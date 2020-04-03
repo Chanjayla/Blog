@@ -1,0 +1,36 @@
+$linkHoverColor: #00b3ff;
+$headerBgColor: #fff;
+$borderColor: #eee;
+$normalFontColor: #444;
+* {
+    margin: 0;
+    padding: 0;
+}
+body, html {
+    width: 100%;
+    height: 100%;
+    color: $normalFontColor;
+}
+a {
+    text-decoration: none;
+    color: inherit;
+}
+a:hover {
+    color: $linkHoverColor;
+}
+
+
+::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+}
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0,.6);
+}
+
+::-webkit-scrollbar-track {
+    border-radius: 0;
+    background: transparent
+}
