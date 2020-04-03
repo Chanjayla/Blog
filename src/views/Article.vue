@@ -7,10 +7,13 @@
         {{ item.timestamp | timestampToDate }}
       </div>
       <div class="article-list__item__img">
-
+        <img :src="item.imageURL" alt="">
       </div>
     </div>
-    <person-card></person-card>
+    <div class="article-list__sub-box">
+      <person-card></person-card>
+    </div>
+
   </div>
 </template>
 <script lang="ts">
@@ -35,6 +38,53 @@ export default class Article extends Vue {
 </script>
 <style lang="scss">
 .article-list {
+  position: relative;
+  box-sizing: border-box;
+  padding: 10px 300px 10px 10px;
+  @media screen and (max-width: 640px) {
+    padding-right: 10px;
+  }
+  &__item {
+    box-sizing: border-box;
+    position: relative;
+    margin: 30px;
+    padding-right: 150px;
+    &__tit {
+      margin-bottom: 5px;
+      white-space: nowrap;
 
+    }
+    &__desc {
+      color: $secondaryFontColor;
+      font-size: 15px;
+      line-height: 1.6;
+      margin-bottom: 5px;
+    }
+    &__label {
+      color: $secondaryFontColor;
+      font-size: 14px;
+      line-height: 2;
+    }
+    &__img {
+      position: absolute;
+      right: 0;
+      top: 10px;
+      width: 120px;
+      height: 120px;
+      overflow: hidden;
+      img {
+        height: 100%;
+      }
+    }
+  }
+  &__sub-box {
+    position: absolute;
+    width: 250px;
+    right: 10px;
+    top: 10px;
+    @media screen and (max-width: 640px) {
+      display: none;
+    }
+  }
 }
 </style>

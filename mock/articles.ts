@@ -10,9 +10,9 @@ for (let i = 0; i < articleCount; i++) {
   articleList.push({
     id: i,
     title: faker.lorem.sentence(6, 10),
-    abstractContent: faker.lorem.sentences(2),
+    abstractContent: faker.lorem.sentences(8),
     fullContent: mockFullContent,
-    imageURL: faker.image.imageUrl(),
+    imageURL: 'http://img.7724.com/7724/zt/2020/03/25/20200325134317.jpg',
     timestamp: faker.date.past().getTime(),
     author: faker.name.findName(),
     type: faker.random.arrayElement(['CN', 'US', 'JP', 'EU']),
