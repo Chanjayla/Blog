@@ -1,7 +1,7 @@
 let hoverDetailFn: EventListener
 let leaveDetailFn: EventListener
-let detailTimer: number|undefined
-const DETAIL_TIME: number = 1000
+let detailTimer: NodeJS.Timeout
+const DETAIL_TIME = 1000
 export const textdetail = {
     inserted(el: HTMLElement): void {
         if (el.scrollHeight > el.clientHeight) {
@@ -12,19 +12,20 @@ export const textdetail = {
                     if (!detail) {
                         parent.style.position = 'relative'
                         detail = document.createElement('span')
-                        detail.style.boxSizing = 'border-box'
+                        detail.style.cssText += `
+                          box-sizing: border-box;
+                          position: absolute;
+                          left: 0;
+                          top: ${el.offsetTop + el.offsetHeight + 5}px;
+                          width: ${el.offsetWidth}px;
+                          padding: 10px;
+                          background-color: #fff;
+                          border: 1px solid #eee;
+                          border-radius: 5px;
+                          transition: all .2s ease;
+                          opacity: 0;
+                          z-index: -1;                        `
                         detail.innerText = el.innerText
-                        detail.style.position = 'absolute'
-                        detail.style.left = '0'
-                        detail.style.top = `${el.offsetTop + el.offsetHeight + 5}px`
-                        detail.style.width = `${el.offsetWidth}px`
-                        detail.style.padding = '10px'
-                        detail.style.background = '#fff'
-                        detail.style.zIndex = '-1'
-                        detail.style.border = '1px solid #eee'
-                        detail.style.borderRadius = '5px'
-                        detail.style.transition = 'opacity .5s ease'
-                        detail.style.opacity = '0'
                         el.appendChild(detail)
                     }
                     detailTimer = setTimeout(() => {

@@ -37,8 +37,7 @@ export default class AppLayout extends Vue {
   &__content {
     width: 100%;
     height: 100%;
-    overflow-x: hidden;
-    overflow-y: auto;
+    overflow: hidden;
   }
   &__footer {
     display: none;
