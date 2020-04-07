@@ -36,3 +36,19 @@ a:hover {
     border-radius: 0;
     background: transparent
 }
+
+//style mixins
+@mixin text-overflow ($rows) {
+    @if $rows == 1 {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    @if $rows > 1 {
+        display: -webkit-box;
+        -webkit-line-clamp: $rows;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
