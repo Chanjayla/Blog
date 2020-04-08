@@ -18,8 +18,8 @@ for (let i = 0; i < articleCount; i++) {
     type: faker.random.arrayElement(['CN', 'US', 'JP', 'EU']),
   })
 }
-
-export const getArticles = (req: Request, res: Response) => {
+const delay = (ms:number) => new Promise(resolve => setTimeout(resolve, ms))
+export const getArticles = async (req: Request, res: Response) => {
   const { type, title, page = 1, limit = 20, sort } = req.query
 
   let mockList = articleList.filter(item => {
@@ -33,7 +33,7 @@ export const getArticles = (req: Request, res: Response) => {
   }
 
   const pageList = mockList.filter((_, index) => index < limit * page && index >= limit * (page - 1))
-
+  await delay(2000)
   return res.json({
     code: 0,
     data: {

@@ -1,22 +1,34 @@
-export function throttle(fn: Function, time: number): Function {
-    let timeout:any = null
-    return function () {
+export function throttle (fn: Function, time: number): Function {
+    let timeout: NodeJS.Timeout
+    return (...arg: any) => {
         clearTimeout(timeout)
         timeout = setTimeout(() => {
-            fn.call(null, arguments)
-        },time)
+            fn(...arg)
+        }, time)
     }
 }
 
-export function debounce(fn: Function, time: number): Function{
-    let canRun: boolean = true
-    return function() {
-        if(canRun) {
+export function fnDebounce(fn: Function, time: number): Function {
+  let canRun = true
+  return (...arg: any) => {
+      if (canRun) {
+          canRun = false
+          fn(...arg)
+          setTimeout(() => {
+              canRun = true
+          }, time)
+      }
+  }
+}
+export function debounce (fn: Function, time: number): Function {
+    let canRun = true
+    return (...arg: any) => {
+        if (canRun) {
             canRun = false
             setTimeout(() => {
-                fn.call(null, arguments)
+                fn(...arg)
                 canRun = true
-            })
+            }, time)
         }
     }
 }

@@ -10,7 +10,6 @@ export const textdetail = {
                 const parent: HTMLElement | null = el.parentElement
                 if (parent) {
                     if (!detail) {
-                        parent.style.position = 'relative'
                         detail = document.createElement('span')
                         detail.style.cssText += `
                           box-sizing: border-box;
@@ -30,7 +29,7 @@ export const textdetail = {
                     }
                     detailTimer = setTimeout(() => {
                         detail.style.opacity = '1'
-                        detail.style.zIndex = '2'
+                        detail.style.zIndex = '9'
                     }, DETAIL_TIME)
                 }
             })
