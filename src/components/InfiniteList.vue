@@ -4,7 +4,7 @@
       <h2 class="infinite-box__list__item__tit" v-textdetail>
         {{ item.title }}
       </h2>
-      <p class="infinite-box__list__item__desc" v-textdetail>
+      <p class="infinite-box__list__item__desc">
         {{ item.abstractContent }}
       </p>
       <div class="infinite-box__list__item__label">
@@ -49,14 +49,16 @@ export default class InfiniteList extends DataProps {
   private recordScroll = 0
   private start = 0
   private end = 0
+  private buffer = 0
   private scrollDebounce: Function
   private locateThrottle: Function
 
   mounted() {
     this.boxHeight = this.$refs.infiniteBox.clientHeight || 0
-    this.pageSize = Math.ceil(this.boxHeight / this.itemHeight) * 2
+    this.pageSize = Math.ceil(this.boxHeight / this.itemHeight) * 3
     this.border = this.paneHeight = this.pageSize * (this.itemHeight + 10)
     this.itemPos = this.tombstonePos = this.end = this.pageSize - 1
+    this.buffer = this.itemHeight * 5
     this.initTombstone()
     getArticles({}).then((res) => {
       if (res.data) {
@@ -66,16 +68,19 @@ export default class InfiniteList extends DataProps {
     })
     this.scrollDebounce = debounce((e) => {
       const scrollTop = e.target && e.target.scrollTop
-      // console.log(scrollTop, this.boxHeight, this.border)
-      if (scrollTop > this.recordScroll && scrollTop + this.boxHeight > this.border) {
+      // console.log(scrollTop, this.boxHeight, this.border, scrollTop - this.recordScroll)
+      if (scrollTop > this.recordScroll && scrollTop + this.boxHeight > this.border - this.buffer) {
+        const num = Math.floor((scrollTop - this.recordScroll) / this.itemHeight)
         this.border = scrollTop + this.boxHeight
-        this.scrollDown()
-      } else if (scrollTop < this.recordScroll && scrollTop < this.border - this.paneHeight) {
+        this.scrollDown(num)
+      } else if (scrollTop < this.recordScroll && this.start >= 0 && scrollTop < this.border - this.paneHeight + this.buffer) {
+        // console.log(this.border - this.paneHeight - scrollTop)
+        const num = Math.floor((this.recordScroll - scrollTop) / this.itemHeight)
         this.border = scrollTop + this.paneHeight
-        this.scrollUp()
+        this.scrollUp(num)
       }
       this.recordScroll = scrollTop
-    }, 200)
+    }, 50)
     this.locateThrottle = throttle(() => {
       if (this.$refs.infiniteBox) {
         const list = this.$refs.infiniteBox.children
@@ -87,6 +92,9 @@ export default class InfiniteList extends DataProps {
           i = (i + 1) % this.pageSize
         }
         this.paneHeight = offset
+        this.border = this.itemData[i].y + list[i].clientHeight + 10
+        console.log('paneHeight:', this.paneHeight)
+        console.log('border:', this.border)
       }
     }, 500)
   }
@@ -113,21 +121,29 @@ export default class InfiniteList extends DataProps {
   scrollHandler(e): void {
     this.scrollDebounce(e)
   }
-  scrollDown(): void {
-    const newPos = (this.itemPos + 1) % this.pageSize
-    this.end++
-    this.start++
-    this.itemPos = newPos
-    this.itemData[newPos].y = this.itemData[newPos].y + this.paneHeight
+  scrollDown(num: number): void {
+    num = num || 1
+    this.end += num
+    this.start += num
+    for (let i = 0; i < num; i++) {
+      const newPos = (this.itemPos + 1) % this.pageSize
+      this.itemPos = newPos
+      this.itemData[newPos].y = this.itemData[newPos].y + this.paneHeight
+    }
     this.locate()
   }
 
-  scrollUp(): void {
-    const newPos = this.itemPos - 1 < 0 ? this.pageSize - 1 : this.itemPos - 1
-    this.end--
-    this.start--
-    this.itemData[this.itemPos].y = this.itemData[(this.itemPos + 1) % this.pageSize].y - this.itemHeight
-    this.itemPos = newPos
+  scrollUp(num: number): void {
+    num = num || 1
+    const offset = this.start >= num ? num : this.start
+    this.end -= offset
+    this.start -= offset
+    for (let i = 0; i < offset; i++) {
+      const newPos = this.itemPos - 1 < 0 ? this.pageSize - 1 : this.itemPos - 1
+      this.itemData[this.itemPos].y = this.itemData[this.itemPos].y - this.paneHeight > 0 ? (this.itemData[this.itemPos].y - this.paneHeight) : 0
+      this.itemPos = newPos
+    }
+
     this.locate()
   }
 }
