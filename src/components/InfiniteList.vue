@@ -80,7 +80,7 @@ export default class InfiniteList extends DataProps {
         this.scrollUp(num)
       }
       this.recordScroll = scrollTop
-    }, 50)
+    }, 200)
     this.locateThrottle = throttle(() => {
       if (this.$refs.infiniteBox) {
         const list = this.$refs.infiniteBox.children
@@ -91,7 +91,7 @@ export default class InfiniteList extends DataProps {
           this.itemData[(i + 1) % this.pageSize].y = this.itemData[i].y + list[i].clientHeight + 10
           i = (i + 1) % this.pageSize
         }
-        this.paneHeight = offset
+        this.paneHeight = offset + list[i].clientHeight + 10
         this.border = this.itemData[i].y + list[i].clientHeight + 10
         console.log('paneHeight:', this.paneHeight)
         console.log('border:', this.border)
@@ -132,7 +132,6 @@ export default class InfiniteList extends DataProps {
     }
     this.locate()
   }
-
   scrollUp(num: number): void {
     num = num || 1
     const offset = this.start >= num ? num : this.start
@@ -143,7 +142,6 @@ export default class InfiniteList extends DataProps {
       this.itemData[this.itemPos].y = this.itemData[this.itemPos].y - this.paneHeight > 0 ? (this.itemData[this.itemPos].y - this.paneHeight) : 0
       this.itemPos = newPos
     }
-
     this.locate()
   }
 }
