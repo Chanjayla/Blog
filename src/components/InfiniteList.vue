@@ -1,7 +1,15 @@
 <template>
-  <div ref="infiniteBox" class="infinite-box" @scroll="scrollHandler">
-    <div v-for="item in itemData" :key="item.id" class="infinite-box__list__item" :style="`transform: translateY(${item.y}px);`" :data-id="item.id" :data-inity="item.y">
-      <h2 class="infinite-box__list__item__tit" v-textdetail>
+  <div ref="infiniteBox"
+       class="infinite-box"
+       @scroll="scrollHandler">
+    <div v-for="item in itemData"
+         :key="item.id"
+         :class="`infinite-box__list__item ${item.visible?'':'hidden'}`"
+         :style="`transform: translateY(${item.y}px);`"
+         :data-id="item.id"
+         :data-inity="item.y">
+      <h2 class="infinite-box__list__item__tit"
+          v-textdetail>
         {{ item.title }}
       </h2>
       <p class="infinite-box__list__item__desc">
@@ -11,10 +19,14 @@
         {{ item.timestamp | timestampToDate }}
       </div>
       <div class="infinite-box__list__item__img">
-        <img :src="item.imageURL" alt="">
+        <img :src="item.imageURL"
+             alt="">
       </div>
     </div>
-    <div v-for="(stone,idx) in tombstoneData" :key="`stone${idx}`" class="infinite-box__list__tombstone" :style="`transform: translateY(${stone.y}px);`"></div>
+    <div v-for="(stone,idx) in tombstoneData"
+         :key="`stone${idx}`"
+         :class="`infinite-box__list__tombstone ${stone.visible?'':'hidden'}`"
+         :style="`transform: translateY(${stone.y}px);`"></div>
   </div>
 </template>
 <script lang="ts">
@@ -22,6 +34,7 @@ import { Vue, Component } from 'vue-property-decorator'
 import { getArticles } from '../api/articles'
 import { debounce, throttle } from '../utils/optimize'
 import { textdetail } from '../directives'
+import { AxiosPromise } from 'axios'
 const DataProps = Vue.extend({
   props: {
     itemHeight: {
@@ -43,38 +56,35 @@ export default class InfiniteList extends DataProps {
   private boxHeight = 0
   private paneHeight = 0
   private itemPos = 0
-  private tombstonePos = 0
-  private pageSize = 0
+  private tombstoneHead = 0
   private border = 0
   private recordScroll = 0
   private start = 0
   private end = 0
   private buffer = 0
+  private page = 1
+  private pageSize = 10
   private scrollDebounce: Function
   private locateThrottle: Function
 
   mounted() {
+    this.init()
+  }
+  init() {
+    // 参数初始化
     this.boxHeight = this.$refs.infiniteBox.clientHeight || 0
     this.pageSize = Math.ceil(this.boxHeight / this.itemHeight) * 3
     this.border = this.paneHeight = this.pageSize * (this.itemHeight + 10)
-    this.itemPos = this.tombstonePos = this.end = this.pageSize - 1
+    this.itemPos = this.end = this.pageSize - 1
     this.buffer = this.itemHeight * 5
-    this.initTombstone()
-    getArticles({}).then((res) => {
-      if (res.data) {
-        this.listData = res.data.list || []
-        this.initItemData()
-      }
-    })
+    // 滚动和重定位函数进行构成防抖、节流函数
     this.scrollDebounce = debounce((e) => {
       const scrollTop = e.target && e.target.scrollTop
-      // console.log(scrollTop, this.boxHeight, this.border, scrollTop - this.recordScroll)
       if (scrollTop > this.recordScroll && scrollTop + this.boxHeight > this.border - this.buffer) {
         const num = Math.floor((scrollTop - this.recordScroll) / this.itemHeight)
         this.border = scrollTop + this.boxHeight
         this.scrollDown(num)
       } else if (scrollTop < this.recordScroll && this.start >= 0 && scrollTop < this.border - this.paneHeight + this.buffer) {
-        // console.log(this.border - this.paneHeight - scrollTop)
         const num = Math.floor((this.recordScroll - scrollTop) / this.itemHeight)
         this.border = scrollTop + this.paneHeight
         this.scrollUp(num)
@@ -97,52 +107,82 @@ export default class InfiniteList extends DataProps {
         console.log('border:', this.border)
       }
     }, 500)
-  }
-  locate() {
-    this.locateThrottle()
+    // dom模块初始化定位并隐藏
+    this.initTombstone()
+    this.initItemData()
   }
   initItemData(): void{
     for (let i = 0; i < this.pageSize; ++i) {
       this.itemData.push({
-        ...this.listData[i],
-        y: (this.itemHeight + 10) * i
+        y: (this.itemHeight + 10) * i,
+        visible: false
       })
     }
-    this.locate()
   }
-
   initTombstone(): void {
     for (let i = 0; i < this.pageSize; ++i) {
       this.tombstoneData.push({
-        y: (this.itemHeight + 10) * i
+        y: (this.itemHeight + 10) * i,
+        visible: true
       })
     }
+  }
+  locate() {
+    this.locateThrottle()
   }
   scrollHandler(e): void {
     this.scrollDebounce(e)
   }
   scrollDown(num: number): void {
     num = num || 1
-    this.end += num
-    this.start += num
     for (let i = 0; i < num; i++) {
       const newPos = (this.itemPos + 1) % this.pageSize
+      this.end++
+      this.start++
+      this.fillTombstone(this.itemPos, 1)
       this.itemPos = newPos
       this.itemData[newPos].y = this.itemData[newPos].y + this.paneHeight
+      this.itemData[newPos].visible = false
     }
-    this.locate()
   }
   scrollUp(num: number): void {
     num = num || 1
     const offset = this.start >= num ? num : this.start
-    this.end -= offset
-    this.start -= offset
     for (let i = 0; i < offset; i++) {
       const newPos = this.itemPos - 1 < 0 ? this.pageSize - 1 : this.itemPos - 1
-      this.itemData[this.itemPos].y = this.itemData[this.itemPos].y - this.paneHeight > 0 ? (this.itemData[this.itemPos].y - this.paneHeight) : 0
+      this.end--
+      this.start--
+      this.fillTombstone(this.itemPos, -1)
+      this.itemData[this.itemPos] = this.itemData[this.itemPos].y - this.paneHeight > 0 ? (this.itemData[this.itemPos].y - this.paneHeight) : 0
+      this.itemData[this.itemPos] = this.itemData[this.itemPos].visible = false
       this.itemPos = newPos
     }
-    this.locate()
+  }
+
+  fillTombstone(pos: number, direct: -1|1): void {
+    this.tombstoneData[pos] = {
+      y: this.itemData[pos].y + (this.itemHeight + 10) * direct,
+      visible: true
+    }
+  }
+  fetchData(page) {
+    return new Promise((resolve) => {
+      if (this.end > this.listData.length) {
+        getArticles({
+          page: page,
+          limit: this.pageSize
+        }).then((res) => {
+          if (res.data) {
+            for (let i = 0; i < this.pageSize; ++i) {
+              this.listData[i + page * this.pageSize] = res.data.list[i]
+            }
+            resolve()
+          }
+        })
+      } else {
+        resolve()
+      }
+    })
   }
 }
 
@@ -166,7 +206,7 @@ export default class InfiniteList extends DataProps {
       padding: 10px 150px 10px 10px;
       border-bottom: 1px solid $borderColor;
       background: #fff;
-      transition: color .2s ease;
+      transition: all .2s ease;
       cursor: pointer;
       z-index: 3;
       &:hover {
@@ -202,7 +242,6 @@ export default class InfiniteList extends DataProps {
 
     }
     &__tombstone {
-      display: none;
       position: absolute;
       left: 0;
       right: 0;
@@ -210,8 +249,14 @@ export default class InfiniteList extends DataProps {
       margin: 10px;
       border-radius: 5px;
       background: rgba(0,0,0,.5);
-      transition: opacity .2s 1s ease;
+      transition: all .2s 1s ease;
       z-index: 2;
+    }
+    .hidden {
+      visibility: hidden;
+      transform: scale(.8);
+      opacity: 0;
+      z-index: -1;
     }
   }
 }
