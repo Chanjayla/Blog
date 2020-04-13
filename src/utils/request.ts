@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { Message, MessageBox } from 'element-ui'
 
-const service = axios.create({
+export const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API,
   timeout: 5000
 })
@@ -27,5 +27,3 @@ service.interceptors.response.use(
     return response.data
   }
 )
-
-export default service

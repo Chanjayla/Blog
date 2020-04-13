@@ -1,7 +1,7 @@
-import request from '../utils/request'
+import { service } from '../utils'
 
 export const getArticles = (params: any) =>
-  request({
+  service({
     url: '/articles',
     method: 'get',
     params

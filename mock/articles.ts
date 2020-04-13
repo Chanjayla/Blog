@@ -3,7 +3,7 @@ import { Response, Request } from 'express'
 import { IArticleData } from '../src/api/types'
 faker.locale = 'zh_CN'
 const articleList: IArticleData[] = []
-const articleCount = 100
+const articleCount = 1000
 const mockFullContent = '<p>I am testing data, I am testing data.</p><p><img src="https://wpimg.wallstcn.com/4c69009c-0fd4-4153-b112-6cb53d1cf943"></p>'
 
 for (let i = 0; i < articleCount; i++) {

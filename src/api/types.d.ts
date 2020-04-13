@@ -37,6 +37,6 @@ export interface IUserData {
 }
 
 export interface axiosRes {
-  code: number,
+  code: number
   data: any
 }
