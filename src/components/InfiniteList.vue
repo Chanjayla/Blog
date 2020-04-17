@@ -1,27 +1,33 @@
 <template>
-  <div ref="infiniteBox"
-       class="infinite-box"
-       @scroll="scrollHandler">
-    <div v-for="item in itemData"
-         :key="item.id"
-         :class="`infinite-box__list__item ${item.visible?'':'infinite-box__list__hidden'}`"
-         :style="`transform: translateY(${item.y}px);`"
-         :data-id="item.id"
-         :data-inity="item.y">
-      <h2 class="infinite-box__list__item__tit"
-          v-textdetail>{{ item.title||'' }}</h2>
-      <p class="infinite-box__list__item__desc">{{ item.abstractContent||'' }}</p>
-      <div class="infinite-box__list__item__label">{{ item.timestamp | timestampToDate }}</div>
-      <div class="infinite-box__list__item__img">
-        <img :src="item.imageURL"
-             alt />
+  <div ref="infiniteBox" class="infinite-box" @scroll="scrollHandler">
+    <!-- <transition-group tag="div" name="list"> -->
+      <div
+        v-for="item in itemData"
+        :key="item.id"
+        :class="`infinite-box__list__item ${item.visible?'':'infinite-box__list__hidden'}`"
+        :style="`transform: translateY(${item.y}px);`"
+        :data-id="item.id"
+        :data-inity="item.y"
+      >
+        <h2 class="infinite-box__list__item__tit" v-textdetail>{{ item.title||'' }}</h2>
+        <p class="infinite-box__list__item__desc">{{ item.abstractContent||'' }}</p>
+        <div class="infinite-box__list__item__label">{{ item.timestamp | timestampToDate }}</div>
+        <div class="infinite-box__list__item__img">
+          <img :src="item.imageURL" alt />
+        </div>
       </div>
-    </div>
-    <div v-for="(stone,idx) in tombstoneData"
-         :key="`stone${idx}`"
-         :class="`infinite-box__list__tombstone ${stone.visible?'':'infinite-box__list__hidden'}`"
-         :style="`transform: translateY(${stone.y}px);${stone.height?'height: '+stone.height+'px':''}`">
+    <!-- </transition-group> -->
 
+    <div
+      v-for="(stone,idx) in tombstoneData"
+      :key="`stone${idx}`"
+      :class="`infinite-box__list__tombstone ${stone.visible?'':'infinite-box__list__hidden'}`"
+      :style="`transform: translateY(${stone.y}px);${stone.height?'height: '+stone.height+'px':''}`"
+    >
+      <div class="infinite-box__list__tombstone__mark"></div>
+      <div class="infinite-box__list__tombstone__mark"></div>
+      <div class="infinite-box__list__tombstone__mark-short"></div>
+      <div class="infinite-box__list__tombstone__mark-img"></div>
     </div>
   </div>
 </template>
@@ -34,7 +40,7 @@ const DataProps = Vue.extend({
   props: {
     itemHeight: {
       type: Number,
-      default: 150
+      default: 160
     }
   }
 })
@@ -47,6 +53,7 @@ const DataProps = Vue.extend({
 export default class InfiniteList extends DataProps {
   private listData = []
   private itemData = []
+  private offsetArr = []
   private tombstoneData = []
   private boxHeight = 0
   private paneHeight = 0
@@ -55,6 +62,7 @@ export default class InfiniteList extends DataProps {
   private border = 0
   private recordScroll = 0
   private start = 0
+  private recordLocateStart = 0
   private end = 0
   private buffer = 0
   private pageSize = 10
@@ -75,7 +83,6 @@ export default class InfiniteList extends DataProps {
     // 滚动和重定位函数进行构成防抖、节流函数
     this.scrollDebounce = debounce(e => {
       const scrollTop = e.target && e.target.scrollTop
-      // console.log(scrollTop, this.border - this.paneHeight + this.buffer)
       /* 向下滑动且可视边界超过数据边界-缓冲区时扩大数据边界 */
       if (
         scrollTop > this.recordScroll + this.itemHeight / 2 &&
@@ -84,7 +91,6 @@ export default class InfiniteList extends DataProps {
         const num = Math.floor(
           (scrollTop - this.recordScroll) / this.itemHeight
         )
-        // this.border = scrollTop + this.paneHeight
         this.scrollDown(num)
         this.recordScroll = scrollTop
       } else if (
@@ -95,7 +101,6 @@ export default class InfiniteList extends DataProps {
         const num = Math.floor(
           (this.recordScroll - scrollTop) / this.itemHeight
         )
-        // this.border = scrollTop + this.paneHeight
         this.scrollUp(num)
         this.recordScroll = scrollTop
       }
@@ -104,19 +109,29 @@ export default class InfiniteList extends DataProps {
       if (!this.isRendering && this.$refs.infiniteBox) {
         const list = this.$refs.infiniteBox.children
         let i = (this.itemPos + 1) % this.pageSize
-        let offset = 0
+        let heightStore = 0
+        let count = 0
+        let cHeight = 0
+        const offset = this.getScrollOffset(this.start - this.recordLocateStart)
+        this.itemData[i].y = this.start > 0 ? this.itemData[i].y - offset : 0
+        this.itemData[i].visible = true
+        this.tombstoneData[i].visible = false
+        this.recordLocateStart = this.start
         while (i !== this.itemPos) {
-          offset += list[i].clientHeight + 10
+          cHeight = list[i].clientHeight
+          heightStore += cHeight + 10
           this.itemData[(i + 1) % this.pageSize].y =
-            this.itemData[i].y + list[i].clientHeight + 10
+            this.itemData[i].y + cHeight + 10
+          this.itemData[(i + 1) % this.pageSize].visible = true
           this.tombstoneData[(i + 1) % this.pageSize].y = this.itemData[
             (i + 1) % this.pageSize
           ].y
-          this.itemData[(i + 1) % this.pageSize].height = list[i].clientHeight
+          this.tombstoneData[(i + 1) % this.pageSize].visible = false
+          this.offsetArr[count++] = cHeight - this.itemHeight
           i = (i + 1) % this.pageSize
         }
-        this.paneHeight = offset + list[i].clientHeight + 10
-        this.border = this.itemData[i].y + list[i].clientHeight + 10
+        this.paneHeight = heightStore + cHeight + 10
+        this.border = this.itemData[i].y + cHeight + 10 - offset
         this.$forceUpdate()
       }
     }, 500)
@@ -127,17 +142,13 @@ export default class InfiniteList extends DataProps {
         i = (i + 1) % this.pageSize
         this.itemData[i] = {
           ...this.itemData[i],
-          ...this.listData[count++],
-          visible: true
-        }
-        this.tombstoneData[i] = {
-          visible: false
+          ...this.listData[count++]
         }
         this.$forceUpdate()
       } while (i !== this.itemPos)
       this.isRendering = false
       this.locate()
-    }, 500)
+    }, 1000)
     // dom模块初始化定位并隐藏
     this.initTombstone()
     this.initItemData()
@@ -178,17 +189,11 @@ export default class InfiniteList extends DataProps {
       this.end++
       this.start++
       this.tombstoneData[newPos] = {
-        y:
-          this.itemData[this.itemPos].y +
-          (this.itemData[this.itemPos].height || this.itemHeight) +
-          10,
+        y: this.itemData[this.itemPos].y + this.itemHeight + 10,
         visible: true
       }
       this.itemData[newPos] = {
-        y:
-          this.itemData[this.itemPos].y +
-          (this.itemData[this.itemPos].height || this.itemHeight) +
-          10,
+        y: this.itemData[this.itemPos].y + this.itemHeight + 10,
         visible: false
       }
       this.itemPos = newPos
@@ -207,14 +212,14 @@ export default class InfiniteList extends DataProps {
       this.tombstoneData[newPos] = {
         y:
           this.itemData[(this.itemPos + 1) % this.pageSize].y -
-          this.itemData[(this.itemPos + 1) % this.pageSize].height -
+          this.itemHeight -
           10,
         visible: true
       }
       this.itemData[this.itemPos] = {
         y:
           this.itemData[(this.itemPos + 1) % this.pageSize].y -
-          this.itemData[(this.itemPos + 1) % this.pageSize].height -
+          this.itemHeight -
           10,
         visible: false
       }
@@ -247,6 +252,17 @@ export default class InfiniteList extends DataProps {
       }
     })
   }
+  getScrollOffset(count: number) {
+    if (count > 0) {
+      const arr =
+        this.offsetArr.length > 2 ? this.offsetArr.splice(0, count) : [0, 0]
+      return arr.reduce((val1, val2) => {
+        return val1 + val2
+      })
+    } else {
+      return 0
+    }
+  }
 }
 </script>
 
@@ -269,7 +285,7 @@ export default class InfiniteList extends DataProps {
       padding: 10px 150px 10px 10px;
       border-bottom: 1px solid $borderColor;
       background: #fff;
-      transition: all 0.2s 0.2s ease;
+      transition: all 0.2s ease;
       cursor: pointer;
       z-index: 3;
       &:hover {
@@ -304,16 +320,39 @@ export default class InfiniteList extends DataProps {
       }
     }
     &__tombstone {
+      box-sizing: border-box;
       position: absolute;
       left: 0;
       right: 0;
       height: 150px;
       margin: 0 10px;
+      padding-right: 150px;
       border-radius: 5px;
       transition: opacity 0.2s ease;
-      z-index: 4;
-      background: #eee;
-      border: 1px solid #eee;
+      z-index: 2;
+      &__mark {
+        width: 100%;
+        height: 30px;
+        margin: 5px 0;
+        background: #eee;
+        border-radius: 5px;
+      }
+      &__mark-short {
+        width: 50%;
+        height: 30px;
+        margin: 5px 0;
+        background: #eee;
+        border-radius: 5px;
+      }
+      &__mark-img {
+        position: absolute;
+        width: 120px;
+        height: 120px;
+        right: 10px;
+        top: 0;
+        background: #eee;
+        border-radius: 5px;
+      }
     }
     &__hidden {
       opacity: 0;

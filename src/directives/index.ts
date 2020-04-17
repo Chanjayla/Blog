@@ -15,7 +15,7 @@ export const textdetail = {
                           box-sizing: border-box;
                           position: absolute;
                           left: 0;
-                          top: ${el.offsetTop + el.offsetHeight + 5}px;
+                          top: 0;
                           width: ${el.offsetWidth}px;
                           padding: 10px;
                           background-color: #fff;
