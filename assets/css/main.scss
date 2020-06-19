@@ -1,0 +1,59 @@
+@import '~/assets/iconfont/iconfont.css';
+@font-face {
+  font-family: 'Ubuntu';
+  src: url('/fonts/Ubuntu-Regular.woff2')
+    format('woff');
+  font-style: normal;
+  font-weight: 400;
+  font-display: fallback;
+} /*!sc*/
+.iconfont {
+  color: $normalFontColor;
+}
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: Ubuntu, sans-serif;
+  color: $normalFontColor;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+a:hover {
+  color: $linkHoverColor;
+}
+
+:-webkit-scrollbar {
+  width: 5px;
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+::-webkit-scrollbar-track {
+  display: none;
+  border-radius: 0;
+  background: transparent;
+}
+
+//style mixins
+@mixin text-overflow($rows) {
+  @if $rows == 1 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  @if $rows > 1 {
+    display: -webkit-box;
+    -webkit-line-clamp: $rows;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
