@@ -4,13 +4,6 @@
     <section class="home-box__content">
       <div class="home-box__content__tit">
         <i></i>
-        <span>Components</span>
-      </div>
-      <div class="home-box__content__list">
-        <card-inline-list :dataList="componentsData" v-if="componentsData"></card-inline-list>
-      </div>
-      <div class="home-box__content__tit">
-        <i></i>
         <span>The Lastest</span>
       </div>
       <div class="home-box__content__list">
@@ -82,8 +75,8 @@ export default {
     @media screen and (max-width: 1200px) {
       width: 100%;
     }
-    @media screen and (min-width: 900px) {
-      width: 900px;
+    @media screen and (min-width: 1200px) {
+      width: 1200px;
     }
     margin: 0 auto;
     &__tit {

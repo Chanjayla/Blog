@@ -6,4 +6,5 @@ module.exports = app => {
   app.use("/api/article", require("./article"))
   app.use("/api/tag", require("./tag"))
   app.use("/api", require("./other"))
+  app.use("/api/qqms", require("./qqmusic"))
 };

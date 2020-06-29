@@ -8,15 +8,11 @@
         </li>
         <li>
           <i class="iconfont icon-pen"></i>
-          <nuxt-link to="/article">文章</nuxt-link>
+          <nuxt-link to="/article">博客</nuxt-link>
         </li>
         <li>
-          <i class="iconfont icon-music"></i>
-          <nuxt-link to="/music">音乐</nuxt-link>
-        </li>
-        <li>
-          <i class="iconfont icon-games"></i>
-          <nuxt-link to="/game">游戏</nuxt-link>
+          <i class="iconfont icon-3801wenjian"></i>
+          <nuxt-link to="/component">组件库</nuxt-link>
         </li>
       </ul>
     </div>
@@ -40,6 +36,8 @@ export default {
   color: $normalFontColor;
   box-shadow: rgba(0, 0, 0, 0.5) 0px 1px 40px -8px;
   background: rgba(255, 255, 255, 0.9);
+  white-space: nowrap;
+  overflow-x: auto;
   &__menu {
     ul {
       height: $headerHeight;

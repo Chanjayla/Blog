@@ -5,8 +5,8 @@
 </template>
 <style lang="scss" scoped>
 .app-footer {
-  width: 900px;
-  @media screen and (max-width: 640px) {
+  width: 1200px;
+  @media screen and (max-width: 1200px) {
     width: 100%;
   }
   height: 60px;

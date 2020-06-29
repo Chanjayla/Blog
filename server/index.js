@@ -4,7 +4,7 @@ const { Nuxt, Builder } = require('nuxt')
 const bodyParser = require('body-parser')
 const app = express()
 app.use(bodyParser.json())
-require('./api')(app)
+require('./routes')(app)
 // Import and Set Nuxt.js options
 const config = require('../nuxt.config.js')
 config.dev = process.env.NODE_ENV !== 'production'

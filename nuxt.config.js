@@ -33,7 +33,11 @@ module.exports = {
     '~plugins/vue-filter',
     '~plugins/vue-directives',
     '~plugins/axios',
-    '~plugins/element-ui'
+    {
+      src: '~plugins/element-ui',
+      ssr: true
+    },
+    '~plugins/index',
   ],
   /*
   ** Nuxt.js dev-modules
@@ -55,11 +59,12 @@ module.exports = {
     /*
     ** You can extend webpack config here
     */
+   extractCSS: true,
     extend (config, ctx) {
     }
   },
   vendor: [
-    'element-ui'
+    
   ],
   styleResources: {
     scss: [
