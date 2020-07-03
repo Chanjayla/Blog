@@ -1,4 +1,4 @@
-FROM node:alpine as builder
+FROM node:alpine
 
 RUN mkdir /code && cd /code
 WORKDIR /code
