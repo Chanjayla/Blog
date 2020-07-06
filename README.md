@@ -1,5 +1,5 @@
 # nuxt-ts
-
+ 
 > My stylish Nuxt.js project
 
 ## Build Setup
