@@ -14,5 +14,5 @@ COPY ./ /usr/src/next-app/
 COPY --from=builder /usr/src/nuxt-app/node_modules ./node_modules
 EXPOSE 3000
 RUN npm run build
-CMD ["npm","start"]
+CMD ["npm","start"] 
 
