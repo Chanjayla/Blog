@@ -1,5 +1,6 @@
 
 module.exports = {
+  telemetry: false,
   mode: 'universal',
   /*
   ** Headers of the page
@@ -17,7 +18,7 @@ module.exports = {
   },
   server: {
     host: '0.0.0.0',
-    port: 80
+    port: 3000
   },
   /*
   ** Customize the progress-bar color
