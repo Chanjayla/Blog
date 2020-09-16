@@ -16,9 +16,8 @@ module.exports = {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
   },
-  server: {
-    host: '0.0.0.0',
-    port: 3000
+  env: {
+    baseUrl: process.env.NODE_ENV === 'development' ? process.env.DEV_BASE_URL : process.env.PRO_BASE_URL
   },
   /*
   ** Customize the progress-bar color
@@ -28,27 +27,37 @@ module.exports = {
   ** Global CSS
   */
   css: [
-    '@/assets/css/main.scss',
-    'element-ui/lib/theme-chalk/index.css'
+    '@/styles/main.scss',
+    'element-ui/lib/theme-chalk/index.css',
+    // lib css
+    'codemirror/lib/codemirror.css',
+    // theme css
+    'codemirror/theme/zenburn.css'
+
   ],
   /*
   ** Plugins to load before mounting the App
   */
   plugins: [
-    '~plugins/vue-filter',
-    '~plugins/vue-directives',
+    '~plugins/filter',
+    '~plugins/directive',
     '~plugins/axios',
     {
       src: '~plugins/element-ui',
       ssr: true
     },
-    '~plugins/index',
+    {
+      src:  '~plugins/index',
+      ssr: false
+    }
+   
   ],
   /*
   ** Nuxt.js dev-modules
   */
   buildModules: [
-    '@nuxt/typescript-build',
+    // '@nuxt/typescript-build',
+    '@nuxtjs/svg'
   ],
   /*
   ** Nuxt.js modules
@@ -73,7 +82,7 @@ module.exports = {
   ],
   styleResources: {
     scss: [
-      './assets/css/variables.scss', // 全局 scss 变量
+      './styles/variables.scss', // 全局 scss 变量
     ]
   }
 }

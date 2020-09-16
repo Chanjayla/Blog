@@ -1,0 +1,126 @@
+@font-face {
+  font-family: "Ubuntu";
+  src: url("/fonts/Ubuntu-Regular.woff2") format("woff");
+  font-style: normal;
+  font-weight: 400;
+  font-display: fallback;
+} /*!sc*/
+.iconfont {
+  color: $normalFontColor;
+}
+html {
+  font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 16px;
+  word-spacing: 1px;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+  margin: 0;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+a:hover {
+  color: $linkHoverColor;
+}
+
+:-webkit-scrollbar {
+  width: 5px;
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+::-webkit-scrollbar-track {
+  display: none;
+  border-radius: 0;
+  background: transparent;
+}
+
+.page-enter-active,
+.page-leave-active {
+  transition: all 0.5s;
+}
+.page-enter,
+.page-leave-active {
+  transform: translateX(10px);
+  opacity: 0;
+}
+.blog-enter-active,
+.blog-leave-active {
+  transition: all 0.5s;
+}
+.blog-enter,
+.blog-leave-active {
+  opacity: 0;
+}
+.markdown-content {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    margin: 10px 0;
+    line-height: 2;
+  }
+  h1 {
+    font-size: 1.8em;
+    border-bottom: 1px solid rgb(230, 230, 230);
+  }
+  h2 {
+    font-size: 1.6em;
+    border-bottom: 1px dashed rgb(230, 230, 230);
+  }
+  h3 {
+    font-size: 1.4em;
+  }
+  h4 {
+    font-size: 1.2em;
+  }
+  h5 {
+    font-size: 1em;
+  }
+  p {
+    line-height: 1.8;
+    margin: 10px 0;
+  }
+  ul {
+    box-sizing: border-box;
+    padding-left: 20px;
+    margin: 10px 0;
+  }
+  li {
+    color: #666;
+  }
+  a {
+    text-decoration: none;
+    color: #00b2ff;
+  }
+  .hljs {
+    border-radius: 3px;
+  }
+  pre {
+    padding: 0.5em;
+    overflow-x: auto;
+  }
+  blockquote {
+    box-sizing: border-box;
+    padding-left: 10px;
+    border-left: 3px solid #eee;
+    background: #fefefe;
+    color: $secondaryFontColor;
+    font-size: 14px;
+  }
+}

@@ -8,14 +8,12 @@
   </div>
 </template>
 <script>
-import CardBlockList from '~/components/list/CardBlockList.vue'
-import TagCloud from '~/components/block/TagCloud.vue'
+import TagCloud from '~/components/TagCol/index.vue'
 import axios from 'axios'
 import { transScroll } from '~/utils'
 export default {
   components: {
     TagCloud,
-    CardBlockList
   },
   data() {
     return {

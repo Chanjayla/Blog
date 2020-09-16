@@ -1,0 +1,38 @@
+$linkHoverColor: #00b3ff;
+$dangerColor: #F56C6C;
+$headerColor: #fff;
+$borderColor: #eee;
+$normalFontColor: #444;
+$secondaryFontColor: #999;
+$headerHeight: 60px;
+$footerHeight: 62px;
+
+$navBarHeight: 50px;
+$sideBarWidth: 160px;
+$sideBarWidth_c: 54px;
+
+$minViewWidth: 1200px;
+$mobileWidth: 640px;
+$adminViewBg: #f0f2f5;
+$adminItemBg: #ffffff;
+$maskBg: rgba(0,0,0,.5);
+//style mixins
+@mixin text-overflow($rows) {
+  @if $rows == 1 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  @if $rows > 1 {
+    display: -webkit-box;
+    -webkit-line-clamp: $rows;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+:export {
+  headerColor: $headerColor;
+  normalFontColor: $normalFontColor;
+  maskBg: $maskBg;
+}

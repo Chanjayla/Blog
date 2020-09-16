@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const axios = require('axios')
-const { qqMusicDataHandle } = require('../util/dataHandle')
+const { qqMusicDataHandle } = require('../utils/dataHandle')
 const {
     SEARCH_URL
 } = require('../api/qqmusic')

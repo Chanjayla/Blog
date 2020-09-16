@@ -1,0 +1,35 @@
+.el-menu [class^=el-icon-] {
+    font-size: 16px !important;
+}
+.el-menu {
+    overflow: hidden;
+    border-right: 0;
+}
+.el-submenu__title {
+    padding: 0 15px !important;
+}
+.el-menu-item {
+    padding: 0 15px !important;
+}
+.el-menu--collapse {
+    width: 54px;
+    .el-submenu__title {
+        padding: 0 15px !important;
+        span {
+            display: none;
+        }
+    }
+    .el-tooltip {
+        padding: 0 15px !important;
+    }
+}
+.el-submenu__icon-arrow {
+    margin: -5px !important;
+}
+
+.el-submenu .el-menu-item {
+    min-width: auto;
+    height: 40px;
+    line-height: 40px;
+    font-size: 12px;
+}

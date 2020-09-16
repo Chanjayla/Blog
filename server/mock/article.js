@@ -1,11 +1,10 @@
-
 const faker = require("faker");
 const fs = require("fs");
 const path = require("path");
 const articleList = [];
 const { allTag } = require('./tag')
 const mockFullContent = fs
-  .readFileSync(path.join(__dirname, "../../static/md/example.md"))
+  .readFileSync(path.join(__dirname, "../example.md"))
   .toString();
 faker.locale = "zh_CN";
 
@@ -13,13 +12,13 @@ for (let i = 0; i < 100; i++) {
   articleList.push({
     id: i,
     title: faker.lorem.sentence(6, 10),
-    abstractContent: faker.lorem.sentences(8),
-    imageURL: "/example.png",
-    timestamp: faker.date.past().getTime(),
+    description: faker.lorem.sentences(4),
+    previewImage: "/example.png",
+    publish_time: faker.date.past().getTime(),
     author: faker.name.findName(),
-    tag: faker.random.arrayElement(allTag),
+    tags: [faker.random.arrayElement(allTag)],
     preface: faker.lorem.sentences(5),
-    fullContent: mockFullContent
+    content: mockFullContent
   });
 }
 
