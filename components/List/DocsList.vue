@@ -1,4 +1,5 @@
 <template>
+
     <div class="docs-list" :style="`background-color: ${inSelectStatus?maskBgColor:''}`">
         <div @click="clickItem">
             <div

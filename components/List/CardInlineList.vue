@@ -1,4 +1,5 @@
 <template>
+
   <div class="list-box">
     <a
       class="list-box__item"
