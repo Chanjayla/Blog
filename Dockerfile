@@ -14,5 +14,5 @@ COPY ./ /nuxt/
 COPY --from=builder /code/node_modules ./node_modules
 EXPOSE 3000
 RUN npm run build
-CMD ["npm","start"] 
+CMD ["pm2","start","node_modules/nuxt/bin/nuxt-start --name Genos_Blog"] 
 
