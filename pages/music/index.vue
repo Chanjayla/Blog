@@ -25,21 +25,21 @@ export default {
   },
   asyncData({ error }) {
     if (process.server) {
-      return axios
-        .post('/api/article/page', {
-          page: 1,
-          pageSize: 10
-        })
-        .then(res => {
-          return {
-            articleData: res.data.data,
-            total: res.data.total,
-            isServer: true
-          }
-        })
-        .catch(err => {
-          error({ statusCode: 400, message: err })
-        })
+      // return axios
+      //   .post('/api/article/page', {
+      //     page: 1,
+      //     pageSize: 10
+      //   })
+      //   .then(res => {
+      //     return {
+      //       articleData: res.data.data,
+      //       total: res.data.total,
+      //       isServer: true
+      //     }
+      //   })
+      //   .catch(err => {
+      //     error({ statusCode: 400, message: err })
+      //   })
     } else {
       return {
         isServer: false

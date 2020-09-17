@@ -13,7 +13,7 @@ export const actions = {
     nuxtServerInit({ commit }, { req }) {
         
         let token = null
-        if (req.headers.cookie) {
+        if (req.headers && req.headers.cookie) {
             const parsed = cookieParser && cookieParser.parse(req.headers.cookie)
             try {
                 token = parsed[TokenKey]

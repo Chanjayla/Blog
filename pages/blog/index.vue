@@ -16,7 +16,6 @@
 
 <script>
 import Vue from 'vue'
-import axios from 'axios'
 import BlogList from '~/components/List/BlogList.vue'
 import * as Article from '~/api/article'
 import * as Component from '~/api/component'
@@ -39,7 +38,7 @@ export default {
           }
         })
         .catch(err => {
-          error({ statusCode: 400, message: err })
+          // error({ statusCode: 400, message: err })
         })
     } else {
       return {

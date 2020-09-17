@@ -46,7 +46,7 @@ export default {
           }
         })
         .catch(err => {
-          error({ statusCode: 400, message: err })
+          // error({ statusCode: 400, message: err })
         })
     } else {
       return {
