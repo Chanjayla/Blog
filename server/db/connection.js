@@ -1,11 +1,6 @@
 const mongoose = require('mongoose')
 const conn = mongoose.createConnection(
-    'mongodb://127.0.0.1:27017/dbtest',
-    {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        useFindAndModify: false
-    }
+    'mongodb://admin:Cjl123456@47.101.61.8:27017/admin'
 )
 conn.on('open', () => {
     console.log('打开 mongodb 连接')
