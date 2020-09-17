@@ -18,13 +18,13 @@ module.exports = {
         })
     },
     verify(data) {
-        return UserModel.find({
+        return UserModel.findOne({
             name: data.name
         }).then(doc => {
-            if(doc.length == 0) {
+            if(!doc) {
                 return false
             }
-            return doc[0].password === data.password
+            return doc.password === data.password
         })
         
     }

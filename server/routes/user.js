@@ -21,7 +21,6 @@ router.post('/login', async (req, res, next) => {
         name: params.username,
         password: params.password
     })
-    console.log(pwdVerRes)
     if(pwdVerRes) {
         if(token) {
             const tokenVerRes = Jwt.verify(token)
