@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
-let connection = require('../db/connection')
-const autoAddId = require('../db/ids')
+let connection = require('../mongodb/connection').connection
+const autoAddId = require('../mongodb/ids')
 let ArticleSchema = new mongoose.Schema({
     cid: Number, 
     title: String,

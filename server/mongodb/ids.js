@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-let connection = require('./connection')
+let connection = require('./connection').connection
 
 const CounterSchema = new mongoose.Schema({
     name: {
@@ -23,6 +23,7 @@ function autoAddId(schema, name) {
         }, {
             new: true
         }, (error, counter) => {
+            console.log(counter)
             if (error) return next(error)
             doc.cid = counter.seq
             next()
