@@ -3,7 +3,7 @@
             <div class="app-header__mask" :class="`${themeName}-mask`"></div>
             <div class="app-header__tit">
                 Genos's Blog
-                <i :class="themeId?'night':'noon'" @click="changeTheme"></i>
+                <i :class="themeId>0?'night':'noon'" @click="changeTheme"></i>
             </div>
             <div class="app-header__menu">
                 <ul>
@@ -22,7 +22,6 @@
 <script>
 import Sticky from '~/components/Sticky'
 import { mapState } from 'vuex'
-import { headerColor, normalFontColor } from '~/styles/variables.scss'
 export default {
     data() {
         return {
@@ -56,7 +55,7 @@ export default {
     },
     methods: {
         changeTheme() {
-            this.$store.dispatch('app/toggleTheme', normalFontColor)
+            this.$store.dispatch('app/toggleTheme', 1 - this.themeId)
         },
     },
     computed: {

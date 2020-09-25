@@ -9,7 +9,7 @@
             <h1 class="detail-box__title">{{ title }}</h1>
             <figure class="detail-box__msg">
                 <span>{{ publish_time | timestampToDate }}</span>
-                <span v-for="tag in tags" :key="tag.id">{{ tag.name }}</span>
+                <span class="detail-box__msg__tag" v-for="tag in tags" :key="tag.id">{{ tag }}</span>
             </figure>
             <div class="detail-box__preface" v-if="preface">{{ preface }}</div>
             <div class="markdown-content" v-html="content" v-highlight ref="contentBox"></div>
@@ -98,13 +98,13 @@ export default {
             }
         }
         this.scrollCb = throttle((e) => {
-            const top = document.documentElement.scrollTop
+            const top = document.getElementById('app').scrollTop
             this.findDirActive(top)
         }, 16)
-        window.addEventListener('scroll', this.scrollCb)
+        document.getElementById('app').addEventListener('scroll', this.scrollCb)
     },
     beforeDestroy() {
-        window.removeEventListener('scroll', this.scrollCb)
+        document.getElementById('app').removeEventListener('scroll', this.scrollCb)
     },
     methods: {
         initDirectory() {
@@ -165,15 +165,22 @@ export default {
         line-height: 1.8;
         margin: 20px 0;
         text-align: center;
-        font-size: 40px;
+        font-size: 48px;
         font-weight: 600;
     }
     &__msg {
+        margin-bottom: 20px;
         text-align: center;
         color: #999;
         span {
             display: inline-block;
             margin: 0 10px;
+        }
+        &__tag {
+            padding: 0 10px;
+            color: #00965e;
+            background: rgba(0, 150, 94, 0.1);
+            border-radius: 5px;
         }
     }
     &__preface {

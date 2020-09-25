@@ -16,9 +16,14 @@ export default {
     },
     computed: {
         ...mapState({
-            themeName: (state) => state.app.themeName,
+            themeName: (state) => state.app.themeName
         }),
     },
+    mounted() {
+        const theme = sessionStorage.getItem('theme_id') || 0
+        console.log(theme)
+        this.$store.dispatch('app/toggleTheme', theme)
+    }
 }
 </script>
 <style lang="scss">

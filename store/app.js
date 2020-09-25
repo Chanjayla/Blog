@@ -1,13 +1,15 @@
+
 export const state = () => ({
-    themeId: 0,
+    themeId:  0,
     themeName: 'theme0',
     clientWidth: 0,
     clientHeight: 0
 })
 export const mutations = {
-    TOGGLE_THEME: (state) => {
-        state.themeId = 1 - state.themeId
+    TOGGLE_THEME: (state, themeId) => {
+        state.themeId = themeId || 0
         state.themeName = 'theme' + state.themeId
+        sessionStorage.setItem('theme_id', state.themeId)
     },
     SET_CLIENT_WIDTH: (state, width) => {
         state.clientWidth = width
@@ -17,7 +19,7 @@ export const mutations = {
     }
 }
 export const actions = {
-    toggleTheme({ commit }) {
-        commit('TOGGLE_THEME')
+    toggleTheme({ commit }, themeId) {
+        commit('TOGGLE_THEME', themeId)
     }
 }
