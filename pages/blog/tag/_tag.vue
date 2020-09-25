@@ -5,7 +5,9 @@
         <div class="article-box__left__tag">
             Tag: <span v-for="tag in tags" :key="tag">{{ tag }}</span>
         </div>
-      <BlogList :dataList="articleData" v-if="articleData"></BlogList>
+        <div class="article-box__left__box">
+            <BlogList :dataList="articleData" v-if="articleData"></BlogList>
+        </div>
       <el-pagination
         class="article-box__pagination"
         layout="prev, pager, next"
@@ -53,7 +55,7 @@ export default {
           }
         })
         .catch(err => {
-          error({ statusCode: 400, message: err })
+          // error({ statusCode: 400, message: err })
         })
     } else {
       return {
@@ -139,6 +141,9 @@ export default {
             padding: 5px 10px;
             border-radius: 5px;
         }
+    }
+    &__box {
+      width: 900px;
     }
   }
   &__pagination {

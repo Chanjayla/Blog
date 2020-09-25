@@ -11,11 +11,12 @@ const CounterSchema = new mongoose.Schema({
     }
 })
 
-const CounterModel = connection.model('Counter', CounterSchema)
+const CounterModel = connection.model('Counters', CounterSchema)
 
 function autoAddId(schema, name) {
     schema.pre('save', function (next) {
         let doc = this
+        console.log(name)
         CounterModel.findOneAndUpdate({
             name: name
         }, {

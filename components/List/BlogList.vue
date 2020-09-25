@@ -6,10 +6,12 @@
         <img :src="item.imageURL" :alt="item.title" />
       </a> -->
       <nuxt-link :to="`/blog/${item._id}`" class="article-list__item__img">
-        <img :src="item.preview_image" :alt="item.title" />
+        <img :src="item.preview_image" :alt="item.title" @error="loadDefaultImg" />
       </nuxt-link>
       <div class="article-list__item__msg">
-        <p class="article-list__item__msg__date">{{item.publish_time | timestampToDate}}</p>
+        <p class="article-list__item__msg__date">
+          <i class="el-icon-time"></i>
+          {{item.publish_time | timestampToDate}}</p>
         <h2 class="article-list__item__msg__tit">{{item.title}}</h2>
         <p class="article-list__item__msg__type" v-for="tag in item.tags" :key="tag.id">{{tag.name}}</p>
         <p class="article-list__item__msg__desc">{{item.description}}</p>
@@ -22,31 +24,36 @@
 </template>
 <script>
 export default {
-  props: ['dataList']
+  props: ['dataList'],
+  methods: {
+    loadDefaultImg(e) {
+      e.target.src = "/empty.png"
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>
 .article-list {
-  width: 900px;
+  width: 800px;
   &__item {
     display: flex;
-    width: 900px;
-    height: 330px;
+    width: 800px;
+    height: 225px;
     margin: 20px 0 40px 0;
     border-radius: 10px;
     box-shadow: rgba(0, 0, 0, 0.5) 0px 1px 20px -8px;
     overflow: hidden;
     &__img {
       position: relative;
-      width: 500px;
+      width: 400px;
       height: 100%;
       overflow: hidden;
       box-shadow: rgba(0, 0, 0, 0.5) 0px 1px 20px -8px;
-      background: #444;
+      background: #fff;
       img {
         position: absolute;
+        left: 0;
         top: 0;
-        bottom: 0;
         width: 100%;
         margin: auto;
         transition: transform .2s linear;
@@ -61,13 +68,11 @@ export default {
       padding: 30px;
       &__date, &__type{
         font-size: 14px;
-        color: #999;
         margin-bottom: 10px;
       }
       &__tit {
         margin-bottom: 10px;
         font-size: 20px;
-        color: #444;
         font-weight: bold;
         line-height: 2;
         white-space: nowrap;
@@ -80,8 +85,7 @@ export default {
         -webkit-line-clamp: 5;
         line-height: 1.6;
         overflow: hidden;
-        font-size: 16px;
-        color: #666;
+        font-size: 14px;
       }
     }
   }
@@ -90,7 +94,6 @@ export default {
   }
   &__no-data {
     padding-top: 10px;
-    color: $secondaryFontColor;
   }
 }
 </style>

@@ -1,6 +1,5 @@
 $linkHoverColor: #00b3ff;
 $dangerColor: #F56C6C;
-$headerColor: #fff;
 $borderColor: #eee;
 $normalFontColor: #444;
 $secondaryFontColor: #999;
@@ -16,6 +15,14 @@ $mobileWidth: 640px;
 $adminViewBg: #f0f2f5;
 $adminItemBg: #ffffff;
 $maskBg: rgba(0,0,0,.5);
+
+$mdBlockquoteLineColor: rgb(224,226,229);
+$mdBlockquoteBgColor: #fefefe;
+$mdBlockquoteColor: rgb(123,131,138);
+
+$blogBgColor: rgba(251,251,251,1);
+$blogDetailColor: #3b454e;
+$blogTitBgColor: rgb(0, 112, 186);
 //style mixins
 @mixin text-overflow($rows) {
   @if $rows == 1 {
@@ -32,7 +39,6 @@ $maskBg: rgba(0,0,0,.5);
   }
 }
 :export {
-  headerColor: $headerColor;
   normalFontColor: $normalFontColor;
   maskBg: $maskBg;
 }

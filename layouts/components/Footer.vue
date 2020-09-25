@@ -1,7 +1,10 @@
 <template>
-  <div class="app-footer">
-    <p class="copyright">Copyright © 2020 Genos.</p>
+  <div>
+      <div class="app-footer">
+        <p class="copyright">Copyright © 2020 Genos.</p>
+      </div>
   </div>
+
 </template>
 <script> 
 export default {}

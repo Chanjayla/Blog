@@ -3,10 +3,11 @@ let connection = require('../mongodb/connection').connection
 const autoAddId = require('../mongodb/ids')
 let TagSchema = new mongoose.Schema({
     cid: Number,
-    name: String
+    name: String,
+    defaultPreview: String
 })
 autoAddId(TagSchema, 'tag')
-let TagModel = connection.model('Tag', TagSchema)
+let TagModel = connection.model('Tags', TagSchema)
 
 module.exports = {
     add(data) {
@@ -16,9 +17,13 @@ module.exports = {
         return tagDoc.save()
     },
     update(data) {
-        const whereQuery = {cid: data.cid}
-        const updateQuery = {
+        const whereQuery = data.cid ? {cid: data.cid} : {name: data.name}
+        let updateQuery = {
             name: data.name
+        }
+        console.log(data)
+        if(data.previewImage) {
+            updateQuery.defaultPreview = data.previewImage
         }
         return TagModel.updateOne(whereQuery, updateQuery)
     },

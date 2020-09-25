@@ -1,13 +1,13 @@
 export const state = () => ({
-    theme: {
-        headerColor: ''
-    },
+    themeId: 0,
+    themeName: 'theme0',
     clientWidth: 0,
     clientHeight: 0
 })
 export const mutations = {
-    TOGGLE_HEADER_COLOR: (state, color) => {
-        state.theme.headerColor = color
+    TOGGLE_THEME: (state) => {
+        state.themeId = 1 - state.themeId
+        state.themeName = 'theme' + state.themeId
     },
     SET_CLIENT_WIDTH: (state, width) => {
         state.clientWidth = width
@@ -17,7 +17,7 @@ export const mutations = {
     }
 }
 export const actions = {
-    toggleHeaderColor({ commit }, color) {
-        commit('TOGGLE_HEADER_COLOR', color)
+    toggleTheme({ commit }) {
+        commit('TOGGLE_THEME')
     }
 }

@@ -33,3 +33,9 @@
     line-height: 40px;
     font-size: 12px;
 }
+.el-pagination button:disabled {
+    background: transparent;
+}
+.el-pager li {
+    background: transparent;
+}

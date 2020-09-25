@@ -3,13 +3,13 @@
     <div class="home-box__timg"></div>
     <section class="home-box__content">
       <div class="home-box__content__tit">
-        <i></i>
+        <i class="el-icon-time"></i>
         <span>The Lastest</span>
       </div>
       <div class="home-box__content__list">
         <blog-list :dataList="lastestData" v-if="lastestData"></blog-list>
       </div>
-      <div class="home-box__content__more">More</div>
+      <div class="home-box__content__more" @click="gotoBlog">More</div>
     </section>
   </div>
 </template>
@@ -59,7 +59,12 @@ export default {
       })
     }
   },
-  transition: 'blog'
+  transition: 'blog',
+  methods: {
+    gotoBlog() {
+      this.$router.push('/blog/list')
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>
@@ -68,7 +73,7 @@ export default {
   &__timg {
     width: 100%;
     height: 62.4vw;
-    background: url(/timg.jpeg);
+    background: url(/home_page_header.jpeg);
     background-attachment: fixed;
     background-repeat: no-repeat;
     background-position: 0 0;
@@ -77,15 +82,16 @@ export default {
   &__content {
     width: 100%;
     margin: 0 auto;
+    padding-bottom: 20px;
     &__tit {
-      max-width: 1200px;
-      height: 40px;
+      box-sizing: border-box;
+      max-width: 900px;
       line-height: 40px;
       margin: 40px auto 20px auto;
-      color: rgb(102, 102, 102);
+      padding: 10px;
       font-weight: 600;
       border-bottom: 1px dashed rgb(230, 230, 230);
-      font-size: 20px;
+      font-size: 1.6em;
     }
     &__list {
       display: flex;
@@ -105,8 +111,8 @@ export default {
       transition-delay: 0s, 0s, 0.15s;
       transform: scale3d(1, 1, 1);
       cursor: pointer;
-      margin: 20px auto;
-      background: rgb(255, 255, 255);
+      margin: 20px auto 0 auto;
+      background: transparent;
       border: 2px solid rgb(240, 82, 40);
       border-radius: 25px;
       text-align: center;

@@ -1,34 +1,45 @@
 <template>
-    <div class="detail-box">
-        <div class="detail-box__image">
-            <img :src="previewImage" :alt="title" />
-        </div>
-        <h1 class="detail-box__title">{{ title }}</h1>
-        <figure class="detail-box__msg">
-            <span>{{ publish_time | timestampToDate }}</span>
-            <span v-for="tag in tags" :key="tag.id">{{ tag.name }}</span>
-        </figure>
-        <div class="detail-box__preface" v-if="preface">{{ preface }}</div>
-        <div class="markdown-content" v-html="content" v-highlight ref="contentBox"></div>
-        <div class="detail-box__dir">
-            <ul>
-                <li class="main" v-for="item in directory" :key="item">
-                    <a href="javascript:void(0)" :data-id="item" @click="scrollToDir">{{ item }}</a>
-                </li>
-            </ul>
+    <div>
+        <div class="detail-box">
+            <div class="detail-box__image">
+                <transition name="fade">
+                    <img :src="previewImage" :alt="title" @load="imageLoaded" v-show="imgLoaded" />
+                </transition>
+            </div>
+            <h1 class="detail-box__title">{{ title }}</h1>
+            <figure class="detail-box__msg">
+                <span>{{ publish_time | timestampToDate }}</span>
+                <span v-for="tag in tags" :key="tag.id">{{ tag.name }}</span>
+            </figure>
+            <div class="detail-box__preface" v-if="preface">{{ preface }}</div>
+            <div class="markdown-content" v-html="content" v-highlight ref="contentBox"></div>
+            <div class="detail-box__dir">
+                <ul :key="dirKey">
+                    <li
+                        class="dir-item"
+                        v-for="item in directory"
+                        :key="item.id"
+                        :class="{'dir-active-item':!!item.active}"
+                    >
+                        <a :href="`#${item.id}`" :data-id="item.id">{{ item.id }}</a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 </template>
 <script>
 import marked from 'marked'
-import { transScroll } from '~/utils'
+import { transScroll, throttle } from '~/utils'
 import * as Article from '~/api/article'
-import { headerColor, normalFontColor } from '~/styles/variables.scss'
 export default {
     layout: 'blog',
     data() {
         return {
             directory: [],
+            imgLoaded: false,
+            dirKey: 0,
+            scrollCb: function () {},
         }
     },
     asyncData({ params, error }) {
@@ -86,27 +97,46 @@ export default {
                 this.initDirectory()
             }
         }
-        this.$store.dispatch('app/toggleHeaderColor', normalFontColor)
+        this.scrollCb = throttle((e) => {
+            const top = document.documentElement.scrollTop
+            this.findDirActive(top)
+        }, 16)
+        window.addEventListener('scroll', this.scrollCb)
     },
     beforeDestroy() {
-        this.$store.dispatch('app/toggleHeaderColor', headerColor)
+        window.removeEventListener('scroll', this.scrollCb)
     },
     methods: {
         initDirectory() {
-            const nodes = this.$refs.contentBox.querySelectorAll('[id]')
+            const nodes = this.$refs.contentBox.querySelectorAll(
+                'h1[id],h2[id]'
+            )
             const dir = []
             nodes.forEach((node) => {
-                dir.push(node.id)
+                dir.push({
+                    id: node.id,
+                    pos: node.offsetTop,
+                })
             })
             this.directory = dir
         },
-        scrollToDir(e) {
-            e.preventDefault()
-            const id = e.target.dataset.id
-            if (id) {
-                const top = document.querySelector(`#${id}`).offsetTop
-                transScroll(top - 80)
+        imageLoaded() {
+            this.imgLoaded = true
+        },
+        findDirActive(pos) {
+            let selected = false
+            for (let i = 0; i < this.directory.length; ++i) {
+                if (!selected && this.directory[i].pos > pos) {
+                    this.directory[i].active = true
+                    selected = true
+                } else {
+                    this.directory[i].active = false
+                }
             }
+            !selected &&
+                this.directory[this.directory.length - 1] &&
+                (this.directory[this.directory.length - 1].active = true)
+            this.dirKey++
         },
     },
 }
@@ -118,9 +148,14 @@ export default {
     padding: calc(#{$headerHeight} + 30px) 10px;
     &__image {
         width: 100%;
+        min-height: 400px;
         box-shadow: rgba(0, 0, 0, 0.5) 0px 1px 20px -8px;
         font-size: 0;
         border-radius: 10px;
+        background-image: url(/empty.png);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 50%;
         overflow: hidden;
         img {
             width: 100%;
@@ -156,7 +191,7 @@ export default {
         display: flex;
         align-items: center;
         position: fixed;
-        width: 100px;
+        width: 200px;
         top: 0;
         bottom: 0;
         left: 10px;
@@ -178,19 +213,19 @@ export default {
                 overflow: hidden;
                 background: #444;
             }
-            .main {
+            .dir-item {
                 position: relative;
                 display: block;
-                height: 30px;
-                line-height: 30px;
+                margin: 5px 0;
+                padding-left: 5px;
                 &::before {
                     position: absolute;
                     content: '';
-                    width: 10px;
-                    height: 10px;
+                    width: 15px;
+                    height: 15px;
                     top: 0;
                     bottom: 0;
-                    left: -15px;
+                    left: -16px;
                     margin: auto;
                     border: 2px solid #444;
                     border-radius: 50%;
@@ -201,12 +236,28 @@ export default {
                     border-color: $linkHoverColor;
                 }
                 a {
+                    line-height: 24px;
                     @media screen and (max-width: 900px) {
-                        display: none;
+                        visibility: hidden;
                     }
+                }
+                &:hover a {
+                    visibility: visible;
+                }
+            }
+            .dir-active-item {
+                color: $linkHoverColor;
+                &::before {
+                    border-color: $linkHoverColor;
                 }
             }
         }
     }
+}
+.fade-enter-active {
+    transition: all 0.2s;
+}
+.fade-enter {
+    opacity: 0;
 }
 </style>

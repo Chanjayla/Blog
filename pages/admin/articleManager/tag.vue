@@ -12,6 +12,22 @@
             >{{tag.name}}</el-tag>
             <el-button style="height: 32px;margin: 10px;" size="small" @click="addTag">+ New Tag</el-button>
         </div>
+        <!-- <div class="tag-manager__tit" v-if="selectedTags.length > 0">Default Preview Image: [ {{selectedTags.join(',')}} ]</div>
+        <div class="tag-manager__row" style="padding: 10px" v-if="selectedTags.length > 0">
+            <el-upload
+                    action="/upload/image"
+                    name="preview"
+                    :with-credentials="true"
+                    accept="image/jpeg, image/png"
+                    :on-success="uploadSuccess"
+                    style="text-align: left;"
+                >
+                     <el-button size="small" type="primary">点击上传</el-button>
+                     <div>
+                         <img :src="previewImage" alt="">
+                     </div>
+                </el-upload>
+        </div> -->
         <div class="tag-manager__tit">TAG: [ {{selectedTags.join(',')}} ]</div>
         <div class="tag-manager__row">
             <ArticleTable :tags="selectedTags" />
@@ -32,7 +48,8 @@ export default {
         return {
             tagsData: [],
             selectedTags: [],
-            clickTime: 0
+            clickTime: 0,
+            previewImage: ''
         }
     },
     created() {
@@ -87,7 +104,9 @@ export default {
                 })
         },
         selectTag(name) {
+            const selectTagData = this.tagsData.find(tag => tag.name === name)
             this.selectedTags = [name]
+            this.previewImage = selectTagData.defaultPreview
         },
         addTag() {
             this.$prompt('请输入新增标签名', '新增', {
@@ -156,6 +175,17 @@ export default {
             } else {
                 this.selectTag(tag.name)
                 this.clickTime = clickTime
+            }
+        },
+        uploadSuccess(res) {
+            if (res.code === 0) {
+                Tag.modify({
+                    name: this.selectedTags[0],
+                    token: this.token,
+                    previewImage: res.path
+                }).then(res => {
+                    this.getAllTags()
+                })
             }
         }
     },

@@ -82,20 +82,28 @@ router.post('/del', auth, (req, res, next) => {
 
 router.post('/modify', auth, (req, res, next) => {
     const data = req.body
+    if(data.cid || data.name) {
+        tagService.update({
+            cid: data.cid,
+            name: data.name,
+            previewImage: data.previewImage || ''
+        }).then(doc => {
+            res.json({
+                code: 0,
+                msg: 'ok'
+            })
+        }).catch(e => {
+            res.json({
+                code: 500,
+                msg: e
+            })
+        })
+    } else {
+        res.json({
+            code: 400,
+            msg: '缺少参数'
+        })
+    }
     
-    tagService.update({
-        cid: data.cid,
-        name: data.name
-    }).then(doc => {
-        res.json({
-            code: 0,
-            msg: 'ok'
-        })
-    }).catch(e => {
-        res.json({
-            code: 500,
-            msg: e
-        })
-    })
 })
 module.exports = router

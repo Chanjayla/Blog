@@ -12,7 +12,7 @@ let ArticleSchema = new mongoose.Schema({
     preview_image: String
 })
 autoAddId(ArticleSchema, 'article')
-let ArticleModel = connection.model('Article', ArticleSchema)
+let ArticleModel = connection.model('Articles', ArticleSchema)
 
 module.exports = {
     add(data) {

@@ -15,7 +15,7 @@ export function getById(data) {
 }
 
 export function getByTag(data) {
-    return axios.post('/api/article/tag', data)
+    return axios.post('/api/article/page', data)
 }
 
 export function add(data) {

@@ -5,7 +5,7 @@ let hoverDetailFn
 let leaveDetailFn
 let detailTimer
 const DETAIL_TIME = 1000
-export const textdetail = {
+const textdetail = {
     inserted(el) {
         if (el.scrollHeight > el.clientHeight) {
             let detail
@@ -56,7 +56,7 @@ export const textdetail = {
         el.removeEventListener('mouseleave', leaveDetailFn)
     }
 }
-export const highlight = {
+const highlight = {
     update(el) {
         const nodes = el.querySelectorAll('pre')
         nodes.forEach(node => {
@@ -64,7 +64,6 @@ export const highlight = {
         })
     }
 }
-
 
 Vue.directive('textdetail', textdetail)
 Vue.directive('highlight', highlight)
