@@ -77,8 +77,8 @@
                     </li>
                 </ul>
             </div>
-        </div>
-        <div id="gitalk-container"></div>
+             <div id="gitalk-container" style="margin-bottom: 20px;"></div>
+        </div> 
     </div>
 </template>
 <script>
