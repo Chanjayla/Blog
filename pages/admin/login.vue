@@ -42,6 +42,9 @@ export default {
     },
     layout: 'empty',
     components: {},
+    mounted() {
+        
+    },
     methods: {
         login() {
             this.$store.dispatch('user/login', {

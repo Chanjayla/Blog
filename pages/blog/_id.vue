@@ -3,29 +3,82 @@
         <div class="detail-box">
             <div class="detail-box__image">
                 <transition name="fade">
-                    <img :src="previewImage" :alt="title" @load="imageLoaded" v-show="imgLoaded" />
+                    <img
+                        :src="previewImage"
+                        :alt="title"
+                        @load="imageLoaded"
+                        v-show="imgLoaded"
+                    />
                 </transition>
             </div>
             <h1 class="detail-box__title">{{ title }}</h1>
             <figure class="detail-box__msg">
                 <span>{{ publish_time | timestampToDate }}</span>
-                <span class="detail-box__msg__tag" v-for="tag in tags" :key="tag.id">{{ tag }}</span>
+                <span
+                    class="detail-box__msg__tag"
+                    v-for="tag in tags"
+                    :key="tag.id"
+                    >{{ tag }}</span
+                >
             </figure>
             <div class="detail-box__preface" v-if="preface">{{ preface }}</div>
-            <div class="markdown-content" v-html="content" v-highlight ref="contentBox"></div>
+            <div
+                class="markdown-content"
+                v-html="content"
+                v-highlight
+                ref="contentBox"
+            ></div>
+            <div class="detail-box__bottom">
+                <div class="detail-box__bottom__pn">
+                    <template v-if="prevData">
+                        <router-link :to="`/blog/${prevData.id}`">
+                            <img
+                                :src="prevData.preview_image"
+                                @error="loadDefaultImg"
+                            />
+                            <div class="mask"></div>
+                            <p>{{ prevData.title }}</p>
+                            <span>PREVIOUS</span>
+                        </router-link>
+                    </template>
+                    <template v-else>
+                        <div class="mask"></div>
+                        <span style="color: #7b838a">NO PREVIOUS</span>
+                    </template>
+                </div>
+                <div class="detail-box__bottom__pn">
+                    <template v-if="nextData">
+                        <router-link :to="`/blog/${nextData.id}`">
+                            <img
+                                :src="nextData.preview_image"
+                                @error="loadDefaultImg"
+                            />
+                            <div class="mask"></div>
+                            <p>{{ nextData.title }}</p>
+                            <span>NEXT</span>
+                        </router-link>
+                    </template>
+                    <template v-else>
+                        <span style="color: #7b838a">NO NEXT</span>
+                    </template>
+                </div>
+            </div>
             <div class="detail-box__dir">
                 <ul :key="dirKey">
                     <li
                         class="dir-item"
                         v-for="item in directory"
                         :key="item.id"
-                        :class="{'dir-active-item':!!item.active}"
+                        :class="{ 'dir-active-item': !!item.active }"
                     >
-                        <a :href="`#${item.id}`" :data-id="item.id">{{ item.id }}</a>
+                        <a :href="`#${item.id}`" :data-id="item.id">{{
+                            item.id
+                        }}</a>
                     </li>
                 </ul>
             </div>
         </div>
+        <div id="gitalk-container"></div>
     </div>
 </template>
 <script>
@@ -57,10 +110,12 @@ export default {
                         tags: detail.data.tags,
                         preface: detail.data.preface,
                         content: marked(detail.data.content),
+                        prevData: detail.prev,
+                        nextData: detail.next,
                     }
                 })
                 .catch((err) => {
-                    error({ statusCode: 400, message: err })
+                    // error({ statusCode: 400, message: err })
                 })
         } else {
             return {
@@ -73,6 +128,8 @@ export default {
                 tags: [],
                 preface: '',
                 content: '',
+                prevData: null,
+                nextData: null,
             }
         }
     },
@@ -86,13 +143,17 @@ export default {
                 this.tags = detail.data.tags
                 this.preface = detail.data.preface
                 this.content = marked(detail.data.content)
+                this.prevData = detail.prev
+                this.nextData = detail.next
                 this.$nextTick(() => {
+                    this.$store.dispatch('app/toggleLoading', 2)
                     if (this.$refs.contentBox) {
                         this.initDirectory()
                     }
                 })
             })
         } else {
+            this.$store.dispatch('app/toggleLoading', 2)
             if (this.$refs.contentBox) {
                 this.initDirectory()
             }
@@ -102,9 +163,12 @@ export default {
             this.findDirActive(top)
         }, 16)
         document.getElementById('app').addEventListener('scroll', this.scrollCb)
+
     },
     beforeDestroy() {
-        document.getElementById('app').removeEventListener('scroll', this.scrollCb)
+        document
+            .getElementById('app')
+            .removeEventListener('scroll', this.scrollCb)
     },
     methods: {
         initDirectory() {
@@ -137,6 +201,9 @@ export default {
                 this.directory[this.directory.length - 1] &&
                 (this.directory[this.directory.length - 1].active = true)
             this.dirKey++
+        },
+        loadDefaultImg(e) {
+            e.target.src = '/empty.png'
         },
     },
 }
@@ -194,6 +261,53 @@ export default {
         box-shadow: rgb(150, 150, 150) 0.4rem 0.4rem 0px 0px;
         border: 2px solid rgb(150, 150, 150);
     }
+    &__bottom {
+        box-sizing: border-box;
+        display: flex;
+        width: 100%;
+        height: 150px;
+        padding: 0 20px;
+        margin-top: 20px;
+        justify-content: center;
+        align-items: center;
+        &__pn {
+            position: relative;
+            width: 50%;
+            height: 100%;
+            overflow: hidden;
+            cursor: pointer;
+            .mask {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.7);
+            }
+            &:hover .mask {
+                background: rgba(0, 0, 0, 0.5);
+            }
+            span {
+                position: absolute;
+                top: 1em;
+                left: 1em;
+                font-size: 1.2em;
+                color: rgba(255, 255, 255, 1);
+            }
+            img {
+                position: absolute;
+                width: 100%;
+                left: 0;
+                top: 0;
+            }
+            p {
+                position: absolute;
+                top: 3.5em;
+                left: 1em;
+                color: rgba(255, 255, 255, 1);
+            }
+        }
+    }
     &__dir {
         display: flex;
         align-items: center;
@@ -204,7 +318,7 @@ export default {
         left: 10px;
         margin: auto;
         padding: $headerHeight 0 $footerHeight 0;
-        font-size: 14px;
+        font-size: 1em;
         ul {
             position: relative;
             padding: 10px 0 10px 10px;

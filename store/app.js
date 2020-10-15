@@ -3,7 +3,8 @@ export const state = () => ({
     themeId:  0,
     themeName: 'theme0',
     clientWidth: 0,
-    clientHeight: 0
+    clientHeight: 0,
+    loading: 0
 })
 export const mutations = {
     TOGGLE_THEME: (state, themeId) => {
@@ -16,10 +17,21 @@ export const mutations = {
     },
     SET_CLIENT_HEIGHT: (state, height) => {
         state.clientHeight = height
+    },
+    TOGGLE_LOADING: (state, status) => {
+        state.loading = status || 0
     }
 }
 export const actions = {
     toggleTheme({ commit }, themeId) {
         commit('TOGGLE_THEME', themeId)
+    },
+    toggleLoading({ commit }, status) {
+        commit('TOGGLE_LOADING', status)
+        if(status == 2) {
+            setTimeout(() => {
+                commit('TOGGLE_LOADING', 0)
+            }, 500)
+        }
     }
 }

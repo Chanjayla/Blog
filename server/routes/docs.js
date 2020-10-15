@@ -1,13 +1,16 @@
 const express = require('express')
+const auth = require('../middleware/auth')
 const router = express.Router()
 const fs = require('fs')
 const path = require('path')
+const log4js = require('log4js')
+const handleLogger = log4js.getLogger('handle')
+const errLogger = log4js.getLogger('err')
 let menuJson = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../../docs/menu.json'), 'utf8'))
 const cache = {}
 const checkInMenu = (name) => menuJson.filter(item => item.name === name)[0]
 const isInCache = (name) => !!cache[name]
-let isInWriting = false
-router.get('/page', (req, res, next) => {
+router.get('/page', auth, (req, res, next) => {
     const page = req.body.page || 1
     const pageSize = req.body.pageSize || 10
     try {
@@ -54,22 +57,21 @@ router.get('/get', (req, res, next) => {
     }
 })
 
-router.post('/update', (req, res, next) => {
+router.post('/update', auth, (req, res, next) => {
     const name = req.body.name
     const content = req.body.content
     if(!!name && !!content) {
         try {
             let result = checkInMenu(name)
-            isInWriting = true
             if(result) {
                 fs.writeFile(path.resolve(__dirname, '../../docs/' + result.file), content, function(err) {
                     if(err) throw err
-                    isInWriting = false
                     cache[name] = content
                     res.json({
                         code: 0,
                         msg: 'update successfully!'
                     })
+                    handleLogger.debug(`update docs name:${name}-success`)
                 })
             } else {
                 menuJson.push({
@@ -80,21 +82,21 @@ router.post('/update', (req, res, next) => {
                     if(err) throw err
                     fs.writeFile(path.resolve(__dirname, '../../docs/' + name + '.md'), content, function(err) {
                         if(err) throw err
-                        isInWriting = false
                         cache[name] = content
                         res.json({
                             code: 0,
                             msg: 'create successfully!'
                         })
+                        handleLogger.debug(`create docs name:${name}-success`)
                     })
                 })
             }
         } catch(e) {
-            isInWriting = false
             res.json({
                 code: 500,
                 msg: e
             })
+            errLogger.error(`update docs name:${name}-error:${e}`)
         }
        
     } else {
@@ -102,10 +104,11 @@ router.post('/update', (req, res, next) => {
             code: -1,
             msg: 'error parameter'
         })
+        errLogger.error(`update docs name:${name}-error:${e}`)
     }
 })
 
-router.post('/delete', (req, res, next) => {
+router.post('/delete', auth,  (req, res, next) => {
     const names = req.body.names
     if(names) {
         try {
@@ -120,12 +123,14 @@ router.post('/delete', (req, res, next) => {
                     code: 0,
                     msg: 'delete successfully'
                 })
+                handleLogger.debug(`delete docs names:${names}-success`)
             }) 
         } catch(e) {
             res.json({
                 code: 500,
                 msg: e
             })
+            errLogger.error(`delete docs names:${names}-error:${e}`)
         }
 
     }

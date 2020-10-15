@@ -11,7 +11,6 @@ export const mutations = {
 }
 export const actions = {
     nuxtServerInit({ commit }, { req }) {
-        
         let token = null
         if (req.headers && req.headers.cookie) {
             const parsed = cookieParser && cookieParser.parse(req.headers.cookie)
@@ -24,7 +23,7 @@ export const actions = {
             } catch (err) {
                 // No valid cookie found
                 console.log('err: ', err)
-                commit('user/REMOVE_TOKEN')
+                // commit('user/REMOVE_TOKEN')
             }
         } 
     }

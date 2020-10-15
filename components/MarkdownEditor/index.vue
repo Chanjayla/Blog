@@ -46,13 +46,16 @@ export default {
         }
     },
     methods: {
-        inputValue(text) {
+        inputValue(text, type) {
             const selection =
                 this.$refs['editor'].codemirror.doc.getSelection() || 'text'
             this.$refs['editor'].codemirror.doc.replaceSelection(
                 text.replace('{$1}', selection)
             )
             this.$refs['editor'].codemirror.focus()
+            if(type == 'image') {
+                this.$emit('selectImage')
+            }
         },
     },
     components: {

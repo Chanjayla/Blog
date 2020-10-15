@@ -1,12 +1,18 @@
 <template>
     <div class="article-edit">
-        <Sticky style="margin-bottom: 10px;">
+        <Sticky style="margin-bottom: 10px">
             <div class="handle-bar">
                 <div class="handle-btn">
-                    <el-button type="primary" @click="submitPublish">发布</el-button>
+                    <el-button type="primary" @click="submitPublish"
+                        >发布</el-button
+                    >
                 </div>
                 <div class="handle-btn">
-                    <el-upload :show-file-list="false" action :before-upload="getMdFile">
+                    <el-upload
+                        :show-file-list="false"
+                        action
+                        :before-upload="getMdFile"
+                    >
                         <el-button type="primary">读取md文件</el-button>
                     </el-upload>
                 </div>
@@ -26,10 +32,16 @@
                     autosize
                 ></el-input>
             </el-form-item>
-            <el-form-item label="作者" style="display: inline-flex;margin-right: 10px;">
+            <el-form-item
+                label="作者"
+                style="display: inline-flex; margin-right: 10px"
+            >
                 <el-input v-model="author"></el-input>
             </el-form-item>
-            <el-form-item label="标签" style="display: inline-flex;margin-right: 10px;">
+            <el-form-item
+                label="标签"
+                style="display: inline-flex; margin-right: 10px"
+            >
                 <el-select
                     v-model="selectTags"
                     multiple
@@ -45,7 +57,7 @@
                     ></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="日期" style="display: inline-flex;">
+            <el-form-item label="日期" style="display: inline-flex">
                 <el-date-picker
                     v-model="publish"
                     type="datetime"
@@ -54,35 +66,57 @@
                 ></el-date-picker>
             </el-form-item>
             <el-form-item>
+                <el-button
+                    type="primary"
+                    icon="el-icon-document"
+                    class="local-select"
+                    @click="showDrawerToPreview"
+                    >选择线上图片</el-button
+                >
                 <el-upload
                     drag
                     action="/upload/image"
+                    :data="{ id: id }"
                     name="preview"
                     :with-credentials="true"
                     accept="image/jpeg, image/png"
                     list-type="picture"
                     :limit="1"
                     :on-success="uploadSuccess"
-                    :file-list="previewImage ? [{name: 'previewImage', url: previewImage}] : []"
+                    :on-remove="uploadRemove"
+                    :file-list="
+                        previewImage
+                            ? [{ name: 'previewImage', url: previewImage }]
+                            : []
+                    "
                 >
                     <i class="el-icon-upload"></i>
                     <div class="el-upload__text">
                         将图片拖到此处，或
                         <em>点击上传缩略图</em>
                     </div>
-                    <div class="el-upload__tip" slot="tip">只能上传jpg/png文件</div>
+                    <div class="el-upload__tip" slot="tip">
+                        只能上传jpg/png文件
+                    </div>
                 </el-upload>
             </el-form-item>
             <el-form-item>
-                <MarkdownEditor ref="markdownEditor" :accept="fileText" />
+                <MarkdownEditor ref="markdownEditor" :accept="fileText" @selectImage="showDrawerToMd"/>
             </el-form-item>
         </el-form>
+        <el-drawer :visible.sync="drawer" :with-header="false" size="40%" @close="closeDrawer">
+            <div style="height: 100vh;overflow: auto;">
+                <RsList @select="selectOnline" filter="image" :hiddenName="true"/>
+            </div>
+            
+        </el-drawer>
     </div>
 </template>
 <script>
 import MDInput from '~/components/Input/MDInput'
 import MarkdownEditor from '~/components/MarkdownEditor/index'
 import Sticky from '~/components/Sticky'
+import RsList from '~/components/List/ResourcesList'
 import { mapState } from 'vuex'
 import { transFileToText } from '~/utils'
 import * as Article from '~/api/article'
@@ -102,6 +136,8 @@ export default {
             allTags: [],
             fileText: '',
             previewImage: '',
+            drawer: false,
+            inSelectStatus: false
         }
     },
     mounted() {
@@ -115,7 +151,7 @@ export default {
                     this.author = res.data.author || this.author
                     this.fileText = res.data.content
                     this.title = res.data.title
-                    this.publish = Date(res.data.publish_time)
+                    this.publish = new Date(res.data.publish_time)
                     this.previewImage = res.data.preview_image
                     this.selectTags = res.data.tags
                 }
@@ -124,19 +160,19 @@ export default {
 
         Tag.getAll().then((res) => {
             this.articleTags = res.data.data
-            this.allTags = this.articleTags.map(tag => tag.name)
+            this.allTags = this.articleTags.map((tag) => tag.name)
         })
     },
     computed: {
         ...mapState({
             sidebar: (state) => state.app.sidebar,
-            token: (state) => state.user.token,
         }),
     },
     components: {
         MDInput,
         MarkdownEditor,
         Sticky,
+        RsList
     },
     methods: {
         tagChange(value) {
@@ -160,7 +196,6 @@ export default {
                 tags: this.selectTags,
                 content: this.$refs['markdownEditor'].code,
                 preview_image: this.previewImage,
-                token: this.token,
             }
             this.validate(data)
                 .then(() => {
@@ -171,6 +206,7 @@ export default {
                         this.$message({
                             type: 'success',
                             message: '上传成功',
+                            duration: 2000,
                             onClose: () => {
                                 this.$router.push('view')
                             },
@@ -191,6 +227,9 @@ export default {
                 this.previewImage = res.path
             }
         },
+        uploadRemove() {
+            this.previewImage = ''
+        },
         validate(data) {
             return new Promise((resolve, reject) => {
                 if (data.title.length < 3) {
@@ -205,6 +244,22 @@ export default {
                 resolve()
             })
         },
+        showDrawerToPreview() {
+            this.inSelectStatus = true
+            this.drawer = true
+        },
+        showDrawerToMd() {
+            this.inSelectStatus = false
+            this.drawer = true
+        },
+        closeDrawer() {
+             this.inSelectStatus = false
+        },
+        selectOnline(path) {
+            if(this.inSelectStatus) {
+                this.previewImage = path
+            }
+        }
     },
 }
 </script>
@@ -242,5 +297,8 @@ export default {
     .handle-btn {
         margin-right: 10px;
     }
+}
+.local-select {
+    margin-bottom: 10px;
 }
 </style>

@@ -2,7 +2,7 @@ import { userLogin } from '~/api/user'
 import { getToken, setToken, removeToken } from '~/utils/auth'
 
 export const state = () => ({
-    token: getToken()
+    token: ''
 })
 
 export const mutations = {

@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 let connection = require('../mongodb/connection').connection
 const autoAddId = require('../mongodb/ids')
+
 let ArticleSchema = new mongoose.Schema({
     cid: Number, 
     title: String,
@@ -13,6 +14,7 @@ let ArticleSchema = new mongoose.Schema({
 })
 autoAddId(ArticleSchema, 'article')
 let ArticleModel = connection.model('Articles', ArticleSchema)
+
 
 module.exports = {
     add(data) {
@@ -68,19 +70,37 @@ module.exports = {
                 }
             }).skip(skipNum).limit(pageSize).sort(sort).exec()
         }
-        return ArticleModel.find({}).skip(skipNum).limit(pageSize).sort(sort).exec()
+        return ArticleModel.find({}).skip(skipNum).limit(pageSize).sort(sort).select('author description cid preview_image publish_time tags title id').exec()
     },
     getBySort(num, sort) {
-        return ArticleModel.find({}).limit(num).sort(sort).exec()
+        return ArticleModel.find({}).limit(num).sort(sort).select('author description cid preview_image publish_time tags title id').exec()
     },
     getById(id) {
-        return ArticleModel.find({
+        return ArticleModel.findOne({
             _id: id
         })
     },
     getByCid(cid) {
-        return ArticleModel.find({
+        return ArticleModel.findOne({
             cid: cid
         })
-    } 
+    },
+    async getArticlePrevAndNext(condition) {
+        let prev = await ArticleModel.find({
+            cid: {
+                $lt: condition.cid
+            }
+        }).sort({cid: 1}).limit(1).select('id title preview_image').exec()
+        let next = await ArticleModel.find({
+            cid: {
+                $gt: condition.cid
+            }
+        }).sort({cid: 1}).limit(1).exec()
+        prev = prev[0]
+        next = next[0]
+        return {
+            prev: prev || null,
+            next: next || null
+        }
+    }
 }

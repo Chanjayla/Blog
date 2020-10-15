@@ -2,7 +2,11 @@ const express = require('express')
 const consola = require('consola')
 const { Nuxt, Builder } = require('nuxt')
 const bodyParser = require('body-parser')
+const log4js = require('./log')
 const app = express()
+app.use(log4js.connectLogger(log4js.getLogger('default'), {
+  format: '[:remote-addr :method :url :status :response-timems][:referrer HTTP/:http-version :user-agent]'//自定义输出格式
+ }))
 app.use(bodyParser.json())
 
 

@@ -21,7 +21,6 @@ module.exports = {
         let updateQuery = {
             name: data.name
         }
-        console.log(data)
         if(data.previewImage) {
             updateQuery.defaultPreview = data.previewImage
         }

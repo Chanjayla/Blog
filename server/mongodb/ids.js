@@ -16,7 +16,6 @@ const CounterModel = connection.model('Counters', CounterSchema)
 function autoAddId(schema, name) {
     schema.pre('save', function (next) {
         let doc = this
-        console.log(name)
         CounterModel.findOneAndUpdate({
             name: name
         }, {
@@ -24,7 +23,6 @@ function autoAddId(schema, name) {
         }, {
             new: true
         }, (error, counter) => {
-            console.log(counter)
             if (error) return next(error)
             doc.cid = counter.seq
             next()

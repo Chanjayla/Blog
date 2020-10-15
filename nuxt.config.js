@@ -13,7 +13,13 @@ module.exports = {
       { hid: 'description', name: 'description', content: process.env.npm_package_description || '' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'stylesheet', href: 'https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css'}
+    ],
+    script: [
+      {
+        src: 'https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js'
+      }
     ]
   },
   env: {
@@ -42,6 +48,7 @@ module.exports = {
     '~plugins/filter',
     '~plugins/directive',
     '~plugins/axios',
+    '~plugins/router',
     {
       src: '~plugins/element-ui',
       ssr: true
@@ -50,7 +57,6 @@ module.exports = {
       src:  '~plugins/index',
       ssr: false
     }
-   
   ],
   /*
   ** Nuxt.js dev-modules

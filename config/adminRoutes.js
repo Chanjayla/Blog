@@ -39,11 +39,6 @@ export const pathMap = {
         icon: 'el-icon-view',
         path: '/admin/resourceManager/view'
     },
-    '/admin/resourceManager/upload': {
-        name: '资源上传',
-        icon: 'el-icon-upload',
-        path: '/admin/resourceManager/upload'
-    },
     '/admin/theme': {
         name: '主题',
         icon: 'el-icon-picture-outline-round',
@@ -87,8 +82,7 @@ export default {
         name: '资源管理',
         icon: 'el-icon-picture',
         children: [
-            pathMap['/admin/resourceManager/view'],
-            pathMap['/admin/resourceManager/upload']
+            pathMap['/admin/resourceManager/view']
         ]
     },
     theme: pathMap['/admin/theme'],

@@ -17,12 +17,13 @@ export default ({ app, store, redirect }) => {
 	// response拦截器，数据返回后，你可以先在这里进行一个简单的判断
 	axios.interceptors.response.use(response => {
 		const message = response.data.msg
-		if (message == 'no-token' || message == 'expires') {
+		const code = response.data.code 
+		if (code == -1 || code == -2) {
 			store.commit('user/REMOVE_TOKEN')
 			Message({
-				message: '认证错误',
+				message: '认证错误' + message.name,
 				type: 'error',
-				duration: 5 * 1000
+				duration: 3 * 1000
 			})
 			redirect('/admin/login')
 		}

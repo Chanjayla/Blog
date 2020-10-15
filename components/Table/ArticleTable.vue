@@ -136,7 +136,6 @@ export default {
     computed: {
         ...mapState({
             clientHeight: (state) => state.app.clientHeight,
-            token: (state) => state.user.token,
         }),
         tableHead() {
             let headOptions = []
@@ -158,7 +157,10 @@ export default {
                 pageSize: this.pageSize,
                 tags: this.tags || [],
             }).then((res) => {
-                this.tableData = res.data.data
+                this.tableData = res.data.data.map(item => {
+                    item.publish_time = new Date(item.publish_time).toString()
+                    return item
+                })
                 this.total = res.data.total
             })
         },
@@ -168,7 +170,6 @@ export default {
         handleDelete(index, row) {
             Article.del({
                 id: row._id,
-                token: this.token,
             }).then((res) => {
                 if (res.data.code === 0) {
                     this.getArticleList()
@@ -188,7 +189,6 @@ export default {
             this.getArticleList()
         },
         handleCurrentChange(page) {
-            console.log(page)
             this.page = page
             this.getArticleList()
         },

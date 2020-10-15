@@ -36,6 +36,11 @@ export default {
                     name: 'Blog',
                     icon: 'icon-pen',
                 },
+                {
+                    path: '/blog/about',
+                    name: 'About',
+                    icon: 'icon-tag',
+                },
                 // {
                 //     path: '/component',
                 //     name: 'Component',

@@ -48,25 +48,19 @@ a:hover {
   border-radius: 0;
   background: transparent;
 }
-
-.page-enter-active,
-.page-leave-active {
-  transition: all 0.2s;
-}
-.page-enter,
-.page-leave-active {
-  transform: translateX(10px);
-  opacity: 0;
-}
-.blog-enter-active,
 .blog-leave-active {
-  transition: all 0.2s;
+  transition: all .2s ease;
 }
+.blog-enter-active
+{
+  transition: all .5s ease;
+}
+
 .blog-enter,
 .blog-leave-active {
   opacity: 0;
-  transform: scale(1.02);
 }
+
 .markdown-content {
   color: $blogDetailColor;
   h1,
@@ -122,15 +116,24 @@ a:hover {
     padding: 0.5em;
     overflow-x: auto;
   }
+  table {
+    text-align: center;
+  }
+  tr {
+    line-height: 1.8;
+  }
+  img {
+    max-width: 100%;
+  }
   blockquote {
     box-sizing: border-box;
     width: 80%;
     line-height: 1.8;
     padding-left: 10px;
     border-left: 3px solid  $mdBlockquoteLineColor;
-    background: $mdBlockquoteBgColor;
     color: $mdBlockquoteColor;
-    font-size: 14px;
+    font-size: .8em;
+    border-radius: 5px;
   }
 }
 

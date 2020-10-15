@@ -56,9 +56,7 @@ export default {
         this.getAllTags()
     },
     computed: {
-        ...mapState({
-            token: (state) => state.user.token,
-        }),
+
     },
     methods: {
         getAllTags() {
@@ -84,7 +82,6 @@ export default {
                 .then(() => {
                     return Tag.del({
                         cid: tag.cid,
-                        token: this.token
                     })
                 })
                 .then(res => {
@@ -118,7 +115,6 @@ export default {
                 .then(({ value }) => {
                     return Tag.add({
                         name: value,
-                        token: this.token
                     })
                 })
                 .then(res => {
@@ -148,7 +144,6 @@ export default {
                     return Tag.modify({
                         cid: tag.cid,
                         name: value,
-                        token: this.token
                     })
                 })
                 .then(res => {
@@ -181,7 +176,6 @@ export default {
             if (res.code === 0) {
                 Tag.modify({
                     name: this.selectedTags[0],
-                    token: this.token,
                     previewImage: res.path
                 }).then(res => {
                     this.getAllTags()

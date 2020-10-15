@@ -2,7 +2,9 @@ const express = require('express')
 const router = express.Router()
 const Jwt = require('../jwt')
 const userService = require('../service/UserService')
-
+const log4js = require('log4js')
+const handleLogger = log4js.getLogger('handle')
+const errLogger = log4js.getLogger('err')
 router.post('/login', async (req, res, next) => {
     const params = {
         username: req.body.username,
@@ -15,6 +17,7 @@ router.post('/login', async (req, res, next) => {
             code: -1,
             msg: '账号或密码错误'
         })
+        errLogger.error(`add tag username:${params.username}-pwd:${params.password}-fail`)
         return 
     }
     const pwdVerRes = await userService.verify({
@@ -43,6 +46,7 @@ router.post('/login', async (req, res, next) => {
             code: -1,
             msg: '账号或密码错误'
         })
+        errLogger.error(`add tag username:${params.username}-pwd:${params.password}-fail`)
     }
 })
 
