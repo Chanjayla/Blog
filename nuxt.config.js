@@ -14,7 +14,7 @@ module.exports = {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      { rel: 'stylesheet', rel="preload", href: 'https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css'}
+      { rel: 'stylesheet', rel: "preload", href: 'https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css'}
     ],
     script: [
       {
