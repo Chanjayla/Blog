@@ -5,7 +5,6 @@ export default ({ app, store }) => {
             setTimeout(function() {
                 next()
             }, 500)
-            next()
         } else {
             next()
         }
