@@ -13,8 +13,10 @@
           <i class="el-icon-time"></i>
           {{item.publish_time | timestampToDate}}</p>
         <h2 class="article-list__item__msg__tit">{{item.title}}</h2>
-        <p class="article-list__item__msg__type" v-for="tag in item.tags" :key="tag.id">{{tag.name}}</p>
         <p class="article-list__item__msg__desc">{{item.description}}</p>
+        <p class="article-list__item__msg__type">
+          <i class="iconfont icon-tag"></i>
+          {{item.tags.join(' | ')}}</p>
       </div>
     </section>
     <section v-if="dataList.length === 0 || !dataList" class="article-list__no-data">
@@ -34,18 +36,18 @@ export default {
 </script>
 <style lang="scss" scoped>
 .article-list {
-  width: 800px;
+  width: 900px;
   &__item {
     display: flex;
-    width: 800px;
-    height: 225px;
+    width: 900px;
+    height: 300px;
     margin: 20px 0 40px 0;
     border-radius: 10px;
     box-shadow: rgba(0, 0, 0, 0.5) 0px 1px 20px -8px;
     overflow: hidden;
     &__img {
       position: relative;
-      width: 400px;
+      width: 475px;
       height: 100%;
       overflow: hidden;
       box-shadow: rgba(0, 0, 0, 0.5) 0px 1px 20px -8px;
@@ -63,16 +65,17 @@ export default {
       transform: scale(1.1);
     }
     &__msg {
-      width: 400px;
+      position: relative;
+      width: 425px;
       box-sizing: border-box;
       padding: 30px;
-      &__date, &__type{
+      &__date{
         font-size: 14px;
         margin-bottom: 10px;
       }
       &__tit {
         margin-bottom: 10px;
-        font-size: 20px;
+        font-size: 27px;
         font-weight: bold;
         line-height: 2;
         white-space: nowrap;
@@ -83,9 +86,16 @@ export default {
         display: -webkit-box;
         -webkit-box-orient: vertical;
         -webkit-line-clamp: 5;
-        line-height: 1.6;
+        line-height: 1.8;
         overflow: hidden;
         font-size: 14px;
+      }
+      &__type {
+        font-size: 14px;
+        position: absolute;
+        left: 30px;
+        bottom: 10px;
+        color: $secondaryFontColor;
       }
     }
   }

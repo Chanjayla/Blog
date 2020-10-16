@@ -42,3 +42,9 @@ $blogTitBgColor: rgb(0, 112, 186);
   normalFontColor: $normalFontColor;
   maskBg: $maskBg;
 }
+
+@mixin keyframes($animationName) {
+  @keyframes #{$animationName} {
+      @content;
+  }
+}

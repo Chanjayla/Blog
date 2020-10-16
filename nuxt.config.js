@@ -13,14 +13,7 @@ module.exports = {
       { hid: 'description', name: 'description', content: process.env.npm_package_description || '' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      { rel: 'stylesheet', rel: "preload", href: 'https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css'}
-    ],
-    script: [
-      {
-        src: 'https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js',
-        async: 'async'
-      }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
   },
   env: {

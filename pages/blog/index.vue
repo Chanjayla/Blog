@@ -74,7 +74,7 @@ export default {
     &__timg {
         width: 100%;
         height: 62.4vw;
-        background: url(/home_page_header.jpeg);
+        background: url(/home_page_header.jpg);
         background-attachment: fixed;
         background-repeat: no-repeat;
         background-position: 0 0;
