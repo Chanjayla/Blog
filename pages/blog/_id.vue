@@ -167,7 +167,10 @@ export default {
         }, 16)
         document.getElementById('app').addEventListener('scroll', this.scrollCb)
         if (document.getElementById('gitalk-container')) {
-            let gitalk = new Gitalk(gitalkConfig)
+            let gitalk = new Gitalk({
+                ...gitalkConfig,
+                id: location.pathname, // Ensure uniqueness and length less than 50 唯一值，如果和其他页面一样，则两个页面显示的评论都一样
+            })
             gitalk.render('gitalk-container')
         }
     },
@@ -272,10 +275,12 @@ export default {
         display: flex;
         width: 100%;
         height: 150px;
-        padding: 0 20px;
         margin-top: 20px;
         justify-content: center;
         align-items: center;
+        &__pn:nth-child(1) {
+            border-right: 1px solid $borderColor;
+        }
         &__pn {
             position: relative;
             width: 50%;
