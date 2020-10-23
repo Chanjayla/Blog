@@ -22,7 +22,8 @@ import {
     Drawer,
     Collapse,
     Message,
-    DatePicker
+    DatePicker,
+    Progress
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 
@@ -48,4 +49,5 @@ Vue.use(Drawer)
 Vue.use(Collapse)
 Vue.use(DatePicker)
 Vue.use(TableColumn)
+Vue.use(Progress)
 Vue.prototype.$message = Message
