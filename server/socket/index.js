@@ -48,28 +48,32 @@ function getServerStatus() {
     if(process.platform == 'linux') {
         let prc = spawn('free', [])
         let str = prc.stdout.toString()
-        let lines = str.split(/\n/g);
+        let lines = str.split(/\n/g)
         for (let i = 0; i < lines.length; i++) {
             lines[i] = lines[i].split(/\s+/);
         }
         prc = spawn('df')
-        let disk = prc.stdout.toString()
+        let diskStr = prc.stdout.toString()
+        let diskLine = diskStr.split(/\n/g)
+        for (let i = 0; i < diskLine.length; i++) {
+            diskLine[i] = diskLine[i].split(/\s+/);
+        }
         return {
             mem: {
-                total: Math.floor(lines[1][1]/1024/1024),
-                used: Math.floor(lines[1][2]/1024/1024),
-                free: Math.floor(lines[1][3]/1024/1024),
-                available: Math.floor(lines[1][6]/1024/1024)
+                total: Math.floor(lines[1][1]/1024),
+                used: Math.floor(lines[1][2]/1024),
+                free: Math.floor(lines[1][3]/1024),
+                available: Math.floor(lines[1][6]/1024)
             },
             cpus: os.cpus(),
-            disk: disk
+            disk: diskLine
         }
     } else if(process.platform == 'darwin') {
         return {
             mem: {
-                total: Math.floor(os.totalmem()/1024/1024),
+                total: Math.floor(os.totalmem()/1024),
                 used: null,
-                free: Math.floor(os.freemem()/1024/1024),
+                free: Math.floor(os.freemem()/1024),
                 available: null
             },
             cpus: os.cpus(),
