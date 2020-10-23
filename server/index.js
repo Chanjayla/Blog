@@ -9,10 +9,8 @@ app.use(log4js.connectLogger(log4js.getLogger('default'), {
  }))
 app.use(bodyParser.json())
 
-
 require('./routes')(app)
 app.use("/docs", express.static('docs'))
-
 // Import and Set Nuxt.js options
 const config = require('../nuxt.config.js')
 config.dev = process.env.NODE_ENV !== 'production'
@@ -33,7 +31,8 @@ async function start () {
   // Give nuxt middleware to express
   app.use(nuxt.render)
   // Listen the server
-  app.listen(port, host)
+  let server = app.listen(port, host)
+  require('./socket')(server)
   consola.ready({
     message: `Server listening on http://${host}:${port}`,
     badge: true

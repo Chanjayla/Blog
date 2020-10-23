@@ -1,5 +1,8 @@
 <template>
     <div class="side-bar" style="background: #304156">
+        <div class="side-bar-header">
+            BLOG CMS
+        </div>
         <el-menu
             class="el-menu-vertical"
             background-color="#304156"
@@ -59,6 +62,15 @@ export default {
     height: 100vh;
     transition: all 0.2s ease;
     z-index: 99;
+    &-header {
+        height: 50px;
+        line-height: 50px;
+        margin: 0 5px;
+        text-align: center;
+        font-size: 20px;
+        color: #fff;
+        border-bottom: 1px solid #999;
+    }
     .el-menu-vertical {
         min-height: 100%;
     }

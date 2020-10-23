@@ -29,7 +29,8 @@ export default {
   props: ['dataList'],
   methods: {
     loadDefaultImg(e) {
-      e.target.src = "/empty.png"
+      e.target.src = "/empty.webp"
+      e.target.height = "300"
     }
   }
 }
@@ -39,24 +40,23 @@ export default {
   width: 900px;
   &__item {
     display: flex;
-    width: 900px;
+    width: 800px;
     height: 300px;
-    margin: 20px 0 40px 0;
+    margin: 20px auto 40px auto;
     border-radius: 10px;
-    box-shadow: rgba(0, 0, 0, 0.5) 0px 1px 20px -8px;
     overflow: hidden;
     &__img {
       position: relative;
-      width: 475px;
+      width: 400px;
       height: 100%;
       overflow: hidden;
-      box-shadow: rgba(0, 0, 0, 0.5) 0px 1px 20px -8px;
       background: #fff;
       img {
         position: absolute;
         left: 0;
+        right: 0;
         top: 0;
-        width: 100%;
+        min-height: 100%;
         margin: auto;
         transition: transform .2s linear;
       }
@@ -66,7 +66,7 @@ export default {
     }
     &__msg {
       position: relative;
-      width: 425px;
+      width: 400px;
       box-sizing: border-box;
       padding: 30px;
       &__date{

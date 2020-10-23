@@ -13,7 +13,8 @@
                 :label="head"
                 :prop="transHead[head].name"
                 :min-width="transHead[head].width"
-            ></el-table-column>
+            >
+            </el-table-column>
             <template v-if="isFixedOperation">
                 <el-table-column width="160" label="操作" fixed="right">
                     <template slot-scope="scope">
@@ -97,27 +98,32 @@ export default {
             isFixedOperation: false,
             tableData: null,
             transHead: {
-                cid: {
+                Cid: {
                     name: 'cid',
                     width: 50,
                     show: true,
                 },
-                标题: {
+                Title: {
                     name: 'title',
                     width: 150,
                     show: true,
                 },
-                作者: {
+                PreviewImage: {
+                    name: 'preview_image',
+                    width: 150,
+                    show: true,
+                },
+                Author: {
                     name: 'author',
                     width: 100,
                     show: true,
                 },
-                发布日期: {
+                Publish: {
                     name: 'publish_time',
                     width: 120,
                     show: true,
                 },
-                标签: {
+                Tags: {
                     name: 'tags',
                     width: 120,
                     show: true,

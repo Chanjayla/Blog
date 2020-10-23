@@ -87,15 +87,15 @@ module.exports = {
     },
     async getArticlePrevAndNext(condition) {
         let prev = await ArticleModel.find({
-            cid: {
-                $lt: condition.cid
+            publish_time: {
+                $lt: condition.publish_time
             }
-        }).sort({cid: 1}).limit(1).select('id title preview_image').exec()
+        }).sort({publish_time: 1}).limit(1).select('id title preview_image').exec()
         let next = await ArticleModel.find({
-            cid: {
-                $gt: condition.cid
+            publish_time: {
+                $gt: condition.publish_time
             }
-        }).sort({cid: 1}).limit(1).exec()
+        }).sort({publish_time: 1}).limit(1).select('id title preview_image').exec()
         prev = prev[0]
         next = next[0]
         return {

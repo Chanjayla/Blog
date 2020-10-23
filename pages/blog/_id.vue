@@ -59,6 +59,7 @@
                         </router-link>
                     </template>
                     <template v-else>
+                        <div class="mask"></div>
                         <span style="color: #7b838a">NO NEXT</span>
                     </template>
                 </div>
@@ -212,7 +213,7 @@ export default {
             this.dirKey++
         },
         loadDefaultImg(e) {
-            e.target.src = '/empty.png'
+            e.target.src = '/empty.webp'
         },
     },
 }
@@ -228,7 +229,7 @@ export default {
         box-shadow: rgba(0, 0, 0, 0.5) 0px 1px 20px -8px;
         font-size: 0;
         border-radius: 10px;
-        background-image: url(/empty.png);
+        background-image: url(/empty.webp);
         background-position: center;
         background-repeat: no-repeat;
         background-size: 50%;

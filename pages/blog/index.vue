@@ -1,6 +1,11 @@
 <template>
     <div class="home-box">
-        <div class="home-box__timg"></div>
+        <div class="home-box__timg">
+            <div class="mask"></div>
+            <h1>
+                Hello World !
+            </h1>
+        </div>
         <section class="home-box__content">
             <div class="home-box__content__tit">
                 <i class="el-icon-time"></i>
@@ -72,13 +77,32 @@ export default {
 .home-box {
     width: 100%;
     &__timg {
+        position: relative;
         width: 100%;
-        height: 62.4vw;
+        height: 67.7vw;
+        min-height: 300px;
         background: url(/home_page_header.jpg);
         background-attachment: fixed;
         background-repeat: no-repeat;
         background-position: 0 0;
         background-size: 100%;
+        .mask {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            opacity: .3;
+        }
+        h1 {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%,-50%);
+            font-size: 3em;
+            color: #fff;
+            opacity: .8;
+        }
     }
     &__content {
         width: 100%;
@@ -92,7 +116,7 @@ export default {
             padding: 10px;
             font-weight: 600;
             border-bottom: 1px dashed rgb(230, 230, 230);
-            font-size: 1.6em;
+            font-size: 1.2em;
         }
         &__list {
             display: flex;

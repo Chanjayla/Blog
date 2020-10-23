@@ -1,0 +1,40 @@
+const os = require('os')
+const spawn = require('child_process').spawn
+const WebSocketServer = require('ws').Server
+
+module.exports = (server) => {
+    const wss = new WebSocketServer({ server })
+    wss.on('connection', function (ws) {
+        ws.on('message', function (message) {
+            //打印客户端监听的消息
+            console.log(message);
+        });
+        if (os.platform() == 'linux') {
+            const prc = spawn('free', [])
+            setInterval(function () {
+                prc.stdout.setEncoding('utf8');
+                prc.stdout.on('data', function (data) {
+                    let str = data.toString()
+                    let lines = str.split(/\n/g);
+                    for (var i = 0; i < lines.length; i++) {
+                        lines[i] = lines[i].split(/\s+/);
+                    }
+                    ws.send(JSON.stringify({
+                        lines
+                    }))
+                });
+
+            }, 1000)
+
+
+            wss.on('close', function () {
+                prc.on('close', function (code) {
+                    console.log('process exit code ' + code);
+                });
+            })
+        }
+
+    });
+}
+
+

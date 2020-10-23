@@ -10,7 +10,9 @@
                 @current-change="changePage"
             ></el-pagination>
         </div>
-        <tag-cloud></tag-cloud>
+        <div class="article-box__right">
+            <tag-cloud></tag-cloud>
+        </div>
     </div>
 </template>
 <script>
@@ -105,6 +107,7 @@ export default {
         background-image: url(/blog_page_header.jpg);
         background-attachment: fixed;
         background-size: cover;
+        border-radius: 0 0 1em 1em;
     }
     &__tags {
         width: 300px;
@@ -115,7 +118,7 @@ export default {
         }
     }
     &__left {
-        margin-right: 30px;
+        margin-right: 50px;
         margin-bottom: 30px;
     }
     &__pagination {

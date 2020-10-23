@@ -5,6 +5,9 @@ module.exports = {
   /*
   ** Headers of the page
   */
+  html: {
+    lang: 'en'
+  },
   head: {
     title: process.env.npm_package_name || '',
     meta: [
@@ -14,6 +17,9 @@ module.exports = {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+    ],
+    script: [
+      { src: '/catchError.js'}
     ]
   },
   env: {

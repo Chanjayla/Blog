@@ -7,11 +7,12 @@
     </div>
 </template>
 <script>
-import theHeader from './components/Header.vue'
-import theFooter from './components/Footer.vue'
+import theHeader from './components/BlogHeader.vue'
+import theFooter from './components/BlogFooter.vue'
 import loadingMask from '~/components/Loading/loading.vue'
 import { mapState } from 'vuex'
 export default {
+    middleware: 'statistics',
     components: {
         theHeader,
         theFooter,
@@ -22,10 +23,6 @@ export default {
             themeName: (state) => state.app.themeName,
             loading: (state) => state.app.loading
         })
-    },
-    mounted() {
-        const theme = sessionStorage.getItem('theme_id') || 0
-        this.$store.dispatch('app/toggleTheme', theme)
     }
 }
 </script>
