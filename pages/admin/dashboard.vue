@@ -28,6 +28,7 @@
 </template>
 <script>
 import * as Statistics from '~/api/statistics'
+import wsConfig from '~/config/websocket'
 export default {
     name: 'Dashboard',
     layout: 'admin',
@@ -51,7 +52,7 @@ export default {
     },
     methods: {
         websocketHandle() {
-            this.ws = new WebSocket('ws://127.0.0.1:3000')
+            this.ws = new WebSocket(wsConfig.url)
             this.ws.onopen = (e) => {
                 this.ws.send(
                     JSON.stringify({
