@@ -9,6 +9,7 @@ module.exports = (server) => {
             //打印客户端监听的消息
             console.log(message);
         });
+        ws.send(os.platform())
         if (os.platform() == 'linux') {
             const prc = spawn('free', [])
             setInterval(function () {

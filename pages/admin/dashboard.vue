@@ -15,7 +15,7 @@ export default {
     //    Statistics.getPv().then(res => {
     //        console.log(res)
     //    })
-        this.ws = new WebSocket("ws://127.0.0.1:3000");
+        this.ws = new WebSocket("ws://jaylang.cn");
         this.ws.onopen = function (e) {
             //成功连接服务器回调
             console.log('客户端（client）：与服务器的连接已打开')
