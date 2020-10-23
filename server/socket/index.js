@@ -11,23 +11,22 @@ module.exports = (server) => {
         });
         ws.send(os.platform())
         if (os.platform() == 'linux') {
-            const prc = spawn('free', [])
-            setInterval(function () {
-                prc.stdout.setEncoding('utf8');
-                prc.stdout.on('data', function (data) {
-                    let str = data.toString()
-                    let lines = str.split(/\n/g);
-                    for (var i = 0; i < lines.length; i++) {
-                        lines[i] = lines[i].split(/\s+/);
-                    }
-                    ws.send(JSON.stringify({
-                        lines
-                    }))
-                });
-
-            }, 1000)
-
-
+            let prc = spawn('free', [])
+            prc.stdout.setEncoding('utf8');
+            prc.stdout.on('data', function (data) {
+                let str = data.toString()
+                let lines = str.split(/\n/g);
+                for (var i = 0; i < lines.length; i++) {
+                    lines[i] = lines[i].split(/\s+/);
+                }
+                ws.send(JSON.stringify({
+                    data,
+                    lines
+                }))
+                setTimeout(function() {
+                    prc = spawn('free', [])
+                }, 2000)
+            });
             wss.on('close', function () {
                 prc.on('close', function (code) {
                     console.log('process exit code ' + code);
