@@ -7,7 +7,6 @@ const WebSocketServer = require('ws').Server
 module.exports = (server) => {
     const wss = new WebSocketServer({ noServer: true })
     server.on('upgrade', function upgrade(request, socket, head) {
-        console.log(request.headers)
         // authenticate
         const parsed = cookieParser.parse(request.headers.cookie || '')
         const token = parsed.adminToken
