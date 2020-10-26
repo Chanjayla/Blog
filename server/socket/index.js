@@ -3,13 +3,13 @@ const os = require('os')
 const Jwt = require('../jwt')
 const cookieParser = require('cookieparser')
 const osUtils = require('os-utils')
-const { update } = require('../service/TagService')
 const WebSocketServer = require('ws').Server
 module.exports = (server) => {
     const wss = new WebSocketServer({ noServer: true })
     server.on('upgrade', function upgrade(request, socket, head) {
+        console.log(request.headers)
         // authenticate
-        const parsed = cookieParser.parse(request.headers.cookie)
+        const parsed = cookieParser.parse(request.headers.cookie || '')
         const token = parsed.adminToken
         authenticate(token, function(code) {
             if(code !== 0) {
