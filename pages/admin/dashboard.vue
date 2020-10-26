@@ -5,7 +5,7 @@
                 <h1>MEM USAGE</h1>
                 <el-progress :percentage="memUsagePercent"></el-progress>
                 <p>
-                    <span>Usage: {{ mem.used || '0'}}MB</span>
+                    <span>Used: {{ mem.used || '0'}}MB</span>
                     <span>Total: {{ mem.total|| '0' }}MB</span>
                     <span>Free: {{ mem.free || '0'}}MB</span>
                 </p>
@@ -14,14 +14,16 @@
                 <h1>DISK USAGE</h1>
                 <el-progress :percentage="diskUsagePercent"></el-progress>
                 <p>
-                    <span>Usage: {{ disk.used || '0'}}MB</span>
+                    <span>Used: {{ disk.used || '0'}}MB</span>
                     <span>Total: {{ disk.total || '0'}}MB</span>
                 </p>
             </div>
             <div class="server-status__item">
                 <h1>CPU USAGE</h1>
-                <el-progress :percentage="0"></el-progress>
-                <p></p>
+                <el-progress :percentage="cpuUsagePercent"></el-progress>
+                <p>
+                   <span>Platform: {{ cpu.platform }}</span>
+                </p>
             </div>
         </div>
     </div>
@@ -37,8 +39,9 @@ export default {
             ws: null,
             loopTimer: null,
             mem: {},
-            cpus: {},
-            disk: {}
+            disk: {},
+            cpu: {},
+            startTime: 0,
         }
     },
     mounted() {
@@ -54,6 +57,7 @@ export default {
         websocketHandle() {
             this.ws = new WebSocket(wsConfig.url)
             this.ws.onopen = (e) => {
+                this.startTime = new Date().getTime()
                 this.ws.send(
                     JSON.stringify({
                         token: this.$store.state.user.token,
@@ -65,6 +69,7 @@ export default {
                 this.handleStatusData(message.data)
                 clearTimeout(this.loopTimer)
                 this.loopTimer = setTimeout(() => {
+                    this.startTime = new Date().getTime()
                     this.ws.send(
                         JSON.stringify({
                             token: this.$store.state.user.token,
@@ -78,7 +83,7 @@ export default {
             data = JSON.parse(data)
             this.mem = data.mem || {}
             this.disk = data.disk || {}
-            this.cpus = data.cpus || {}
+            this.cpu = data.cpu || {}
         }
     },
     computed: {
@@ -87,6 +92,9 @@ export default {
         },
         diskUsagePercent() {
             return Math.floor(this.disk.used/this.disk.total*100) || 0
+        },
+        cpuUsagePercent() {
+            return parseInt(this.cpu.used) || 0
         }
     }
 }
