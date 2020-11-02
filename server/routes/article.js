@@ -7,10 +7,10 @@ const handleLogger = log4js.getLogger('handle')
 const errLogger = log4js.getLogger('err')
 // const { allArticle, getArticlePage, getArticleByTag } = require('../mock/article')
 router.get('/latest', (req, res, next) => {
-    const num = req.body.num || 10
+    const num = req.query.num || 10
     articleService.getBySort(num, {
         publish_time: -1
-    }).then(doc => {
+    }, 'preview_image title publish_time').then(doc => {
         res.json({
             code: 0,
             data: doc,
@@ -32,11 +32,11 @@ router.post('/page', (req, res, next) => {
         page: page,
         pageSize: pageSize,
         tags: tags
-    }).then(doc => {
+    }).then(docs => {
         res.json({
             code: 0,
-            data: doc,
-            total: 10,
+            data: docs,
+            total: docs.length,
             msg: 'ok'
         })
     }).catch(err => {
@@ -180,5 +180,38 @@ router.post('/delete', auth, (req, res, next) => {
             errLogger.debug(`delete article id:${data.id}-title:${data.title}-error:${e}`)
         })
     }
+})
+router.post('/setTop', auth, (req, res) => {
+    const data = req.body
+    if(data.id && typeof data.is_top != 'undefined')
+    articleService.setTop(data).then(doc => {
+        res.json({
+            code: 0,
+            msg: 'ok'
+        })
+    }).catch(e => {
+        res.json({
+            code: 500,
+            msg: e
+        })
+    })
+})
+
+router.get('/getTop', (req, res) => {
+    const num = req.query.num || 10
+    articleService.getBySort(num, {
+        is_top: -1
+    }).then(docs => {
+        res.json({
+            code: 0,
+            data: docs,
+            msg: 'ok'
+        })
+    }).catch(err => {
+        res.json({
+            code: 500,
+            msg: err
+        })
+    })
 })
 module.exports = router

@@ -1,11 +1,11 @@
 <template>
-    <div style="width: 100%;overflow-x: hidden;">
+    <div style="width: 100%; overflow-x: hidden">
         <el-table
             :key="key"
             :data="tableData"
-            style="width: 100%;border-radius: 5px;"
+            style="width: 100%; border-radius: 5px"
             :size="tableSize"
-            :max-height="isFixedTableHead?800:'auto'"
+            :max-height="isFixedTableHead ? 800 : 'auto'"
         >
             <el-table-column
                 v-for="head in tableHead"
@@ -15,27 +15,48 @@
                 :min-width="transHead[head].width"
             >
             </el-table-column>
+            <el-table-column width="100" label="SetTop">
+                <template slot-scope="scope">
+                    <el-switch
+                        v-model="switchArr[scope.$index]"
+                        @change="setTop"
+                        :active-value="scope.row._id + '-1'"
+                        :inactive-value="scope.row._id + '-0'"
+                    >
+                    </el-switch>
+                </template>
+            </el-table-column>
             <template v-if="isFixedOperation">
-                <el-table-column width="160" label="操作" fixed="right">
+                <el-table-column width="160" label="Operation" fixed="right">
                     <template slot-scope="scope">
-                        <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">Edit</el-button>
+                        <el-button
+                            size="mini"
+                            @click="handleEdit(scope.$index, scope.row)"
+                            >Edit</el-button
+                        >
                         <el-button
                             size="mini"
                             type="danger"
                             @click="handleDelete(scope.$index, scope.row)"
-                        >Delete</el-button>
+                            >Delete</el-button
+                        >
                     </template>
                 </el-table-column>
             </template>
             <template v-else>
-                <el-table-column width="160" label="操作">
+                <el-table-column width="160" label="Operation">
                     <template slot-scope="scope">
-                        <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">Edit</el-button>
+                        <el-button
+                            size="mini"
+                            @click="handleEdit(scope.$index, scope.row)"
+                            >Edit</el-button
+                        >
                         <el-button
                             size="mini"
                             type="danger"
                             @click="handleDelete(scope.$index, scope.row)"
-                        >Delete</el-button>
+                            >Delete</el-button
+                        >
                     </template>
                 </el-table-column>
             </template>
@@ -44,24 +65,34 @@
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
             :current-page="page"
-            :page-sizes="[10, 20, 30, 40]"
+            :page-sizes="[5, 10, 20, 30, 40]"
             :page-size="pageSize"
             layout="total, sizes, prev, pager, next, jumper"
             :total="total"
             style="margin: 10px 0"
         ></el-pagination>
         <Setting>
-            <div class="drawer-item" v-for="(head,key) in transHead" :key="key">
+            <div
+                class="drawer-item"
+                v-for="(head, key) in transHead"
+                :key="key"
+            >
                 <span>{{ key }}</span>
                 <el-switch v-model="head.show" @change="flushTable"></el-switch>
             </div>
             <div class="drawer-item">
                 <span>固定操作列</span>
-                <el-switch v-model="isFixedOperation" @change="flushTable"></el-switch>
+                <el-switch
+                    v-model="isFixedOperation"
+                    @change="flushTable"
+                ></el-switch>
             </div>
             <div class="drawer-item">
                 <span>固定表头</span>
-                <el-switch v-model="isFixedTableHead" @change="flushTable"></el-switch>
+                <el-switch
+                    v-model="isFixedTableHead"
+                    @change="flushTable"
+                ></el-switch>
             </div>
             <div class="drawer-item">
                 <span>表格尺寸</span>
@@ -132,6 +163,8 @@ export default {
             page: 1,
             pageSize: 20,
             total: 0,
+            switchArr: [],
+            canSetTop: true
         }
     },
     mounted() {
@@ -163,11 +196,15 @@ export default {
                 pageSize: this.pageSize,
                 tags: this.tags || [],
             }).then((res) => {
-                this.tableData = res.data.data.map(item => {
+                this.tableData = res.data.data.map((item) => {
                     item.publish_time = new Date(item.publish_time).toString()
+                    item.tags = item.tags.join(',')
                     return item
                 })
                 this.total = res.data.total
+                this.switchArr = this.tableData.map((item) =>
+                    item.is_top ? item._id + '-1' : item._id + '-0'
+                )
             })
         },
         handleEdit(index, row) {
@@ -197,6 +234,30 @@ export default {
         handleCurrentChange(page) {
             this.page = page
             this.getArticleList()
+        },
+        setTop(val) {
+            if(!this.canSetTop) return 
+            const arr = val.split('-')
+            const id = arr[0]
+            const is_top = arr[1] == 1?true:false
+            this.canSetTop = false
+            Article.setTop({
+                id,
+                is_top,
+            }).then((res) => {
+                this.canSetTop = true
+                if (res.data.code === 0) {
+                    this.$message({
+                        type: 'success',
+                        message: is_top?'Set top success':'Cancel top success',
+                    })
+                } else {
+                    this.$message({
+                        type: 'error',
+                        message: is_top?'Set top fail':'Cancel top fail',
+                    })
+                }
+            })
         },
     },
     components: {

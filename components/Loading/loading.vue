@@ -64,7 +64,6 @@ export default {
     left: 0;
     width: 100vw;
     height: 100vh;
-    transform: translateX(100%);
     z-index: -1;
     .content {
         position: absolute;
@@ -91,18 +90,16 @@ export default {
 }
 .loading-enter {
     transition: all 0.5s ease-in-out;
-    transform: translateX(0);
     z-index: 98;
     .content {
         opacity: 1;
-        transition: all 0.2s 0.5s ease;
+        transition: all 0.2s ease;
         .icon {
             animation-play-state: running;
         }
     }
 }
 .loading-end {
-    transition: all 0.5s ease-in-out;
     opacity: 0;
     z-index: 98;
 }

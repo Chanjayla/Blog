@@ -23,7 +23,11 @@ import {
     Collapse,
     Message,
     DatePicker,
-    Progress
+    Progress,
+    Dropdown,
+    DropdownItem,
+    DropdownMenu,
+    Dialog
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 
@@ -50,4 +54,8 @@ Vue.use(Collapse)
 Vue.use(DatePicker)
 Vue.use(TableColumn)
 Vue.use(Progress)
+Vue.use(Dropdown)
+Vue.use(DropdownItem)
+Vue.use(DropdownMenu)
+Vue.use(Dialog)
 Vue.prototype.$message = Message

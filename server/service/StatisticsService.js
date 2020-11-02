@@ -22,13 +22,11 @@ module.exports = {
         return PvDoc.save()
     },
     getPv(condition) {
-        const start = new Date(condition.start)
-        const end = new Date(condition.end)
+        const start = new Date(parseInt(condition.stime))
         return PvModel.find({
             date: {
-                $lt: end,
                 $gt: start
             }
-        }).select('date url agent referer ip').exec()
+        }).select('_id date ip url').exec()
     }
 }

@@ -1,8 +1,10 @@
-const axios = require('axios')
 const express = require('express')
 const router = express.Router()
 const auth = require('../middleware/auth')
 const stService = require('../service/StatisticsService')
+const articleService = require('../service/ArticleService')
+const { json } = require('body-parser')
+
 router.get('/pv', (req, res)=> {
     const ltime = req.query.ltime
     const url = req.query.url
@@ -19,18 +21,27 @@ router.get('/pv', (req, res)=> {
         referer: referer,
         ip: ip
     })
+    const blogId = url && url.match(/(?<=\/blog\/)\w+/)
+    if(blogId) {
+        articleService.statisticsPv(blogId[0]).then(res => {
+            
+        })
+    }
     res.json({
         code: 0
     })
 })
 
 router.get('/getPv', auth, (req, res) => {
-    const start = req.query.start || (new Date().getTime() - 3600 * 1000)
-    const end = req.query.end || new Date().getTime()
+    const stime = req.query.stime || (new Date().getTime() - 3600 * 1000)
     stService.getPv({
-        start, 
-        end
+        stime
     }).then(docs=> {
+        res.json(docs)
+    })
+})
+router.get('/getBlogPv', auth, (req, res) => {
+    articleService.getByPv().then(docs => {
         res.json(docs)
     })
 })

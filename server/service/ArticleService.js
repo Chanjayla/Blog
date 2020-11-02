@@ -10,7 +10,9 @@ let ArticleSchema = new mongoose.Schema({
     author: String,
     tags: Array,
     publish_time: Date,
-    preview_image: String
+    preview_image: String,
+    pv: Number,
+    is_top: Boolean
 })
 autoAddId(ArticleSchema, 'article')
 let ArticleModel = connection.model('Articles', ArticleSchema)
@@ -42,6 +44,13 @@ module.exports = {
         }
         return ArticleModel.updateOne(whereQuery, updateQuery)
     },
+    setTop(data) {
+        const whereQuery = {_id: data.id}
+        const updateQuery = {
+            is_top: data.is_top
+        }
+        return ArticleModel.updateOne(whereQuery, updateQuery)
+    },
     deleteOne(data) {
         const condition = {
             _id: data.id
@@ -68,16 +77,20 @@ module.exports = {
                 tags: {
                     $in: data.tags
                 }
-            }).skip(skipNum).limit(pageSize).sort(sort).exec()
+            }).skip(skipNum).limit(pageSize).sort(sort).select('author description cid preview_image publish_time tags title is_top').exec()
         }
-        return ArticleModel.find({}).skip(skipNum).limit(pageSize).sort(sort).select('author description cid preview_image publish_time tags title id').exec()
+        return ArticleModel.find({}).skip(skipNum).limit(pageSize).sort(sort).select('author description cid preview_image publish_time tags title is_top').exec()
     },
-    getBySort(num, sort) {
-        return ArticleModel.find({}).limit(num).sort(sort).select('author description cid preview_image publish_time tags title id').exec()
+    getBySort(num, sort, select) {
+        if(select) {
+            return ArticleModel.find({}).limit(num).sort(sort).select(select).exec()
+        } else {
+            return ArticleModel.find({}).limit(num).sort(sort).select('author description cid preview_image publish_time tags title').exec()
+        }
     },
     getById(id) {
         return ArticleModel.findOne({
-            _id: id
+            _id: mongoose.mongo.ObjectId(id)
         })
     },
     getByCid(cid) {
@@ -86,21 +99,41 @@ module.exports = {
         })
     },
     async getArticlePrevAndNext(condition) {
+        console.log(condition)
         let prev = await ArticleModel.find({
             publish_time: {
                 $lt: condition.publish_time
             }
-        }).sort({publish_time: 1}).limit(1).select('id title preview_image').exec()
+        }).sort({publish_time: 1}).limit(1).select('title preview_image').exec()
         let next = await ArticleModel.find({
             publish_time: {
                 $gt: condition.publish_time
             }
-        }).sort({publish_time: 1}).limit(1).select('id title preview_image').exec()
+        }).sort({publish_time: 1}).limit(1).select('title preview_image').exec()
+        console.log(prev, next)
         prev = prev[0]
         next = next[0]
         return {
             prev: prev || null,
             next: next || null
         }
+    },
+    statisticsPv(id) {
+        return ArticleModel.updateOne({
+            _id: id
+        }, {
+            $inc: {
+                pv: 1
+            }
+        })
+    },
+    getByPv() {
+        return ArticleModel.find({
+            pv: {
+                $gt: 0
+            }
+        }).sort({
+            pv: -1
+        }).select('title preview_image pv').exec()
     }
 }

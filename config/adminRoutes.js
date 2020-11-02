@@ -39,10 +39,15 @@ export const pathMap = {
         icon: 'el-icon-view',
         path: '/admin/resourceManager/view'
     },
-    '/admin/theme': {
-        name: 'Theme',
-        icon: 'el-icon-picture-outline-round',
-        path: '/admin/theme'
+    // '/admin/theme': {
+    //     name: 'Theme',
+    //     icon: 'el-icon-picture-outline-round',
+    //     path: '/admin/theme'
+    // },
+    '/admin/profile': {
+        name: 'Profile',
+        icon: 'el-icon-user',
+        path: '/admin/profile'
     },
     '/admin/tool/fnt': {
        name: 'fnt',
@@ -85,7 +90,8 @@ export default {
             pathMap['/admin/resourceManager/view']
         ]
     },
-    theme: pathMap['/admin/theme'],
+    profile: pathMap['/admin/profile'],
+    // theme: pathMap['/admin/theme'],
     tool: {
         name: 'Tools',
         icon: 'el-icon-s-tools',

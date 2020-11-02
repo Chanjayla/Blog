@@ -5,9 +5,7 @@ export default ({ app, store }) => {
             if(!process.server) {
                 statistics(to.fullPath, from.fullPath)
             }
-            setTimeout(function() {
-                next()
-            }, 500)
+            next()
         } else {
             next()
         }

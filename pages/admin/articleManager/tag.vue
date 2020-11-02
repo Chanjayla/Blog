@@ -38,6 +38,7 @@
 import ArticleTable from '~/components/Table/ArticleTable'
 import * as Tag from '~/api/tag'
 import { mapState } from 'vuex'
+import { MessageBox } from 'element-ui'
 export default {
     layout: 'admin',
     middleware: 'authenticated',
@@ -74,7 +75,7 @@ export default {
             })
         },
         deleteTag(tag) {
-            this.$confirm('是否要删除此标签', '提示', {
+            Message.confirm('是否要删除此标签', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning',
@@ -106,7 +107,7 @@ export default {
             this.previewImage = selectTagData.defaultPreview
         },
         addTag() {
-            this.$prompt('请输入新增标签名', '新增', {
+            MessageBox.prompt('请输入新增标签名', '新增', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 inputPattern: /[\w\u4e00-\u9fa5]+/,
@@ -134,7 +135,7 @@ export default {
                 })
         },
         modifyTag(tag) {
-            this.$prompt('请输入新标签名', '更新', {
+            MessageBox.prompt('请输入新标签名', '更新', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 inputPattern: /[\w\u4e00-\u9fa5]+/,

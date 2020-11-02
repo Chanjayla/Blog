@@ -25,3 +25,11 @@ export function add(data) {
 export function del(data) {
     return axios.post('/api/article/delete', data)
 }
+
+export function setTop(data) {
+    return axios.post('/api/article/setTop', data)
+} 
+
+export function getTop() {
+    return axios.get('/api/article/getTop')
+}

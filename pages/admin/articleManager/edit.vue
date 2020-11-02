@@ -108,7 +108,6 @@
             <div style="height: 100vh;overflow: auto;">
                 <RsList @select="selectOnline" filter="image" :hiddenName="true"/>
             </div>
-            
         </el-drawer>
     </div>
 </template>

@@ -1,6 +1,8 @@
 <template>
     <div class="article-box">
-        <div class="article-box__header"></div>
+        <div class="article-box__header">
+            <div class="mask"></div>
+        </div>
         <div class="article-box__left">
             <blog-list :dataList="articleData" v-if="articleData"></blog-list>
             <el-pagination
@@ -11,7 +13,7 @@
             ></el-pagination>
         </div>
         <div class="article-box__right">
-            <tag-cloud></tag-cloud>
+            <tag-cloud :dataList="tagData"></tag-cloud>
         </div>
     </div>
 </template>
@@ -19,6 +21,7 @@
 import BlogList from '~/components/List/BlogList.vue'
 import TagCloud from '~/components/TagCol/index.vue'
 import { transScroll } from '~/utils'
+import * as Tag from '~/api/tag'
 import * as Article from '~/api/article'
 export default {
     layout: 'blog',
@@ -32,19 +35,23 @@ export default {
             pageSize: 10,
             total: 0,
             articleData: null,
+            tagData: null,
         }
     },
     asyncData({ error }) {
         if (process.server) {
-            return Article.getPage({
-                page: 1,
-                pageSize: 10,
-            })
+            return Promise.all([
+                Article.getPage({
+                    page: 1,
+                    pageSize: 10,
+                    tags: [],
+                }),
+                Tag.getAll(),
+            ])
                 .then((res) => {
                     return {
-                        articleData: res.data.data,
-                        total: res.data.total,
-                        isServer: true,
+                        articleData: res[0].data.data,
+                        tagData: res[1].data.data,
                     }
                 })
                 .catch((err) => {
@@ -58,12 +65,18 @@ export default {
     },
     mounted() {
         if (this.isServer === false) {
-            Article.getPage({
-                page: this.page,
-                pageSize: this.pageSize,
-            }).then((res) => {
-                this.articleData = res.data.data
-                this.total = res.data.total
+            return Promise.all([
+                Article.getPage({
+                    page: 1,
+                    pageSize: 10,
+                    tags: [],
+                }),
+                Tag.getAll(),
+            ]).then((res) => {
+                console.log(res)
+                this.articleData = res[0].data.data
+                this.total = res[0].data.total
+                this.tagData = res[1].data.data
                 this.$nextTick(() => {
                     this.$store.dispatch('app/toggleLoading', 2)
                 })
@@ -108,6 +121,14 @@ export default {
         background-attachment: fixed;
         background-size: cover;
         border-radius: 0 0 1em 1em;
+        .mask {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            opacity: .3;
+        }
     }
     &__tags {
         width: 300px;

@@ -12,7 +12,6 @@ import theFooter from './components/BlogFooter.vue'
 import loadingMask from '~/components/Loading/loading.vue'
 import { mapState } from 'vuex'
 export default {
-    middleware: 'statistics',
     components: {
         theHeader,
         theFooter,

@@ -27,7 +27,13 @@ export default {
             routesData: routes,
         }
     },
-    mounted() {},
+    mounted() {
+        this.$store.commit('user/SET_MESSAGE', {
+            username: sessionStorage.getItem('cms_username'),
+            avatar: sessionStorage.getItem('cms_avatar'),
+            id: sessionStorage.getItem('cms_id')
+        })
+    },
     components: {
         SideBar,
         NavBar,
