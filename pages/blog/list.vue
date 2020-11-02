@@ -13,12 +13,18 @@
             ></el-pagination>
         </div>
         <div class="article-box__right">
+            <div class="article-box__right__tit">
+                <i class="el-icon-star-on"></i>
+                <span>Most View</span>
+            </div>
+            <side-list :dataList="hotData"></side-list>
             <tag-cloud :dataList="tagData"></tag-cloud>
         </div>
     </div>
 </template>
 <script>
 import BlogList from '~/components/List/BlogList.vue'
+import SideList from '~/components/List/SideList.vue'
 import TagCloud from '~/components/TagCol/index.vue'
 import { transScroll } from '~/utils'
 import * as Tag from '~/api/tag'
@@ -28,6 +34,7 @@ export default {
     components: {
         TagCloud,
         BlogList,
+        SideList,
     },
     data() {
         return {
@@ -35,6 +42,7 @@ export default {
             pageSize: 10,
             total: 0,
             articleData: null,
+            hotData: null,
             tagData: null,
         }
     },
@@ -46,12 +54,14 @@ export default {
                     pageSize: 10,
                     tags: [],
                 }),
+                Article.getHot(),
                 Tag.getAll(),
             ])
                 .then((res) => {
                     return {
                         articleData: res[0].data.data,
-                        tagData: res[1].data.data,
+                        hotData: res[1].data.data,
+                        tagData: res[2].data.data,
                     }
                 })
                 .catch((err) => {
@@ -71,12 +81,13 @@ export default {
                     pageSize: 10,
                     tags: [],
                 }),
+                Article.getHot(),
                 Tag.getAll(),
             ]).then((res) => {
-                console.log(res)
                 this.articleData = res[0].data.data
                 this.total = res[0].data.total
-                this.tagData = res[1].data.data
+                this.hotData = res[1].data.data
+                this.tagData = res[2].data.data
                 this.$nextTick(() => {
                     this.$store.dispatch('app/toggleLoading', 2)
                 })
@@ -127,7 +138,7 @@ export default {
             top: 0;
             width: 100%;
             height: 100%;
-            opacity: .3;
+            opacity: 0.3;
         }
     }
     &__tags {
@@ -139,8 +150,25 @@ export default {
         }
     }
     &__left {
-        margin-right: 50px;
         margin-bottom: 30px;
+    }
+    &__right {
+        max-width: 500px;
+        padding-bottom: 20px;
+        margin-left: 20px;
+        @media screen and (max-width: $minViewWidth) {
+            display: none;
+        }
+        &__tit {
+            box-sizing: border-box;
+            width: 100%;
+            line-height: 40px;
+            margin: 40px auto 20px auto;
+            padding: 10px;
+            font-weight: 600;
+            border-bottom: 1px dashed rgb(230, 230, 230);
+            font-size: 1.2em;
+        }
     }
     &__pagination {
         text-align: center;

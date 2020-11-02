@@ -33,3 +33,7 @@ export function setTop(data) {
 export function getTop() {
     return axios.get('/api/article/getTop')
 }
+
+export function getHot() {
+    return axios.get('/api/article/getHot')
+}

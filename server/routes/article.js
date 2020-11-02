@@ -55,7 +55,7 @@ router.post('/getById', (req, res, next) => {
         if (typeof id != 'undefined') {
             articleService.getById(id).then(async (doc) => {
                 if(doc) {
-                    const prevNext =  await articleService.getArticlePrevAndNext({cid: doc.cid})
+                    const prevNext =  await articleService.getArticlePrevAndNext({cid: doc.cid,publish_time: doc.publish_time})
                     res.json({
                         code: 0,
                         data: doc,
@@ -202,6 +202,24 @@ router.get('/getTop', (req, res) => {
     articleService.getBySort(num, {
         is_top: -1
     }).then(docs => {
+        res.json({
+            code: 0,
+            data: docs,
+            msg: 'ok'
+        })
+    }).catch(err => {
+        res.json({
+            code: 500,
+            msg: err
+        })
+    })
+})
+
+router.get('/getHot', (req, res) => {
+    const num = req.query.num || 5
+    articleService.getBySort(num, {
+        pv: -1
+    },'preview_image title pv').then(docs => {
         res.json({
             code: 0,
             data: docs,

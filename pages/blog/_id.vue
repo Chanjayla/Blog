@@ -17,7 +17,7 @@
                 <span
                     class="detail-box__msg__tag"
                     v-for="tag in tags"
-                    :key="tag.id"
+                    :key="tag"
                     >{{ tag }}</span
                 >
             </figure>
@@ -31,7 +31,7 @@
             <div class="detail-box__bottom">
                 <div class="detail-box__bottom__pn">
                     <template v-if="prevData">
-                        <router-link :to="`/blog/${prevData.id}`">
+                        <router-link :to="`/blog/${prevData._id}`">
                             <img
                                 :src="prevData.preview_image"
                                 @error="loadDefaultImg"
@@ -48,7 +48,7 @@
                 </div>
                 <div class="detail-box__bottom__pn">
                     <template v-if="nextData">
-                        <router-link :to="`/blog/${nextData.id}`">
+                        <router-link :to="`/blog/${nextData._id}`">
                             <img
                                 :src="nextData.preview_image"
                                 @error="loadDefaultImg"
