@@ -229,6 +229,7 @@ export default {
                 margin: auto;
                 width: 30px;
                 height: 30px;
+                object-fit: cover;
                 border-radius: 50%;
             }
             .tit {

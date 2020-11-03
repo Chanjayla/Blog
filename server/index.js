@@ -34,14 +34,11 @@ async function start () {
   // Give nuxt middleware to express
   app.use(nuxt.render)
   // Listen the server
-  https.createServer({
+  let server = https.createServer({
     key: fs.readFileSync('server/https/4713990_www.jaylang.cn.key'),
     cert: fs.readFileSync('server/https/4713990_www.jaylang.cn.pem')
   }, app).listen(port, host)
-  let httpServer = http.createServer((req, res) => {
-    res.end()
-  }).listen(port2, host)
-  require('./socket')(httpServer)
+  require('./socket')(server)
   consola.ready({
     message: `Server listening on https://${host}:${port}`,
     badge: true
