@@ -18,9 +18,6 @@ module.exports = {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
-    ],
-    script: [
-      { src: '/catchError.js'}
     ]
   },
   env: {
@@ -94,6 +91,7 @@ module.exports = {
   },
   server: {
     port: 3000, 
+    port2: 3001,
     host: '0.0.0.0'
   }
 }

@@ -122,7 +122,7 @@ router.post('/add', auth, (req, res, next) => {
                 code: 0,
                 msg: docs.nModified ? 'Update successfully!' : 'No modified'
             })
-            handleLogger.debug(`update article id:${data.id}-title:${data.title}-doc.nModified:${docs.nModified}`)
+            // handleLogger.debug(`update article id:${data.id}-title:${data.title}-doc.nModified:${docs.nModified}`)
         }).catch(e => {
             res.json({
                 code: 500,
@@ -136,7 +136,7 @@ router.post('/add', auth, (req, res, next) => {
                 code: 0,
                 msg: 'ok'
             })
-            handleLogger.debug(`add article id:${data.id}-title:${data.title}-success`)
+            // handleLogger.debug(`add article id:${data.id}-title:${data.title}-success`)
         }).catch(e => {
             res.json({
                 code: 500,
@@ -156,7 +156,7 @@ router.post('/delete', auth, (req, res, next) => {
                 code: 0,
                 msg: 'ok'
             })
-            handleLogger.debug(`delete article id:${data.id}-title:${data.title}-success`)
+            // handleLogger.debug(`delete article id:${data.id}-title:${data.title}-success`)
         }).catch(e => {
             res.json({
                 code: 500,
@@ -171,7 +171,7 @@ router.post('/delete', auth, (req, res, next) => {
                 code: 0,
                 msg: 'ok'
             })
-            handleLogger.debug(`delete articles id:${data.id}-title:${data.title}-success`)
+            // handleLogger.debug(`delete articles id:${data.id}-title:${data.title}-success`)
         }).catch(e => {
             res.json({
                 code: 500,

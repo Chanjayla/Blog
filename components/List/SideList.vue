@@ -100,6 +100,7 @@ export default {
     .side-item__icon {
         width: 90px;
         height: 90px;
+        object-fit: cover;
     }
 }
 </style>

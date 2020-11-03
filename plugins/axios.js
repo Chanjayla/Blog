@@ -2,9 +2,9 @@ import * as axios from 'axios'
 import { Message } from 'element-ui'
 export default ({ app, store, redirect }) => {
 	if (process.env.NODE_ENV == 'development') {
-		axios.defaults.baseURL = 'http://127.0.0.1:3000'
+		axios.defaults.baseURL = 'https://127.0.0.1:3000'
 	} else {
-		axios.defaults.baseURL = 'http://www.jaylang.cn'
+		axios.defaults.baseURL = 'https://www.jaylang.cn'
 	}
 	// axios.defaults.baseURL = process.env.baseUrl
 	// request拦截器，我这里设置了一个token，当然你可以不要

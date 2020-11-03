@@ -2,6 +2,9 @@ const express = require('express')
 const consola = require('consola')
 const { Nuxt, Builder } = require('nuxt')
 const bodyParser = require('body-parser')
+const https = require('https')
+const http = require('http')
+const fs = require('fs')
 const log4js = require('./log')
 const app = express()
 app.use(log4js.connectLogger(log4js.getLogger('default'), {
@@ -19,7 +22,7 @@ async function start () {
   // Init Nuxt.js
   const nuxt = new Nuxt(config)
 
-  const { host, port } = nuxt.options.server
+  const { host, port, port2 } = nuxt.options.server
 
   await nuxt.ready()
   // Build only in dev mode
@@ -31,10 +34,16 @@ async function start () {
   // Give nuxt middleware to express
   app.use(nuxt.render)
   // Listen the server
-  let server = app.listen(port, host)
-  require('./socket')(server)
+  https.createServer({
+    key: fs.readFileSync('server/https/4713990_www.jaylang.cn.key'),
+    cert: fs.readFileSync('server/https/4713990_www.jaylang.cn.pem')
+  }, app).listen(port, host)
+  let httpServer = http.createServer((req, res) => {
+    res.json({})
+  }).listen(port2, host)
+  require('./socket')(httpServer)
   consola.ready({
-    message: `Server listening on http://${host}:${port}`,
+    message: `Server listening on https://${host}:${port}`,
     badge: true
   })
 }

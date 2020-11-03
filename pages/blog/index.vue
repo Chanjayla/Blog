@@ -44,6 +44,7 @@ export default {
         if (process.server) {
             return Promise.all([Article.getLatest(), Article.getTop()])
                 .then((res) => {
+                    console.log('test:', res)
                     return {
                         latestData: res[0].data.data,
                         topData: res[1].data.data,
