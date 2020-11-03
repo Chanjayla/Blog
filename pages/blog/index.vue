@@ -89,7 +89,7 @@ export default {
         width: 100%;
         height: 67.7vw;
         min-height: 300px;
-        background: url(/home_page_header.jpg);
+        background: url(/home_page_header.webp);
         background-attachment: fixed;
         background-repeat: no-repeat;
         background-position: 0 0;
