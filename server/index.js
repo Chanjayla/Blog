@@ -39,7 +39,7 @@ async function start () {
     cert: fs.readFileSync('server/https/4713990_www.jaylang.cn.pem')
   }, app).listen(port, host)
   let httpServer = http.createServer((req, res) => {
-    res.json({})
+    res.end()
   }).listen(port2, host)
   require('./socket')(httpServer)
   consola.ready({
