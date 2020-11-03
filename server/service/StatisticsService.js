@@ -27,6 +27,6 @@ module.exports = {
             date: {
                 $gt: start
             }
-        }).select('_id date ip url').exec()
+        }).select('date ip url').exec()
     }
 }

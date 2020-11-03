@@ -32,7 +32,7 @@ module.exports = {
         return articleDoc.save()
     },
     update(data) {
-        const whereQuery = {_id: data.id}
+        const whereQuery = {_id: mongoose.mongo.ObjectId(data.id)}
         const updateQuery = {
             title: data.title,
             content: data.content,
@@ -45,7 +45,7 @@ module.exports = {
         return ArticleModel.updateOne(whereQuery, updateQuery)
     },
     setTop(data) {
-        const whereQuery = {_id: data.id}
+        const whereQuery = {_id: mongoose.mongo.ObjectId(data.id)}
         const updateQuery = {
             is_top: data.is_top
         }
@@ -53,14 +53,14 @@ module.exports = {
     },
     deleteOne(data) {
         const condition = {
-            _id: data.id
+            _id: mongoose.mongo.ObjectId(data.id)
         }
         return ArticleModel.deleteOne(condition)
     },
     deleteMulti(data) {
         const condition = {
             _id: {
-                $in: data.ids
+                $in: mongoose.mongo.ObjectId(data.ids)
             }
         }
         return ArticleModel.deleteMany(condition)
@@ -118,7 +118,7 @@ module.exports = {
     },
     statisticsPv(id) {
         return ArticleModel.updateOne({
-            _id: id
+            _id: mongoose.mongo.ObjectId(id)
         }, {
             $inc: {
                 pv: 1
