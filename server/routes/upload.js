@@ -31,7 +31,7 @@ router.post('/image', auth, upload.single('preview'), (req, res, next) => {
         if (err) {
             errLogger.error(`upload image path but write menu error ${err}`)
         }
-        handleLogger.debug(`upload image path:${filepath}-success`)
+        // handleLogger.debug(`upload image path:${filepath}-success`)
     })
 })
 router.post('/resource', auth, upload.single('resource'), (req, res, next) => {
@@ -52,7 +52,7 @@ router.post('/resource', auth, upload.single('resource'), (req, res, next) => {
         if (err) {
             errLogger.error(`upload resource path but write menu error ${err}`)
         }
-        handleLogger.debug(`upload resource path:${filepath}-success`)
+        // handleLogger.debug(`upload resource path:${filepath}-success`)
     })
 })
 

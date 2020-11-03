@@ -4,7 +4,6 @@ const Jwt = require('../jwt')
 const userService = require('../service/UserService')
 const log4js = require('log4js')
 const { default: UserService } = require('../service/UserService')
-const handleLogger = log4js.getLogger('handle')
 const errLogger = log4js.getLogger('err')
 const auth = require('../middleware/auth')
 router.post('/login', async (req, res, next) => {

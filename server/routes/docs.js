@@ -71,7 +71,7 @@ router.post('/update', auth, (req, res, next) => {
                         code: 0,
                         msg: 'update successfully!'
                     })
-                    handleLogger.debug(`update docs name:${name}-success`)
+                    // handleLogger.debug(`update docs name:${name}-success`)
                 })
             } else {
                 menuJson.push({
@@ -87,7 +87,7 @@ router.post('/update', auth, (req, res, next) => {
                             code: 0,
                             msg: 'create successfully!'
                         })
-                        handleLogger.debug(`create docs name:${name}-success`)
+                        // handleLogger.debug(`create docs name:${name}-success`)
                     })
                 })
             }
@@ -123,7 +123,7 @@ router.post('/delete', auth,  (req, res, next) => {
                     code: 0,
                     msg: 'delete successfully'
                 })
-                handleLogger.debug(`delete docs names:${names}-success`)
+                // handleLogger.debug(`delete docs names:${names}-success`)
             }) 
         } catch(e) {
             res.json({

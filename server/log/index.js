@@ -6,21 +6,24 @@ log4js.configure({
             filename: "logs/access/access.log",
             pattern: 'yyyy-MM-dd.log',
             alwaysIncludePattern: true,
-            maxFileSize: 10485760
+            maxFileSize: 10485760,
+            maxBackupIndex: 30
         },
         err: {
             type: "file", 
             filename: "logs/error/err.log",
             pattern: 'yyyy-MM-dd.log',
             alwaysIncludePattern: true,
-            maxFileSize: 10485760
+            maxFileSize: 10485760,
+            maxBackupIndex: 30
         },
         handle: {
             type: "file", 
             filename: "logs/other/handle.log",
             pattern: 'yyyy-MM-dd.log',
             alwaysIncludePattern: true,
-            maxFileSize: 10485760
+            maxFileSize: 10485760,
+            maxBackupIndex: 30
         }
     },
     categories: { 

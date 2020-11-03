@@ -49,7 +49,7 @@ router.post('/add', auth, (req, res, next) => {
                 code: 0,
                 msg: 'ok'
             })
-            handleLogger.debug(`add tag id:${data.id}-name:${data.name}-success`)
+            // handleLogger.debug(`add tag id:${data.id}-name:${data.name}-success`)
         }).catch(e => {
             res.json({
                 code: 500,
@@ -77,7 +77,7 @@ router.post('/del', auth, (req, res, next) => {
             code: 0,
             msg: 'ok'
         })
-        handleLogger.debug(`delete tag cid:${data.cid}-name:${data.name}-success`)
+        // handleLogger.debug(`delete tag cid:${data.cid}-name:${data.name}-success`)
     }).catch(e => {
         res.json({
             code: 500,
@@ -99,7 +99,7 @@ router.post('/modify', auth, (req, res, next) => {
                 code: 0,
                 msg: 'ok'
             })
-            handleLogger.debug(`update tag cid:${data.cid}-name:${data.name}-success`)
+            // handleLogger.debug(`update tag cid:${data.cid}-name:${data.name}-success`)
         }).catch(e => {
             res.json({
                 code: 500,
