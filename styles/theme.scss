@@ -14,6 +14,14 @@
         a {
             color: #fff;
         }
+        .mobile-nav {
+            i {
+                color: rgba(24, 26, 27,1);
+            }
+            a {
+                color: rgba(24, 26, 27,1);
+            }
+        }
     }
     &-main {
         background: rgba(251,251,251,1);
@@ -24,12 +32,9 @@
         .article-list__item {
             box-shadow: 0 0 10px #d0d0d0, -10px -10px 10px #fff;
             &__msg {
-                background: #fbfbfb;
+                background: rgba(251,251,251,.8);
             }
         }
-    }
-    &-search {
-        
     }
     &-footer {
         background: #ffffff;
@@ -70,16 +75,12 @@
         .article-list__item {
             box-shadow: 0 0 10px #0f0f0f, -10px -10px 10px #151515;
             &__msg {
-                background: rgba(29, 31, 39,1)
+                background: rgba(29, 31, 39,.8)
             }
         }
         .markdown-content {
             color: rgba(251,251,251,1)
         }
-    }
-    &-search {
-        
-
     }
     &-footer {
         background: rgba(24,26,27,1);

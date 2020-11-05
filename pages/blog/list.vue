@@ -120,7 +120,7 @@ export default {
     margin: 0 auto;
     padding-top: 510px;
     transition: all 0.2s ease;
-    @media screen and (max-width: 640px) {
+    @media screen and (max-width: $mobileWidth) {
         min-width: 0;
     }
     &__header {
@@ -144,7 +144,7 @@ export default {
         .tit {
             position: absolute;
             bottom: 50px;
-            left: 0;
+            left: 20px;
             right: 0;
             margin: auto;
             font-size: 50px;
@@ -156,12 +156,15 @@ export default {
         width: 300px;
         height: 300px;
         background: #000;
-        @media screen and (max-width: 640px) {
+        @media screen and (max-width: $mobileWidth) {
             display: none;
         }
     }
     &__left {
         margin-bottom: 30px;
+        @media screen and (max-width: $mobileWidth) {
+            width: 100%;
+        }
     }
     &__right {
         max-width: 500px;

@@ -163,10 +163,13 @@ export default {
             }
         }
         this.scrollCb = throttle((e) => {
-            const top = document.getElementById('app').scrollTop
+            const top =
+                pageYOffset ||
+                document.documentElement.scrollTop ||
+                document.body.scrollTop
             this.findDirActive(top)
         }, 16)
-        document.getElementById('app').addEventListener('scroll', this.scrollCb)
+        document.addEventListener('scroll', this.scrollCb)
         if (document.getElementById('gitalk-container')) {
             let gitalk = new Gitalk({
                 ...gitalkConfig,
@@ -176,9 +179,7 @@ export default {
         }
     },
     beforeDestroy() {
-        document
-            .getElementById('app')
-            .removeEventListener('scroll', this.scrollCb)
+        document.removeEventListener('scroll', this.scrollCb)
     },
     methods: {
         initDirectory() {
@@ -223,9 +224,11 @@ export default {
     width: 900px;
     margin: 0 auto;
     padding: calc(#{$headerHeight} + 30px) 10px;
+    @media screen and (max-width: $mobileWidth) {
+        width: 100%;
+    }
     &__image {
         width: 100%;
-        min-height: 400px;
         box-shadow: rgba(0, 0, 0, 0.5) 0px 1px 20px -8px;
         font-size: 0;
         border-radius: 10px;
@@ -331,6 +334,9 @@ export default {
         margin: auto;
         padding: $headerHeight 0 $footerHeight 0;
         font-size: 1em;
+        @media screen and (max-width: $mobileWidth) {
+            left: 2px;
+        }
         ul {
             position: relative;
             padding: 10px 0 10px 10px;

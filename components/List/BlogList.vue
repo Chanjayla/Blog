@@ -55,9 +55,13 @@ export default {
 <style lang="scss" scoped>
 .article-list {
     width: 900px;
+    @media screen and (max-width: $mobileWidth) {
+        width: 100%;
+    }
     &__item {
+        position: relative;
         display: flex;
-        width: 800px;
+        width: 90%;
         height: 300px;
         margin: 20px auto 40px auto;
         border-radius: 10px;
@@ -67,6 +71,15 @@ export default {
             width: 400px;
             height: 100%;
             overflow: hidden;
+            @media screen and (max-width: $mobileWidth) {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 0;
+                filter: blur(10px);
+            }
             img {
                 position: absolute;
                 left: 0;
@@ -88,6 +101,10 @@ export default {
             width: 400px;
             box-sizing: border-box;
             padding: 30px;
+            @media screen and (max-width: $mobileWidth) { 
+                width: 100%;
+                pointer-events: none;
+            }
             &__date {
                 font-size: 14px;
                 margin-bottom: 10px;

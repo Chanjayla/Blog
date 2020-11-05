@@ -90,7 +90,7 @@ export default {
     width: 100%;
     height: 500px;
     overflow: hidden;
-    @media screen and (max-width: 640px) {
+    @media screen and (max-width: $mobileWidth) {
       display: none;
     }
     img {

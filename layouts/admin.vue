@@ -28,6 +28,7 @@ export default {
         }
     },
     mounted() {
+        console.log(this.$store.state.user)
         this.$store.commit('user/SET_MESSAGE', {
             username: sessionStorage.getItem('cms_username'),
             avatar: sessionStorage.getItem('cms_avatar'),

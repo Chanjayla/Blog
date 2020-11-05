@@ -5,7 +5,8 @@ export const state = () => ({
     themeName: 'theme0',
     clientWidth: 0,
     clientHeight: 0,
-    loading: 0
+    loading: 0,
+    isMobile: false
 })
 export const mutations = {
     TOGGLE_THEME: (state, themeId) => {
@@ -21,6 +22,9 @@ export const mutations = {
     },
     TOGGLE_LOADING: (state, status) => {
         state.loading = status || 0
+    },
+    SET_MOBILE: (state, status) => {
+        state.isMobile = status
     }
 }
 export const actions = {

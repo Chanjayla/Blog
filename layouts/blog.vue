@@ -29,8 +29,8 @@ export default {
 @import '~/styles/blog.scss';
 #app {
     position: relative;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     overflow-y: auto;
     background: $blogBgColor;
     @media screen and (min-width: $minViewWidth) {

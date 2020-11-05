@@ -95,6 +95,10 @@ export default {
         background-repeat: no-repeat;
         background-position: 0 0;
         background-size: 100%;
+        @media screen and (max-width: $mobileWidth) {
+            height: 100vh;
+            background-size: cover;
+        }
         .mask {
             position: absolute;
             left: 0;
@@ -120,6 +124,9 @@ export default {
         .home-box__content {
             max-width: 900px;
             padding-bottom: 20px;
+            @media screen and (max-width: $mobileWidth) {
+                width: 100%;
+            }
             &__tit {
                 box-sizing: border-box;
                 width: 100%;

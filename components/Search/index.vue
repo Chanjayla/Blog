@@ -1,26 +1,46 @@
 <template>
     <div class="search-box">
-        <el-input v-model="searchKey" placeholder="Search ..." @input="search" :clearable="true">
+        <i v-if="isMobile" class="el-icon-search" @click="toggleSearchInput"></i>
+        <el-input
+            v-model="searchKey"
+            placeholder="Search ..."
+            @input="search"
+            :clearable="true"
+            :class="{'mobile-search': isMobile,'mobile-search-show': searchOpen}"
+        >
             <i
                 slot="prefix"
                 class="el-input__icon el-icon-search"
                 style="color: #c0c4cc"
             ></i>
         </el-input>
-        <div class="search-box__result mask" :class="status ? 'show' : ''" ref="resultList">
-            <template v-if="total>0">
-                <nuxt-link v-for="item in list" :key="item._id" :to="`/blog/${item._id}`" class="search-box__item">
+        <div
+            class="search-box__result mask"
+            :class="status ? 'show' : ''"
+            ref="resultList"
+        >
+            <template v-if="total > 0">
+                <nuxt-link
+                    v-for="item in list"
+                    :key="item._id"
+                    :to="`/blog/${item._id}`"
+                    class="search-box__item"
+                >
                     <h2 class="tit" v-html="item.title"></h2>
                     <div class="tag">
-                        <span v-for="tag in item.tags" :key="tag" >&nbsp;{{ tag }}</span>
+                        <span v-for="tag in item.tags" :key="tag"
+                            >&nbsp;{{ tag }}</span
+                        >
                     </div>
                     <p class="desc" v-html="item.description"></p>
-                    <span class="publish">{{ item.publish_time | timestampToDate}}</span>
+                    <span class="publish">{{
+                        item.publish_time | timestampToDate
+                    }}</span>
                 </nuxt-link>
             </template>
-           <template v-else>
-               <div style="text-align: center;">Not Found</div>
-           </template>
+            <template v-else>
+                <div style="text-align: center">Not Found</div>
+            </template>
         </div>
     </div>
 </template>
@@ -36,7 +56,8 @@ export default {
             total: 0,
             page: 1,
             pageSize: 10,
-            list: []
+            list: [],
+            searchOpen: false
         }
     },
     mounted() {
@@ -45,7 +66,11 @@ export default {
     computed: {
         ...mapState({
             themeName: (state) => state.app.themeName,
+            isMobile: (state) => state.app.isMobile,
         }),
+        mobileStyle() {
+            return this.isMobile ? 'mobile-search' : ''
+        },
     },
     methods: {
         search() {
@@ -66,23 +91,33 @@ export default {
                 page: this.page,
                 pageSize: this.pageSize,
             }).then((res) => {
-                if(res.data.code === 0) {
+                if (res.data.code === 0) {
                     const regExp = new RegExp(this.searchKey, 'ig')
-                    this.list = res.data.data.map(item => {
-                        item.title = item.title.replace(regExp, `<u>${this.searchKey}</u>`)
-                        item.description = item.description.replace(regExp, `<u>${this.searchKey}</u>`)
+                    this.list = res.data.data.map((item) => {
+                        item.title = item.title.replace(
+                            regExp,
+                            `<u>${this.searchKey}</u>`
+                        )
+                        item.description = item.description.replace(
+                            regExp,
+                            `<u>${this.searchKey}</u>`
+                        )
                         return item
                     })
                     this.total = res.data.total
                 }
             })
         },
+        toggleSearchInput() {
+            this.searchOpen = !this.searchOpen
+        }
     },
 }
 </script>
 <style lang="scss" scoped>
 .search-box {
-    width: 200px;
+    display: flex;
+    align-items: center;
     margin-left: 10px;
     &__result {
         box-sizing: border-box;
@@ -99,6 +134,9 @@ export default {
         color: #fff;
         overflow-x: hidden;
         overflow-y: auto;
+        @media screen and (max-width: 500px) {
+            width: 100%;
+        }
     }
     .show {
         transform: translateX(0);
@@ -107,7 +145,7 @@ export default {
         display: block;
         box-sizing: border-box;
         padding: 20px;
-        transition: background .2s ease;
+        transition: background 0.2s ease;
         cursor: pointer;
         .tit {
             font-size: 16px;
@@ -133,11 +171,22 @@ export default {
             text-align: right;
         }
         &:hover {
-            background: rgba(102, 102, 102, .9);
+            background: rgba(102, 102, 102, 0.9);
             color: inherit;
         }
     }
-    &__pagination {
+    .mobile-search {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 145px;
+        transform: translateX(-100%);
+        transition: all 250ms ease 0s;
+        opacity: 0;
+    }
+    .mobile-search-show {
+        transform: translateX(0);
+        opacity: 1;
     }
 }
 </style>

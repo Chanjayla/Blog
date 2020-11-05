@@ -105,7 +105,7 @@ export default {
     margin: 0 auto;
     padding-top: 510px;
     transition: all 0.2s ease;
-    @media screen and (max-width: 640px) {
+    @media screen and (max-width: $mobileWidth) {
         min-width: 0;
     }
     &__header {
@@ -122,7 +122,7 @@ export default {
         width: 300px;
         height: 300px;
         background: #000;
-        @media screen and (max-width: 640px) {
+        @media screen and (max-width: $mobileWidth) {
             display: none;
         }
     }

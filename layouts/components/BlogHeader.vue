@@ -1,24 +1,44 @@
 <template>
-        <div class="app-header" :class="extra">
-            <div class="mask app-header__mask" :class="`${themeName}-mask`" :style="isTop?'background: transparent;':''"></div>
-            <div class="app-header__tit">
-                Genos's Blog
-                <i :class="themeId>0?'night':'noon'" @click="changeTheme"></i>
-            </div>
-            <div class="app-header__menu">
-                <ul>
-                    <li
-                        v-for="route in routes"
-                        :key="route.path"
-                        :class="{active: route.path == activeRoute}"
-                    >
-                        <i :class="`iconfont ${route.icon}`"></i>
-                        <nuxt-link :to="route.path">{{route.name}}</nuxt-link>
-                    </li>
-                </ul>
-                <Search />
-            </div>
+    <div class="app-header">
+        <div
+            class="mask app-header__mask"
+            :class="`${themeName}-mask`"
+            :style="isTop ? 'background: transparent;' : ''"
+        ></div>
+        <div class="app-header__tit">
+            Genos's Blog
+            <i :class="themeId > 0 ? 'night' : 'noon'" @click="changeTheme"></i>
         </div>
+        <div class="app-header__menu">
+            <div
+                v-if="isMobile"
+                class="mobile-nav-btn"
+                :class="{ 'mobile-nav-btn-active': navOpen }"
+                @click="touchNav"
+            >
+                <i></i>
+                <i></i>
+                <i></i>
+            </div>
+
+            <ul
+                :class="{
+                    'mobile-nav-active': navOpen,
+                    'mobile-nav': isMobile,
+                }"
+            >
+                <li
+                    v-for="route in routes"
+                    :key="route.path"
+                    :class="{ active: route.path == activeRoute }"
+                >
+                    <i :class="`iconfont ${route.icon}`"></i>
+                    <nuxt-link :to="route.path">{{ route.name }}</nuxt-link>
+                </li>
+            </ul>
+            <Search />
+        </div>
+    </div>
 </template>
 <script>
 import Sticky from '~/components/Sticky'
@@ -50,38 +70,62 @@ export default {
                 // },
             ],
             activeRoute: '',
-            isTop: true
+            activeRouteName: '',
+            isTop: true,
+            navOpen: false,
         }
     },
     mounted() {
         this.activeRoute = this.$route.path
-        document.getElementById('app').addEventListener('scroll', (e) => {
-            if(e.target.scrollTop > 30) {
-                this.isTop = false
-            } else {
-                this.isTop = true
-            }
-        })
+        document.addEventListener('scroll', this.setTop.bind(this))
+
+    },
+    destroyed() {
+        document.removeEventListener('scroll', this.setTop.bind(this))
     },
     watch: {
         $route() {
             this.activeRoute = this.$route.path
+            this.activeRouteName = this.$route.name
         },
     },
     methods: {
         changeTheme() {
             this.$store.dispatch('app/toggleTheme', 1 - this.themeId)
         },
+        touchNav() {
+            this.navOpen = !this.navOpen
+        },
+        setTop(e) {
+            const scrollTop =
+                pageYOffset ||
+                document.documentElement.scrollTop ||
+                document.body.scrollTop
+            if(this.activeRouteName === 'blog-id') {
+                this.isTop = false
+                return
+            }
+            if (scrollTop > 30) {
+                this.isTop = false
+            } else {
+                this.isTop = true
+            }
+            console.log(this.isTop)
+        },
     },
     computed: {
         ...mapState({
             themeId: (state) => state.app.themeId,
-            themeName: (state) => state.app.themeName
+            themeName: (state) => state.app.themeName,
+            isMobile: (state) => state.app.isMobile,
         }),
+        mobileNavStyle() {
+            return this.isMobile ? 'mobile-nav-list' : ''
+        },
     },
     components: {
         Sticky,
-        Search
+        Search,
     },
 }
 </script>
@@ -106,8 +150,8 @@ export default {
         position: absolute;
         top: 0;
         left: 0;
-        width: 100vw;
-        transition: all .2s ease;
+        width: 100%;
+        transition: all 0.2s ease;
         z-index: -1;
     }
     &__tit {
@@ -162,6 +206,11 @@ export default {
     }
     &__menu {
         display: flex;
+        justify-content: center;
+        align-items: center;
+        @media screen and (max-width: $mobileWidth) {
+            flex-direction: row-reverse;
+        }
         ul {
             height: $headerHeight;
             list-style-type: none;
@@ -214,6 +263,51 @@ export default {
                 &::after {
                     transform: translateX(0);
                 }
+            }
+        }
+        .mobile-nav {
+            position: fixed;
+            top: $headerHeight;
+            right: 0;
+            transform: translateX(100%);
+            transition: transform 250ms ease 0s;
+            li {
+                display: block;
+                height: 30px;
+                line-height: 30px;
+                &::after {
+                    display: none;
+                }
+            }
+        }
+        .mobile-nav-active {
+            transform: translateX(0);
+        }
+        .mobile-nav-btn {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 15px;
+            height: 12px;
+            margin-left: 10px;
+            i {
+                display: block;
+                width: 15px;
+                height: 2px;
+                transition: all 0.2s ease;
+                background: #fff;
+            }
+        }
+        .mobile-nav-btn-active {
+            i:nth-child(1) {
+                transform: rotate(45deg) translate(3.2px, 3.8px);
+            }
+            i:nth-child(2) {
+                transition: all 0.1s ease;
+                visibility: hidden;
+            }
+            i:nth-child(3) {
+                transform: rotate(-45deg) translate(3.2px, -3.8px);
             }
         }
     }
