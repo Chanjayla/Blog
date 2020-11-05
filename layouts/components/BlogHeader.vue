@@ -1,5 +1,5 @@
 <template>
-        <div class="app-header">
+        <div class="app-header" :class="extra">
             <div class="mask app-header__mask" :class="`${themeName}-mask`" :style="isTop?'background: transparent;':''"></div>
             <div class="app-header__tit">
                 Genos's Blog
@@ -16,11 +16,13 @@
                         <nuxt-link :to="route.path">{{route.name}}</nuxt-link>
                     </li>
                 </ul>
+                <Search />
             </div>
         </div>
 </template>
 <script>
 import Sticky from '~/components/Sticky'
+import Search from '~/components/Search'
 import { mapState } from 'vuex'
 export default {
     data() {
@@ -36,11 +38,11 @@ export default {
                     name: 'Blog',
                     icon: 'icon-pen',
                 },
-                {
-                    path: '/blog/about',
-                    name: 'About',
-                    icon: 'icon-tag',
-                },
+                // {
+                //     path: '/blog/about',
+                //     name: 'About',
+                //     icon: 'icon-tag',
+                // },
                 // {
                 //     path: '/component',
                 //     name: 'Component',
@@ -79,6 +81,7 @@ export default {
     },
     components: {
         Sticky,
+        Search
     },
 }
 </script>
@@ -158,6 +161,7 @@ export default {
         }
     }
     &__menu {
+        display: flex;
         ul {
             height: $headerHeight;
             list-style-type: none;

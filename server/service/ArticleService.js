@@ -133,5 +133,19 @@ module.exports = {
         }).sort({
             pv: -1
         }).select('title preview_image pv').exec()
+    },
+    getByKeyword(data) {
+        const page = data.page || 1
+        const pageSize = data.pageSize || 10
+        const skipNum = ( page - 1 ) * pageSize
+        const keyword = data.keyword
+        return ArticleModel.find({
+            $or: [
+                { title: { $regex: keyword }},
+                { description: { $regex: keyword }}
+            ]
+        }).skip(skipNum).limit(pageSize).sort({
+            publish_time: -1
+        }).select('title description publish_time tags').exec()
     }
 }

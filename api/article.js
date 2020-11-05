@@ -37,3 +37,7 @@ export function getTop() {
 export function getHot() {
     return axios.get('/api/article/getHot')
 }
+
+export function search(data) {
+    return axios.get(`/api/article/search?keyword=${data.keyword}&page=${data.page||1}&pageSize=${data.pageSize||10}`)
+}

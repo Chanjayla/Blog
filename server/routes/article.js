@@ -54,8 +54,8 @@ router.post('/getById', (req, res, next) => {
     try {
         if (typeof id != 'undefined') {
             articleService.getById(id).then(async (doc) => {
-                if(doc) {
-                    const prevNext =  await articleService.getArticlePrevAndNext({cid: doc.cid,publish_time: doc.publish_time})
+                if (doc) {
+                    const prevNext = await articleService.getArticlePrevAndNext({ cid: doc.cid, publish_time: doc.publish_time })
                     res.json({
                         code: 0,
                         data: doc,
@@ -70,12 +70,12 @@ router.post('/getById', (req, res, next) => {
                         msg: 'ok'
                     })
                 }
-                
+
             })
         } else if (typeof cid != 'undefined') {
             articleService.getByCid(cid).then(async doc => {
-                if(doc) {
-                    const prevNext = await articleService.getArticlePrevAndNext({cid: doc.cid})
+                if (doc) {
+                    const prevNext = await articleService.getArticlePrevAndNext({ cid: doc.cid })
                     doc.prev = prevNext.prev
                     doc.next = prevNext.next
                     res.json({
@@ -183,18 +183,18 @@ router.post('/delete', auth, (req, res, next) => {
 })
 router.post('/setTop', auth, (req, res) => {
     const data = req.body
-    if(data.id && typeof data.is_top != 'undefined')
-    articleService.setTop(data).then(doc => {
-        res.json({
-            code: 0,
-            msg: 'ok'
+    if (data.id && typeof data.is_top != 'undefined')
+        articleService.setTop(data).then(doc => {
+            res.json({
+                code: 0,
+                msg: 'ok'
+            })
+        }).catch(e => {
+            res.json({
+                code: 500,
+                msg: e
+            })
         })
-    }).catch(e => {
-        res.json({
-            code: 500,
-            msg: e
-        })
-    })
 })
 
 router.get('/getTop', (req, res) => {
@@ -219,7 +219,7 @@ router.get('/getHot', (req, res) => {
     const num = req.query.num || 5
     articleService.getBySort(num, {
         pv: -1
-    },'preview_image title pv').then(docs => {
+    }, 'preview_image title pv').then(docs => {
         res.json({
             code: 0,
             data: docs,
@@ -231,5 +231,40 @@ router.get('/getHot', (req, res) => {
             msg: err
         })
     })
+})
+
+router.get('/search', (req, res) => {
+    const keyword = req.query.keyword
+    const page = parseInt(req.query.page) || 1
+    const pageSize = parseInt(req.query.pageSize) || 10
+    if (keyword) {
+        articleService.getByKeyword({
+            keyword,
+            page,
+            pageSize
+        }).then(docs => {
+            if(docs && docs.length) {
+                res.json({
+                    code: 0,
+                    data: docs,
+                    total: docs.length,
+                    msg: 'ok'
+                })
+            } else {
+                res.json({
+                    code: 0,
+                    data: [],
+                    total: 0,
+                    msg: 'ok'
+                })
+            }
+
+        }).catch(err => {
+            res.json({
+                code: 500,
+                msg: err
+            })
+        })
+    }
 })
 module.exports = router

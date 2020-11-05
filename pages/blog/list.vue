@@ -2,6 +2,7 @@
     <div class="article-box">
         <div class="article-box__header">
             <div class="mask"></div>
+            <h1 class="tit">Blog</h1>
         </div>
         <div class="article-box__left">
             <blog-list :dataList="articleData" v-if="articleData"></blog-list>
@@ -139,6 +140,16 @@ export default {
             width: 100%;
             height: 100%;
             opacity: 0.3;
+        }
+        .tit {
+            position: absolute;
+            bottom: 50px;
+            left: 0;
+            right: 0;
+            margin: auto;
+            font-size: 50px;
+            user-select: none;
+            color: #fff;
         }
     }
     &__tags {
