@@ -110,7 +110,6 @@ export default {
             } else {
                 this.isTop = true
             }
-            console.log(this.isTop)
         },
     },
     computed: {
@@ -300,14 +299,14 @@ export default {
         }
         .mobile-nav-btn-active {
             i:nth-child(1) {
-                transform: rotate(45deg) translate(3.2px, 3.8px);
+                transform: rotate(45deg) translate(.2rem, .26rem);
             }
             i:nth-child(2) {
                 transition: all 0.1s ease;
                 visibility: hidden;
             }
             i:nth-child(3) {
-                transform: rotate(-45deg) translate(3.2px, -3.8px);
+                transform: rotate(-45deg) translate(.2rem, -.26rem);
             }
         }
     }

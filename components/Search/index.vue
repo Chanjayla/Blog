@@ -15,7 +15,7 @@
             ></i>
         </el-input>
         <div
-            class="search-box__result mask"
+            class="search-box__result"
             :class="status ? 'show' : ''"
             ref="resultList"
         >
@@ -79,8 +79,10 @@ export default {
                 this.page = 1
                 if (this.searchKey == '') {
                     this.status = 0
+                    document.body.style.position = 'static'
                 } else {
                     this.status = 1
+                    document.body.style.position = 'fixed'
                     this.requestSearch()
                 }
             }, 200)
@@ -110,6 +112,8 @@ export default {
         },
         toggleSearchInput() {
             this.searchOpen = !this.searchOpen
+            this.status = 0
+            document.body.style.position = 'static'
         }
     },
 }
@@ -134,6 +138,7 @@ export default {
         color: #fff;
         overflow-x: hidden;
         overflow-y: auto;
+        background: rgba(0,0,0,.9);
         @media screen and (max-width: 500px) {
             width: 100%;
         }
