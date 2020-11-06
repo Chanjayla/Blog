@@ -168,7 +168,7 @@ export default {
                 document.documentElement.scrollTop ||
                 document.body.scrollTop
             this.findDirActive(top)
-        }, 16)
+        }, 100)
         document.addEventListener('scroll', this.scrollCb)
         if (document.getElementById('gitalk-container')) {
             let gitalk = new Gitalk({
