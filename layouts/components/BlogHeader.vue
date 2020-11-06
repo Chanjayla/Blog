@@ -144,6 +144,7 @@ export default {
     background: transparent;
     white-space: nowrap;
     overflow-x: auto;
+    overflow-y: hidden;
     z-index: 99;
     &__mask {
         position: absolute;

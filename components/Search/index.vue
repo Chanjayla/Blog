@@ -79,10 +79,8 @@ export default {
                 this.page = 1
                 if (this.searchKey == '') {
                     this.status = 0
-                    document.body.style.position = 'static'
                 } else {
                     this.status = 1
-                    document.body.style.position = 'fixed'
                     this.requestSearch()
                 }
             }, 200)
@@ -113,9 +111,20 @@ export default {
         toggleSearchInput() {
             this.searchOpen = !this.searchOpen
             this.status = 0
-            document.body.style.position = 'static'
         }
     },
+    watch: {
+        status() {
+            if(!this.isMobile) {
+                return 
+            }
+            if(this.status) {
+                document.body.style.position = 'static'
+            } else {
+                document.body.style.position = 'fixed'
+            }
+        }
+    }
 }
 </script>
 <style lang="scss" scoped>
