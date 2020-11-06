@@ -35,6 +35,14 @@ async function start () {
   // Give nuxt middleware to express
   app.use(nuxt.render)
   // Listen the server
+  http.createServer(function(req, res) {
+    if(config.dev) {
+      res.writeHead(301, {'Location': 'https://127.0.0.1:' + port  + req.url});
+    } else {
+      res.writeHead(301, {'Location': 'https://' + req.headers.host + req.url});
+    }
+    res.end()
+  }).listen(port2, host)
   let server = https.createServer({
     key: fs.readFileSync('server/https/4713990_www.jaylang.cn.key'),
     cert: fs.readFileSync('server/https/4713990_www.jaylang.cn.pem')
