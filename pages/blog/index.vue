@@ -2,7 +2,8 @@
     <div class="home-box">
         <div class="home-box__timg">
             <div class="mask"></div>
-            <h1>Hello World !</h1>
+            <!-- <h1 class="home-box__timg__tit" data-text="Hello World!">Hello World !</h1> -->
+            <Contact class="home-box__timg__contact"/>
         </div>
         <section class="home-box__layout">
             <section class="home-box__content">
@@ -32,13 +33,15 @@
 import Vue from 'vue'
 import BlogList from '~/components/List/BlogList.vue'
 import SideList from '~/components/List/SideList.vue'
+import Contact from '~/components/Contact/index.vue'
 import * as Article from '~/api/article'
 
 export default {
     layout: 'blog',
     components: {
         BlogList,
-        SideList
+        SideList,
+        Contact
     },
     asyncData({ error }) {
         if (process.server) {
@@ -107,14 +110,20 @@ export default {
             height: 100%;
             opacity: 0.3;
         }
-        h1 {
+        &__tit {
             position: absolute;
             left: 50%;
             top: 50%;
             transform: translate(-50%, -50%);
-            font-size: 3em;
+            font-size: 5.4rem;
             color: #fff;
             opacity: 0.8;
+            user-select: none;
+        }
+        &__contact {
+            position: absolute;
+            right: 0;
+            bottom: 0;
         }
     }
     &__layout {
