@@ -5,10 +5,10 @@
             :class="`${themeName}-mask`"
             :style="isTop ? 'background: transparent;' : ''"
         ></div>
-        <div class="app-header__tit">
+        <nuxt-link class="app-header__tit" to="/blog">
             Genos's Blog
             <i :class="themeId > 0 ? 'night' : 'noon'" @click="changeTheme"></i>
-        </div>
+        </nuxt-link>
         <div class="app-header__menu">
             <div
                 v-if="isMobile"
@@ -159,6 +159,9 @@ export default {
         align-items: center;
         font-weight: 600;
         font-size: 20px;
+        &:hover {
+            color: inherit;
+        }
         .noon {
             position: relative;
             display: inline-block;

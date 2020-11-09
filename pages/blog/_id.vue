@@ -336,6 +336,7 @@ export default {
         font-size: 1em;
         @media screen and (max-width: $mobileWidth) {
             left: 2px;
+            width: 15px;
         }
         ul {
             position: relative;

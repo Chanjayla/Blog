@@ -22,7 +22,7 @@ router.get('/pv', (req, res)=> {
         ip: ip
     })
     const blogId = url && url.match(/(?<=\/blog\/)\w+/)
-    if(blogId && blogId.length > 20) {
+    if(blogId && blogId[0].length > 20) {
         articleService.statisticsPv(blogId[0]).then(res => {
             
         })
