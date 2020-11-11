@@ -56,15 +56,21 @@ export default {
             e.target.height = '300'
         },
         lazyLoad() {
-            this.lazyImageBoxes.forEach((item, idx) => {
-                if (
-                    item.getBoundingClientRect().top < this.height &&
-                    !this.dataList[idx].loaded
-                ) {
+            if (document.body.getBoundingClientRect) {
+                this.lazyImageBoxes.forEach((item, idx) => {
+                    if (
+                        item.getBoundingClientRect().top < this.height &&
+                        !this.dataList[idx].loaded
+                    ) {
+                        this.dataList[idx].loaded = true
+                    }
+                })
+                this.$forceUpdate()
+            } else {
+                 this.lazyImageBoxes.forEach((item, idx) => {
                     this.dataList[idx].loaded = true
-                }
-            })
-            this.$forceUpdate()
+                })
+            }
         },
     },
     mounted() {
