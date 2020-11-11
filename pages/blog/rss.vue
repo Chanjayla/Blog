@@ -2,7 +2,7 @@
     <div class="rss-box">
         <div class="rss-box__header">
             <div class="mask"></div>
-            <h1 class="tit">Message</h1>
+            <h1 class="tit">Message</h1> 
         </div>
         <div class="rss-box__content">
             <div class="rss-box__content__note">基于RSSHUB搭建的订阅器的，更多规则<a href="https://docs.rsshub.app/" target="_blank">查看文档</a></div>
