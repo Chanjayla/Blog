@@ -25,7 +25,7 @@ export default ({ app, store, redirect }) => {
 				type: 'error',
 				duration: 3 * 1000
 			})
-			redirect('/admin/login')
+			// redirect('/admin/login')
 		}
 		return response
 	})

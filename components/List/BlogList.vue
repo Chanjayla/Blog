@@ -4,19 +4,18 @@
             class="article-list__item"
             v-for="item in dataList"
             :key="item.id"
+            ref="lazyWrapper"
         >
-            <!-- <a :href="`/article/${item.id}`" class="article-list__item__img">
-        <img :src="item.imageURL" :alt="item.title" />
-      </a> -->
             <nuxt-link
                 :to="`/blog/${item._id}`"
                 class="article-list__item__img"
             >
-                <img
-                    :src="item.preview_image"
-                    :alt="item.title"
-                    @error="loadDefaultImg"
-                />
+                <template v-if="item.loaded">
+                    <img :src="item.preview_image" />
+                </template>
+                <template v-else>
+                    <img src="~/assets/icons/loading.svg" />
+                </template>
             </nuxt-link>
             <div class="article-list__item__msg">
                 <p class="article-list__item__msg__date">
@@ -42,13 +41,39 @@
     </div>
 </template>
 <script>
+import { throttle } from '~/utils'
 export default {
+    data() {
+        return {
+            lazyImageBoxes: [],
+            height: 0,
+        }
+    },
     props: ['dataList'],
     methods: {
         loadDefaultImg(e) {
             e.target.src = '/empty.webp'
             e.target.height = '300'
         },
+        lazyLoad() {
+            this.lazyImageBoxes.forEach((item, idx) => {
+                if (
+                    item.getBoundingClientRect().top < this.height &&
+                    !this.dataList[idx].loaded
+                ) {
+                    this.dataList[idx].loaded = true
+                }
+            })
+            this.$forceUpdate()
+        },
+    },
+    mounted() {
+        this.lazyImageBoxes = this.$refs['lazyWrapper']
+        this.height = document.documentElement.clientHeight
+        document.addEventListener('scroll', throttle(this.lazyLoad, 50))
+    },
+    destroyed() {
+        document.removeEventListener('scroll', throttle(this.lazyLoad, 50))
     },
 }
 </script>
@@ -101,7 +126,7 @@ export default {
             width: 400px;
             box-sizing: border-box;
             padding: 30px;
-            @media screen and (max-width: $mobileWidth) { 
+            @media screen and (max-width: $mobileWidth) {
                 width: 100%;
                 pointer-events: none;
             }

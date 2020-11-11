@@ -18,7 +18,7 @@ router.post('/login', async (req, res, next) => {
             code: -1,
             msg: '账号或密码错误'
         })
-        errLogger.error(`add tag username:${params.username}-pwd:${params.password}-fail`)
+        errLogger.error(`login username:${params.username}-fail`)
         return
     }
     const pwdVerRes = await userService.verify({
@@ -42,7 +42,10 @@ router.post('/login', async (req, res, next) => {
         res.json({
             code: 0,
             msg: '登录成功',
-            token: Jwt.createToken(params),
+            token: Jwt.createToken({
+                ...params,
+                cid: pwdVerRes.cid
+            }),
             avatar: pwdVerRes.avatar,
             id: pwdVerRes._id
         })
@@ -51,7 +54,7 @@ router.post('/login', async (req, res, next) => {
             code: -1,
             msg: '账号或密码错误'
         })
-        errLogger.error(`add tag username:${params.username}-pwd:${params.password}-fail`)
+        errLogger.error(`login username:${params.username}-fail`)
     }
 })
 

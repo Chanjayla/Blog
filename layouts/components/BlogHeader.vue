@@ -3,12 +3,12 @@
         <div
             class="mask app-header__mask"
             :class="`${themeName}-mask`"
-            :style="isTop ? 'background: transparent;' : ''"
+            :style="isTop&&!loading ? 'background: transparent;' : ''"
         ></div>
-        <nuxt-link class="app-header__tit" to="/blog">
-            Genos's Blog
+        <div class="app-header__tit" >
+            <nuxt-link to="/blog">Genos's Blog</nuxt-link>
             <i :class="themeId > 0 ? 'night' : 'noon'" @click="changeTheme"></i>
-        </nuxt-link>
+        </div>
         <div class="app-header__menu">
             <div
                 v-if="isMobile"
@@ -58,6 +58,11 @@ export default {
                     name: 'Blog',
                     icon: 'icon-pen',
                 },
+                {
+                    path: '/blog/rss',
+                    name: 'Message',
+                    icon: 'icon-games',
+                }
                 // {
                 //     path: '/blog/about',
                 //     name: 'About',
@@ -77,8 +82,9 @@ export default {
     },
     mounted() {
         this.activeRoute = this.$route.path
+        this.activeRouteName = this.$route.name
         document.addEventListener('scroll', this.setTop.bind(this))
-
+        this.setTop()
     },
     destroyed() {
         document.removeEventListener('scroll', this.setTop.bind(this))
@@ -87,6 +93,7 @@ export default {
         $route() {
             this.activeRoute = this.$route.path
             this.activeRouteName = this.$route.name
+            this.setTop()
         },
     },
     methods: {
@@ -101,7 +108,7 @@ export default {
                 pageYOffset ||
                 document.documentElement.scrollTop ||
                 document.body.scrollTop
-            if(this.activeRouteName === 'blog-id') {
+            if(this.activeRouteName === 'blog-id' || this.activeRouteName === 'blog-login') {
                 this.isTop = false
                 return
             }
@@ -117,6 +124,7 @@ export default {
             themeId: (state) => state.app.themeId,
             themeName: (state) => state.app.themeName,
             isMobile: (state) => state.app.isMobile,
+            loading: (state) => state.app.loading
         }),
         mobileNavStyle() {
             return this.isMobile ? 'mobile-nav-list' : ''

@@ -33,7 +33,7 @@ export const actions = {
                 } catch (err) {
                     // No valid cookie found
                     // console.log('err: ', err)
-                    // commit('user/REMOVE_TOKEN')
+                    commit('user/REMOVE_TOKEN')
                 }
             }
         }

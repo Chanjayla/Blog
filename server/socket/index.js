@@ -9,7 +9,7 @@ module.exports = (server) => {
     server.on('upgrade', function upgrade(request, socket, head) {
         // authenticate
         const parsed = cookieParser.parse(request.headers.cookie || '')
-        const token = parsed.adminToken
+        const token = parsed.accessToken
         authenticate(token, function(code) {
             if(code !== 0) {
                 socket.write('HTTP/1.1 401 Unauthorized\r\n\r\n')

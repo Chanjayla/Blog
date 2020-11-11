@@ -2,7 +2,7 @@
     <div id="app" :class="`${themeName}`">
         <the-header :class="`${themeName}-header`"></the-header>
         <nuxt class="main-box" :class="`${themeName}-main`" />
-        <loadingMask :status="loading" :class="`${themeName}-loading`"/>
+        <loadingMask :status="loadingStatus" :class="`${themeName}-loading`"/>
         <the-footer :class="`${themeName}-footer`"></the-footer>
     </div>
 </template>
@@ -12,10 +12,23 @@ import theFooter from './components/BlogFooter.vue'
 import loadingMask from '~/components/Loading/loading.vue'
 import { mapState } from 'vuex'
 export default {
+    data() {
+        return {
+            loadingStatus: 0
+        }
+    },
     components: {
         theHeader,
         theFooter,
         loadingMask
+    },
+    fetch() {
+        this.loadingStatus = this.$store.state.app.loading
+    },
+    watch: {
+        loading() {
+            this.loadingStatus = this.loading
+        }
     },
     computed: {
         ...mapState({

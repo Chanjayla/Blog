@@ -6,7 +6,7 @@ module.exports = app => {
 
   app.use("/api/article", require("./article"))
   app.use("/api/tag", require("./tag"))
-  app.use("/api", require("./other"))
+  app.use("/api/rss", require("./rss"))
   app.use("/api/qqms", require("./qqmusic"))
   app.use("/user", require("./user"))
   app.use("/docs", require("./docs"))

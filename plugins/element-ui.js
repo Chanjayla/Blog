@@ -27,7 +27,8 @@ import {
     Dropdown,
     DropdownItem,
     DropdownMenu,
-    Dialog
+    Dialog,
+    Tooltip
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 
@@ -58,4 +59,5 @@ Vue.use(Dropdown)
 Vue.use(DropdownItem)
 Vue.use(DropdownMenu)
 Vue.use(Dialog)
+Vue.use(Tooltip)
 Vue.prototype.$message = Message

@@ -1,8 +1,8 @@
 <template>
     <div class="loading-mask" :class="loadingStyles">
         <div class="content">
-            <i class="icon"></i>
-            <p class="text">LOADING . . .</p>
+                <i class="icon"></i>
+                <p class="text">LOADING . . .</p>
         </div>
     </div>
 </template>
@@ -19,7 +19,7 @@ export default {
             }
             return [activeStyle]
         },
-    },
+    }
 }
 </script>
 <style lang="scss" scoped>
@@ -81,7 +81,7 @@ export default {
             background-repeat: no-repeat;
             background-size: 100%;
             animation: loading-anim 2.5s linear infinite forwards;
-            animation-play-state:paused;
+            animation-play-state: paused;
         }
         .text {
             margin-top: 10px;
@@ -103,4 +103,5 @@ export default {
     opacity: 0;
     z-index: 98;
 }
+
 </style>
