@@ -16,4 +16,3 @@ EXPOSE 3000
 EXPOSE 3001
 RUN npm run build
 CMD ["npm", "start"] 
-CMD ["npm", "run", "logs"]
