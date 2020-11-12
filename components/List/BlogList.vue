@@ -77,6 +77,7 @@ export default {
         this.lazyImageBoxes = this.$refs['lazyWrapper']
         this.height = document.documentElement.clientHeight
         document.addEventListener('scroll', throttle(this.lazyLoad, 50))
+        this.lazyLoad()
     },
     destroyed() {
         document.removeEventListener('scroll', throttle(this.lazyLoad, 50))

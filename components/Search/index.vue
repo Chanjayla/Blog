@@ -1,12 +1,19 @@
 <template>
     <div class="search-box">
-        <i v-if="isMobile" class="el-icon-search" @click="toggleSearchInput"></i>
+        <i
+            v-if="isMobile"
+            class="el-icon-search"
+            @click="toggleSearchInput"
+        ></i>
         <el-input
             v-model="searchKey"
             placeholder="Search ..."
             @input="search"
             :clearable="true"
-            :class="{'mobile-search': isMobile,'mobile-search-show': searchOpen}"
+            :class="{
+                'mobile-search': isMobile,
+                'mobile-search-show': searchOpen,
+            }"
         >
             <i
                 slot="prefix"
@@ -57,7 +64,7 @@ export default {
             page: 1,
             pageSize: 10,
             list: [],
-            searchOpen: false
+            searchOpen: false,
         }
     },
     mounted() {
@@ -110,21 +117,28 @@ export default {
         },
         toggleSearchInput() {
             this.searchOpen = !this.searchOpen
-            this.status = 0
-        }
+            this.status = 1 - this.status
+        },
     },
     watch: {
         status() {
-            if(!this.isMobile) {
-                return 
+            if (!this.isMobile) {
+                return
             }
-            if(this.status) {
+            if (!this.status) {
                 document.body.style.position = 'static'
             } else {
                 document.body.style.position = 'fixed'
             }
-        }
-    }
+        },
+        $route() {
+            if(!this.isMobile) {
+                return 
+            }
+            this.searchOpen = false
+            this.status = 0
+        },
+    },
 }
 </script>
 <style lang="scss" scoped>
@@ -147,7 +161,7 @@ export default {
         color: #fff;
         overflow-x: hidden;
         overflow-y: auto;
-        background: rgba(0,0,0,.9);
+        background: rgba(0, 0, 0, 0.9);
         @media screen and (max-width: 500px) {
             width: 100%;
         }

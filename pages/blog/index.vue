@@ -123,6 +123,8 @@ export default {
             position: absolute;
             right: 0;
             bottom: 0;
+            width: 220px;
+            white-space: nowrap;
         }
     }
     &__layout {

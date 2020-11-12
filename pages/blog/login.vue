@@ -63,7 +63,10 @@ export default {
                 })
                 this.loginForm.username = ''
                 this.loginForm.password = ''
-                this.$router.push(this.redirectPath)
+                this.$store.dispatch('app/toggleLoading', 1)
+                setTimeout(() => {
+                    this.$router.push(this.redirectPath)
+                }, 1000)
             }).catch((err) => {
                 this.$message({
                     message: `登录失败,${err}`

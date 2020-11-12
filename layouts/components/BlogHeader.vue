@@ -280,6 +280,7 @@ export default {
             position: fixed;
             top: $headerHeight;
             right: 0;
+            height: auto;
             transform: translateX(100%);
             transition: transform 250ms ease 0s;
             li {
