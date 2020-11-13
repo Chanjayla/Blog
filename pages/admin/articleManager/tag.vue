@@ -107,7 +107,7 @@ export default {
             this.previewImage = selectTagData.defaultPreview
         },
         addTag() {
-            MessageBox.prompt('请输入新增标签名', '新增', {
+            this.$prompt('请输入新增标签名', '新增', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 inputPattern: /[\w\u4e00-\u9fa5]+/,
@@ -135,7 +135,7 @@ export default {
                 })
         },
         modifyTag(tag) {
-            MessageBox.prompt('请输入新标签名', '更新', {
+            this.$prompt('请输入新标签名', '更新', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 inputPattern: /[\w\u4e00-\u9fa5]+/,

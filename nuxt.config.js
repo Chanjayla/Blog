@@ -14,8 +14,8 @@ module.exports = {
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1, user-scalable=0' },
       { hid: 'description', name: 'description', content: process.env.npm_package_description || '' },
-      { name: 'description', content: 'Genos Blog'},
-      { name: 'referrer', content: 'no-referrer'}
+      { name: 'description', content: 'Genos Blog' },
+      { name: 'referrer', content: 'no-referrer' }
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
@@ -53,7 +53,7 @@ module.exports = {
       ssr: true
     },
     {
-      src:  '~plugins/index',
+      src: '~plugins/index',
       ssr: false
     }
   ],
@@ -78,12 +78,50 @@ module.exports = {
     /*
     ** You can extend webpack config here
     */
-   extractCSS: true,
-    extend (config, ctx) {
+    extractCSS: true,
+    extend(config, ctx) {
+      
+      // config.module.rules.push({
+      //   test: /element-ui\/packages/,
+      //   loader: 'vue-loader'
+      // })
+    },
+    analyza: {
+      analyzeMode: 'static'
+    },
+    postcss: {
+      plugins: {
+        // 通过传递 false 来禁用插件
+
+      },
+      preset: {
+        // 更改postcss-preset-env 设置
+        autoprefixer: {
+          overrideBrowserslist: [
+            "Android 4.1",
+            "iOS 7.1",
+            "Chrome > 31",
+            "ff > 31",
+            "ie >= 9"
+            //'last 10 versions', // 所有主流浏览器最近2个版本
+          ]
+        }
+      }
+    },
+    babel: {
+      plugins: [
+        [
+          'component',
+          {
+            libraryName: 'element-ui',
+            styleLibraryName: 'theme-chalk'
+          }
+        ]
+      ]
     }
   },
   vendor: [
-    
+
   ],
   styleResources: {
     scss: [
@@ -91,7 +129,7 @@ module.exports = {
     ]
   },
   server: {
-    port: 3000, 
+    port: 3000,
     port2: 3001,
     host: '0.0.0.0'
   }

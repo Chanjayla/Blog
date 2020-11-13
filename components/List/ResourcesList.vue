@@ -86,7 +86,6 @@
 <script>
 import * as Upload from '~/api/upload'
 import ClipboardJS from 'clipboard'
-import { MessageBox } from 'element-ui'
 export default {
     data() {
         return {
@@ -184,7 +183,7 @@ export default {
             if (!this.inSelectStatus) {
                 this.inSelectStatus = true
             } else if (this.deleteArr.length > 0) {
-                MessageBox.confirm(`Delete these files(${this.deleteArr.length})?`).then(() => {
+                this.$confirm(`Delete these files(${this.deleteArr.length})?`).then(() => {
                     this.requestDelete()
                 }).finally(() => {
                     this.deleteArr = []

@@ -5,7 +5,7 @@
 </template>
 <script>
 import * as Statistics from '~/api/statistics'
-import echarts from 'echarts'
+import echarts from '~/libs/echarts.min.js'
 export default {
     data() {
         return {

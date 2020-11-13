@@ -88,7 +88,6 @@
 <script>
 import rssRules from '~/config/rssRules'
 import * as Rss from '~/api/rss'
-import { MessageBox } from 'element-ui'
 import SideBookList from '~/components/List/SideBookList'
 export default {
     layout: 'blog',
@@ -130,7 +129,7 @@ export default {
             })
         },
         save() {
-            MessageBox.prompt('订阅备注名称', '新增',{
+            this.$prompt('订阅备注名称', '新增',{
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
             }).then(({value}) => {

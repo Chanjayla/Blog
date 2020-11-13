@@ -59,8 +59,9 @@ export default {
             if (document.body.getBoundingClientRect) {
                 this.lazyImageBoxes.forEach((item, idx) => {
                     if (
+                        !this.dataList[idx].loaded &&
                         item.getBoundingClientRect().top < this.height &&
-                        !this.dataList[idx].loaded
+                        item.getBoundingClientRect().top  > 0
                     ) {
                         this.dataList[idx].loaded = true
                     }

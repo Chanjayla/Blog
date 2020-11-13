@@ -10,14 +10,15 @@
     "start": "cross-env NODE_ENV=production pm2-runtime server/index.js -i max",
     "generate": "nuxt generate",
     "logs": "pm2 logs index",
-    "stop": "pm2 stop index"
+    "stop": "pm2 stop index",
+    "analyze": "nuxt build --analyze"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
     "clipboard": "^2.0.6",
+    "compression": "^1.7.4",
     "cookieparser": "^0.1.0",
     "cross-env": "^5.2.0",
-    "echarts": "^4.9.0",
     "element-ui": "^2.13.2",
     "express": "^4.16.4",
     "express-session": "^1.17.1",
@@ -44,6 +45,7 @@
     "@nuxtjs/axios": "^5.11.0",
     "@nuxtjs/style-resources": "^1.0.0",
     "@nuxtjs/svg": "^0.1.11",
+    "babel-plugin-component": "^1.1.1",
     "faker": "^4.1.0",
     "mockjs": "^1.1.0",
     "node-sass": "^4.14.1",
