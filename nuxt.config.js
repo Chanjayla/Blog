@@ -34,11 +34,6 @@ module.exports = {
   css: [
     '@/styles/main.scss',
     'element-ui/lib/theme-chalk/index.css',
-    // lib css
-    'codemirror/lib/codemirror.css',
-    // theme css
-    'codemirror/theme/zenburn.css'
-
   ],
   /*
   ** Plugins to load before mounting the App
@@ -53,7 +48,7 @@ module.exports = {
       ssr: true
     },
     {
-      src: '~plugins/index',
+      src: '~plugins/codemirror',
       ssr: false
     }
   ],
@@ -80,11 +75,46 @@ module.exports = {
     */
     extractCSS: true,
     extend(config, ctx) {
-      
-      // config.module.rules.push({
-      //   test: /element-ui\/packages/,
-      //   loader: 'vue-loader'
-      // })
+      config.optimization.splitChunks = {
+        cacheGroups: {
+          blog: {
+            test: /pages\/blog/,
+            name: 'blog',
+            chunks: 'async',
+            priority: 1,
+            minChunks: 1
+          },
+          admin: {
+            test: /pages\/admin/,
+            name: 'admin',
+            chunks: 'async',
+            priority: 1,
+            minChunks: 1
+          },
+          elementui: {
+            test: /element-ui/,
+            name: 'element-ui',
+            chunks: 'initial',
+            priority: 2,
+            minChunks: 1
+          },
+          codemirror: {
+            test: /codemirror/,
+            name: 'codemirror',
+            chunks: 'initial',
+            priority: 2,
+            minChunks: 1
+          },
+          marked: {
+            test: /marked|api|utils/,
+            name: 'common',
+            chunks: 'async',
+            priority: 3,
+            minChunks: 1
+          }
+
+        }
+      }
     },
     analyza: {
       analyzeMode: 'static'
