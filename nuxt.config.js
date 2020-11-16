@@ -95,24 +95,30 @@ module.exports = {
             test: /element-ui/,
             name: 'element-ui',
             chunks: 'initial',
-            priority: 2,
+            priority: 1,
             minChunks: 1
           },
-          codemirror: {
-            test: /codemirror/,
-            name: 'codemirror',
-            chunks: 'initial',
+          // codemirror: {
+          //   test: /codemirror/,
+          //   name: 'codemirror',
+          //   chunks: 'initial',
+          //   priority: 2,
+          //   minChunks: 1
+          // },
+          common: {
+            test: /api|utils|assets|styles/,
+            name: 'common',
+            chunks: 'async',
             priority: 2,
             minChunks: 1
           },
           marked: {
-            test: /marked|api|utils/,
-            name: 'common',
+            test: /marked/,
+            name: 'marked',
             chunks: 'async',
-            priority: 3,
-            minChunks: 1
+            priority: 2,
+            minChunks: 2
           }
-
         }
       }
     },
