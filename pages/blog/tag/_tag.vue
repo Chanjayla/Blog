@@ -20,15 +20,13 @@
     </div>
 </template>
 <script>
-import BlogList from '~/components/List/BlogList'
-import TagCloud from '~/components/TagCol/index'
 import { transScroll } from '~/utils'
 import * as Article from '~/api/article'
 export default {
     layout: 'blog',
     components: {
-        TagCloud,
-        BlogList,
+        TagCloud: () => import('~/components/TagCol/index.vue'),
+        BlogList: () => import('~/components/List/BlogList.vue'),
     },
     data() {
         return {

@@ -4,7 +4,7 @@
             v-for="item in dataList"
             :key="item.title"
             class="side-item"
-            :to="`/blog/${item._id}`"
+            :to="`/post/${item._id}`"
         >
             <span
                 class="side-item__bg"

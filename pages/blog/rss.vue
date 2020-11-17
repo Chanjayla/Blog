@@ -80,7 +80,7 @@
                     <i class="iconfont icon-3801wenjian"></i>
                     <span>My List</span>
                 </div>
-                <side-book-list :dataList="myList" style="width: 100%" @search="handleMyList"></side-book-list>
+                <side-book-list :dataList="myList" style="width: 100%" @search="handleMyList" v-if="myList.length>0"></side-book-list>
             </section>
         </div>
     </div>

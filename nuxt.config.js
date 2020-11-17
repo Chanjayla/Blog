@@ -33,7 +33,6 @@ module.exports = {
   */
   css: [
     '@/styles/main.scss',
-    'element-ui/lib/theme-chalk/index.css',
   ],
   /*
   ** Plugins to load before mounting the App
@@ -91,6 +90,13 @@ module.exports = {
             priority: 1,
             minChunks: 1
           },
+          detail: {
+            test: /pages\/post/,
+            name: 'post',
+            chunks: 'async',
+            priority: 1,
+            minChunks: 1
+          },
           elementui: {
             test: /element-ui/,
             name: 'element-ui',
@@ -106,6 +112,7 @@ module.exports = {
           //   minChunks: 1
           // },
           common: {
+            minSize: 0,
             test: /api|utils|assets|styles/,
             name: 'common',
             chunks: 'async',

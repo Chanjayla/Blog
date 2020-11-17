@@ -3,7 +3,7 @@
         <div class="home-box__timg">
             <div class="mask"></div>
             <!-- <h1 class="home-box__timg__tit" data-text="Hello World!">Hello World !</h1> -->
-            <Contact class="home-box__timg__contact"/>
+            <Contact class="home-box__timg__contact" />
         </div>
         <section class="home-box__layout">
             <section class="home-box__content">
@@ -31,19 +31,15 @@
 
 <script>
 import Vue from 'vue'
-import BlogList from '~/components/List/BlogList.vue'
-import SideList from '~/components/List/SideList.vue'
-import Contact from '~/components/Contact/index.vue'
 import * as Article from '~/api/article'
-
 export default {
     layout: 'blog',
     components: {
-        BlogList,
-        SideList,
-        Contact
+        BlogList: () => import('~/components/List/BlogList.vue'),
+        SideList: () => import('~/components/List/SideList.vue'),
+        Contact: () => import('~/components/Contact/index.vue'),
     },
-    asyncData({ error }) {
+    asyncData() {
         if (process.server) {
             return Promise.all([Article.getLatest(), Article.getTop()])
                 .then((res) => {
@@ -66,8 +62,8 @@ export default {
     mounted() {
         if (this.isServer === false) {
             Promise.all([Article.getLatest(), Article.getTop()]).then((res) => {
-                this.latestData = res[0].data.data
                 this.topData = res[1].data.data
+                this.latestData = res[0].data.data
                 this.$nextTick(() => {
                     this.$store.dispatch('app/toggleLoading', 2)
                 })
@@ -151,6 +147,7 @@ export default {
                 display: flex;
                 justify-content: center;
                 flex-wrap: wrap;
+                width: 100%;
             }
             &__more {
                 width: 100px;

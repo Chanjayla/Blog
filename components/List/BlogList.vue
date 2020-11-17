@@ -7,7 +7,7 @@
             ref="lazyWrapper"
         >
             <nuxt-link
-                :to="`/blog/${item._id}`"
+                :to="`/post/${item._id}`"
                 class="article-list__item__img"
             >
                 <template v-if="item.loaded">
@@ -32,12 +32,6 @@
                 </p>
             </div>
         </section>
-        <section
-            v-if="dataList.length === 0 || !dataList"
-            class="article-list__no-data"
-        >
-            暂无数据
-        </section>
     </div>
 </template>
 <script>
@@ -49,7 +43,11 @@ export default {
             height: 0,
         }
     },
-    props: ['dataList'],
+    props: {
+        dataList: {
+            default: []
+        }
+    },
     methods: {
         loadDefaultImg(e) {
             e.target.src = '/empty.webp'
@@ -75,7 +73,7 @@ export default {
         },
     },
     mounted() {
-        this.lazyImageBoxes = this.$refs['lazyWrapper']
+        this.lazyImageBoxes = this.$refs['lazyWrapper'] || []
         this.height = document.documentElement.clientHeight
         document.addEventListener('scroll', throttle(this.lazyLoad, 50))
         this.lazyLoad()

@@ -18,24 +18,21 @@
                 <i class="el-icon-star-on"></i>
                 <span>Most View</span>
             </div>
-            <side-list :dataList="hotData"></side-list>
-            <tag-cloud :dataList="tagData"></tag-cloud>
+            <side-list :dataList="hotData" v-if="hotData"></side-list>
+            <tag-cloud :dataList="tagData" v-if="tagData"></tag-cloud>
         </div>
     </div>
 </template>
 <script>
-import BlogList from '~/components/List/BlogList.vue'
-import SideList from '~/components/List/SideList.vue'
-import TagCloud from '~/components/TagCol/index.vue'
 import { transScroll } from '~/utils'
 import * as Tag from '~/api/tag'
 import * as Article from '~/api/article'
 export default {
     layout: 'blog',
     components: {
-        TagCloud,
-        BlogList,
-        SideList,
+        TagCloud: () => import('~/components/TagCol/index.vue'),
+        BlogList: () => import('~/components/List/BlogList.vue'),
+        SideList: () => import('~/components/List/SideList.vue')
     },
     data() {
         return {

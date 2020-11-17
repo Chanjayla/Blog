@@ -65,7 +65,7 @@
                 </div>
             </div>
             <div class="detail-box__dir">
-                <ul :key="dirKey">
+                <ul :key="dirKey" v-if="dirKey.length>0">
                     <li
                         class="dir-item"
                         v-for="item in directory"

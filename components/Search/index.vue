@@ -30,7 +30,7 @@
                 <nuxt-link
                     v-for="item in list"
                     :key="item._id"
-                    :to="`/blog/${item._id}`"
+                    :to="`/post/${item._id}`"
                     class="search-box__item"
                 >
                     <h2 class="tit" v-html="item.title"></h2>
