@@ -4,11 +4,8 @@
 <script>
 export default {
     layout: 'admin',
-    mounted() {
-        
-    },
-    methods: {
-
+    asyncData({ redirect }) {
+        redirect('/admin/dashboard')
     }
 }
 </script>

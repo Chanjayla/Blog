@@ -4,7 +4,6 @@
     </div>
 </template>
 <script>
-
 import DocsList from '~/components/List/DocsList'
 export default {
     layout: 'admin',

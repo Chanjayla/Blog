@@ -112,7 +112,6 @@ module.exports = {
           //   minChunks: 1
           // },
           common: {
-            minSize: 0,
             test: /api|utils|assets|styles/,
             name: 'common',
             chunks: 'async',

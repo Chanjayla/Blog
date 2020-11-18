@@ -38,7 +38,6 @@
 import ArticleTable from '~/components/Table/ArticleTable'
 import * as Tag from '~/api/tag'
 import { mapState } from 'vuex'
-import { MessageBox } from 'element-ui'
 export default {
     layout: 'admin',
     middleware: 'authenticated',

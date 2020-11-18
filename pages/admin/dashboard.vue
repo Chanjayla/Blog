@@ -127,10 +127,8 @@ export default {
         },
         refreshViewBlog(data) {
             this.viewBlogs = data
-            console.log(this.viewBlogs)
         },
         loadDefaultIcon(e) {
-            console.log(e)
         }
     },
     computed: {

@@ -67,6 +67,8 @@ export default {
             searchOpen: false,
         }
     },
+    components: {
+    },
     mounted() {
         // this.$refs['resultList'].addEventListener('')
     },

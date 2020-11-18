@@ -89,6 +89,7 @@
 import rssRules from '~/config/rssRules'
 import * as Rss from '~/api/rss'
 import SideBookList from '~/components/List/SideBookList'
+
 export default {
     layout: 'blog',
     middleware: 'authInBlog',

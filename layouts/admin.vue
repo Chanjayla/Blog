@@ -15,6 +15,7 @@
     </div>
 </template>
 <script>
+// import elementUi from '~/libs/element-ui'
 import SideBar from './components/SideBar'
 import NavBar from './components/NavBar'
 import '~/styles/element-ui.scss'
