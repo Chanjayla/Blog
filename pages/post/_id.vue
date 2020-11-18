@@ -31,7 +31,7 @@
             <div class="detail-box__bottom">
                 <div class="detail-box__bottom__pn">
                     <template v-if="prevData">
-                        <router-link :to="`/blog/${prevData._id}`">
+                        <router-link :to="`/post/${prevData._id}`">
                             <img
                                 :src="prevData.preview_image"
                                 @error="loadDefaultImg"
@@ -48,7 +48,7 @@
                 </div>
                 <div class="detail-box__bottom__pn">
                     <template v-if="nextData">
-                        <router-link :to="`/blog/${nextData._id}`">
+                        <router-link :to="`/post/${nextData._id}`">
                             <img
                                 :src="nextData.preview_image"
                                 @error="loadDefaultImg"
