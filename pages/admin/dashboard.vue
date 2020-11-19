@@ -33,9 +33,9 @@
             <el-col :span="8" class="view-box">
                 <h2>Most View IP</h2>
                 <dl class="view-box__list">
-                    <dd v-for="(num, ip) in viewIPs" :key="ip">
-                        <span>{{ ip }}</span>
-                        <span>{{ num }}次</span>
+                    <dd v-for="item in sortIPs" :key="item.ip">
+                        <span>{{ item.ip }}</span>
+                        <span>{{ item.count }}次</span>
                     </dd>
                 </dl>
             </el-col>
@@ -126,7 +126,7 @@ export default {
             this.viewIPs = data
         },
         refreshViewBlog(data) {
-            this.viewBlogs = data
+            this.viewBlogs = data.slice(0, 10)
         },
         loadDefaultIcon(e) {
         }
@@ -141,6 +141,18 @@ export default {
         cpuUsagePercent() {
             return parseInt(this.cpu.used) || 0
         },
+        sortIPs() {
+            const result = []
+            for(let ip in this.viewIPs) {
+                result.push({
+                    ip: ip,
+                    count: this.viewIPs[ip]
+                })
+            }
+            return result.sort((a,b)=> {
+                return b.count - a.count
+            }).slice(0, 20)
+        }
     },
 }
 </script>
