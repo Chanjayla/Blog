@@ -39,15 +39,15 @@ export default {
   },
   mounted() {
     this.height = this.$el.getBoundingClientRect().height
-    document.getElementById('app').addEventListener('scroll', this.handleScroll)
-    document.getElementById('app').addEventListener('resize', this.handleResize)
+    document.addEventListener('scroll', this.handleScroll)
+    document.addEventListener('resize', this.handleResize)
   },
   activated() {
     this.handleScroll()
   },
   destroyed() {
-    document.getElementById('app').removeEventListener('scroll', this.handleScroll)
-    document.getElementById('app').removeEventListener('resize', this.handleResize)
+    document.removeEventListener('scroll', this.handleScroll)
+    document.removeEventListener('resize', this.handleResize)
   },
   methods: {
     sticky() {

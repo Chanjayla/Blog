@@ -2,6 +2,66 @@
     <div class="sprite-box">
         <input
             ref="selectFiles"
+            type="file"
+            accept="image/png, image/jpeg"
+            multiple
+            style="position: absolute; top: 0; z-index: -1"
+            @change="getFiles"
+        />
+        <div class="tool-list">
+            <p class="tit">操作</p>
+            <el-button type="primary" @click="upload" size="mini"
+                >上传图片</el-button
+            >
+            <el-radio-group v-model="tool" size="mini" @change="selectTool">
+                <el-radio-button label="裁切"></el-radio-button>
+                <el-radio-button label="拼合"></el-radio-button>
+                <el-radio-button label="缩放"></el-radio-button>
+                <el-radio-button label="旋转"></el-radio-button>
+            </el-radio-group>
+        </div>
+        <div class="image-list">
+            <p class="tit">素材</p>
+            <div style="display: flex; height: 80px">
+                <div
+                    class="image-item"
+                    v-for="(image, idx) in imageList"
+                    :key="image.source"
+                    :class="selectList.indexOf(idx) > -1 ? 'select' : ''"
+                >
+                    <img
+                        :src="image.source"
+                        :data-idx="idx"
+                        @click="selectImage"
+                    />
+                </div>
+            </div>
+        </div>
+        <div class="work-pane">
+            <p class="tit">预览</p>
+            <div class="params" :key="tool">
+                <template v-if="tool=='裁切'">
+                    <el-input v-model="areaLeft" placeholder="left"></el-input>
+                    <el-input v-model="areaTop" placeholder="top"></el-input>
+                    <el-input v-model="areaWidth" placeholder="width"></el-input>
+                    <el-input v-model="areaHeight" placeholder="height"></el-input>
+                </template>
+            </div>
+            <div class="view">
+                <div class="content">
+                    <div v-for="view in viewList" :key="view.source">
+                        <img :src="view.source" />
+                    </div>
+                    <div class="area"  :style="`left: ${areaLeft};top: ${areaTop};width:${areaWidth};height:${areaHeight}`"></div>
+                </div>
+            </div>
+            <div class="layers"></div>
+        </div>
+        <div class="handle">
+            <el-button type="primary" size="mini" @click="create">生成</el-button>
+        </div>
+        <!-- <input
+            ref="selectFiles"
             class="upload-btn"
             type="file"
             accept="image/png, image/jpeg"
@@ -32,31 +92,37 @@
         <div ref="spriteBox" class="sprite-canvas">
             <canvas ref="spriteCanvas" width="300" height="300" @click="selectItem"></canvas>
             <div ref="highlight" class="highlight"></div>
-        </div>
+        </div> -->
     </div>
 </template>
 <script>
 export default {
-    layout: 'admin',
     data() {
         return {
             files: [],
-            imgDatas: [],
+            imageList: [],
+            selectList: [],
+            viewList: [],
             context: null,
             space: '',
             arrange: 'horizontal',
             maxWidth: 1000,
+            tool: '',
+            areaLeft: 0,
+            areaTop: 0,
+            areaWidth: '100%',
+            areaHeight: '100%',
         }
     },
     mounted() {
-        this.context = this.$refs['spriteCanvas'].getContext('2d')
+        // this.context = this.$refs['spriteCanvas'].getContext('2d')
     },
+    watch: {},
     methods: {
         upload() {
             this.$refs['selectFiles'].click()
         },
         getFiles(e) {
-            this.imgDatas = []
             this.files = Array.prototype.slice.call(e.target.files, 0)
             this.files.forEach((file) => {
                 this.fileToImgData(file)
@@ -68,14 +134,14 @@ export default {
                 if (e.target.result) {
                     let img = new Image()
                     img.onload = () => {
-                        this.imgDatas.push({
+                        this.imageList.push({
                             width: img.width,
                             height: img.height,
-                            source: img,
+                            source: img.src,
                         })
-                        if (this.files.length == this.imgDatas.length) {
-                            this.drawImage()
-                        }
+                        // if (this.files.length == this.imgDatas.length) {
+                        //     this.drawImage()
+                        // }
                     }
                     img.src = e.target.result
                 }
@@ -109,12 +175,12 @@ export default {
             let ch = 0
             this.imgDatas = this.imgDatas.map((img) => {
                 offsetY = nextLineY
-                
+
                 if (this.arrange == 'horizontal') {
                     offsetX += img.width + (this.space || 10)
                 } else if (this.arrange == 'vertical') {
                     offsetY += img.height + (this.space || 10)
-                } else if (this.arrange == 'custom') {      
+                } else if (this.arrange == 'custom') {
                     if (
                         offsetX + img.width + (this.space || 10) <
                         this.maxWidth
@@ -122,27 +188,27 @@ export default {
                         offsetX += img.width + (this.space || 10)
                         offsetY = nextLineY
                         lineHeight =
-                        img.height > lineHeight ? img.height : lineHeight
+                            img.height > lineHeight ? img.height : lineHeight
                     } else {
                         offsetX = 0
                         nextLineY += lineHeight
                         lineHeight = img.height
                         offsetY = nextLineY + (this.space || 10)
-                    } 
-                }  
+                    }
+                }
                 img.x = offsetX
                 img.y = offsetY
                 cw =
                     cw < img.x + img.width + (this.space || 10)
                         ? img.x + img.width + (this.space || 10)
                         : cw
-                ch = 
+                ch =
                     ch < img.y + img.height + (this.space || 10)
                         ? img.y + img.height + (this.space || 10)
                         : ch
                 return img
             })
-            this.$refs['spriteCanvas'].width = cw 
+            this.$refs['spriteCanvas'].width = cw
             this.$refs['spriteCanvas'].height = ch
         },
         selectItem(e) {
@@ -176,49 +242,102 @@ export default {
             this.arrange = val
             this.drawImage()
         },
-        optimize(pos) {
-            
-            // const data = this.context.getImageData(pos.x,pos.y, pos.x+pos.w, pos.y+pos.h).data
-            // console.log(data)
+        selectTool(label) {
+            this.tool = label
+        },
+        selectImage(e) {
+            const target = e.target
+            let idx = target.dataset.idx
+            if (typeof idx != 'undefined') {
+                idx = parseInt(idx)
+                if (this.selectList.indexOf(idx) > -1) {
+                    this.selectList.splice(idx, 1)
+                } else {
+                    this.selectList.push(idx)
+                }
+            }
+            this.preview()
+        },
+        preview() {
+            if (this.tool && this.selectList.length > 0) {
+                if (this.tool == '裁切') {
+                    this.viewList = [this.imageList[this.selectList[0]]]
+                }
+            }
         },
     },
 }
 </script>
 <style lang="scss" scoped>
 .sprite-box {
+    box-sizing: border-box;
     position: relative;
+    padding: 10px;
     width: 100%;
     border-radius: 5px;
-    .upload-btn {
-        position: absolute;
-        z-index: -1;
-    }
-    .sprite-options {
-        display: flex;
-        flex-wrap: wrap;
+    .tit {
+        height: 30px;
+        line-height: 30px;
+        border-bottom: 1px solid #eee;
         margin-bottom: 10px;
-        & > * {
-            margin-right: 10px;
+        font-size: 14px;
+        color: #666;
+    }
+    .tool-list {
+        margin-bottom: 10px;
+    }
+    .image-list {
+        margin-bottom: 10px;
+        .image-item {
+            box-sizing: border-box;
+            width: 80px;
+            height: 80px;
+            border: 5px solid transparent;
         }
-        .option-item {
-            white-space: nowrap;
-            font-size: 12px;
+        .image-item.select {
+            border-color: $linkHoverColor;
+        }
+        img {
+            width: 100%;
+            height: 100%;
         }
     }
-    .sprite-canvas {
+    .work-pane {
         position: relative;
-        width: 100%;
-        height: 300px;
-        border: 2px solid #fff;
-        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQAQMAAAAlPW0iAAAABlBMVEX///8AAABVwtN+AAAAAnRSTlMzMz0oyR4AAAARSURBVAgdY/jPwIAVYRf9DwB+vw/xbMOy9QAAAABJRU5ErkJggg==);
-        background-repeat: repeat;
-        overflow: auto;
-    }
-    .highlight {
-        position: absolute;
-        left: 0;
-        width: 0;
-        background: rgba(0, 0, 0, 0.3);
+        min-height: 500px;
+        margin-bottom: 10px;
+        .params {
+            position: absolute;
+            top: 40px;
+            left: 0;
+            width: 100px;
+            border-right: 1px solid #eee;
+        }
+        .view {
+            margin: 0 200px;
+            overflow: auto;
+            .content {
+                position: relative;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                .area {
+                    position: absolute;
+                    left: 0; 
+                    top: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0,0,0,.5);
+                }
+            }
+            
+        }
+        .layers {
+            position: absolute;
+            top: 40px;
+            right: 0;
+            width: 100px;
+        }
     }
 }
 </style>

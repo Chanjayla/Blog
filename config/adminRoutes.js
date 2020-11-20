@@ -49,11 +49,11 @@ export const pathMap = {
         icon: 'el-icon-user',
         path: '/admin/profile'
     },
-    '/admin/tool/fnt': {
-       name: 'fnt',
-       icon: 'el-icon-magic-stick',
-       path: '/admin/tool/fnt'
-    }
+    // '/admin/tool/fnt': {
+    //    name: 'fnt',
+    //    icon: 'el-icon-magic-stick',
+    //    path: '/admin/tool/fnt'
+    // }
 
 
 }
@@ -92,11 +92,11 @@ export default {
     },
     profile: pathMap['/admin/profile'],
     // theme: pathMap['/admin/theme'],
-    tool: {
-        name: 'Tools',
-        icon: 'el-icon-s-tools',
-        children: [
-            pathMap['/admin/tool/fnt']
-        ]
-    }
+    // tool: {
+    //     name: 'Tools',
+    //     icon: 'el-icon-s-tools',
+    //     children: [
+    //         pathMap['/admin/tool/fnt']
+    //     ]
+    // }
 }

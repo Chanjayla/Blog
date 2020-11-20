@@ -3,6 +3,7 @@
         <the-header :class="`${themeName}-header`"></the-header>
         <nuxt class="main-box" :class="`${themeName}-main`" />
         <loadingMask :status="loadingStatus" :class="`${themeName}-loading`"/>
+        <setting></setting>
         <the-footer :class="`${themeName}-footer`"></the-footer>
     </div>
 </template>
@@ -10,6 +11,7 @@
 import theHeader from './components/BlogHeader.vue'
 import theFooter from './components/BlogFooter.vue'
 import loadingMask from '~/components/Loading/loading.vue'
+import setting from '~/components/Setting/index.vue'
 import { mapState } from 'vuex'
 export default {
     data() {
@@ -20,7 +22,8 @@ export default {
     components: {
         theHeader,
         theFooter,
-        loadingMask
+        loadingMask,
+        setting
     },
     fetch() {
         this.loadingStatus = this.$store.state.app.loading
@@ -45,7 +48,6 @@ export default {
     width: 100%;
     height: 100%;
     overflow-y: auto;
-    background: $blogBgColor;
     @media screen and (min-width: $minViewWidth) {
         width: 100%;
     }

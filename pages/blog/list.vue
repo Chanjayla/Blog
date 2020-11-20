@@ -129,7 +129,6 @@ export default {
         background-image: url(/blog_page_header.jpg);
         background-attachment: fixed;
         background-size: cover;
-        border-radius: 0 0 1em 1em;
         .mask {
             position: absolute;
             left: 0;

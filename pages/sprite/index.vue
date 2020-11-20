@@ -1,20 +1,24 @@
 <template>
     <div class="fnt-pane">
-        <CssSprite />
+        <div class="mask"></div>
+        <Sprite />
     </div>
 </template>
 <script>
-import CssSprite from '~/components/CssSprite'
+import Sprite from '~/components/Sprite'
 export default {
-    layout: 'admin',
+    layout: 'blog',
     components: {
-        CssSprite
+        Sprite
     }
 }
 </script>
 <style lang="scss" scoped>
 .fnt-pane {
     box-sizing: border-box;
-    padding: 10px;
+    .mask {
+        width: 100%;
+        height: $headerHeight;
+    }
 }
 </style>

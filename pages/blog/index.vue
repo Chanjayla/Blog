@@ -85,14 +85,14 @@ export default {
     width: 100%;
     &__timg {
         position: relative;
-        width: 100%;
-        height: 67.7vw;
+        width: 100vw;
+        height:  100vh;
         min-height: 300px;
         background: url(/home_page_header.webp);
         background-attachment: fixed;
         background-repeat: no-repeat;
         background-position: 0 0;
-        background-size: 100%;
+        background-size: cover;
         @media screen and (max-width: $mobileWidth) {
             height: 100vh;
             background-size: cover;

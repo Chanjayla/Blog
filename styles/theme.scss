@@ -1,7 +1,9 @@
 .theme0 {
     &-loading {
-        background: rgba(251,251,251,1);
-        color: #999;
+        &::before {
+            background: rgba(251,251,251,1);
+            color: #999;
+        }
     }
     &-mask {
         height: $headerHeight;
@@ -58,8 +60,10 @@
 
 .theme1 {
     &-loading {
-        background: rgba(24,26,27,1);
-        color: #999;
+        &::before {
+            background: rgba(24,26,27,1);
+            color: #999;
+        }
     }
     &-mask {
         height: $headerHeight;

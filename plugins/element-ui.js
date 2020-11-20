@@ -29,7 +29,9 @@ import {
     DropdownItem,
     DropdownMenu,
     Dialog,
-    Tooltip
+    Tooltip,
+    RadioGroup,
+    RadioButton
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/breadcrumb.css'
 import 'element-ui/lib/theme-chalk/breadcrumb-item.css'
@@ -62,6 +64,8 @@ import 'element-ui/lib/theme-chalk/dropdown-item.css'
 import 'element-ui/lib/theme-chalk/dropdown-menu.css'
 import 'element-ui/lib/theme-chalk/dialog.css'
 import 'element-ui/lib/theme-chalk/tooltip.css'
+import 'element-ui/lib/theme-chalk/radio-button.css'
+import 'element-ui/lib/theme-chalk/radio-group.css'
 Vue.use(Breadcrumb)
 Vue.use(BreadcrumbItem)
 Vue.use(Row)
@@ -90,6 +94,8 @@ Vue.use(DropdownItem)
 Vue.use(DropdownMenu)
 Vue.use(Dialog)
 Vue.use(Tooltip)
+Vue.use(RadioButton)
+Vue.use(RadioGroup)
 Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm
 Vue.prototype.$prompt = MessageBox.prompt

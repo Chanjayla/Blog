@@ -1,7 +1,10 @@
 <template>
     <div class="loading-mask" :class="loadingStyles">
+        <div class="bg">
+            
+        </div>
         <div class="content">
-                <i class="icon"></i>
+            <i class="icon"></i>
                 <p class="text">LOADING . . .</p>
         </div>
     </div>
@@ -58,21 +61,28 @@ export default {
         transform: rotate(-5deg) translateX(-50px) rotateY(180deg);
     }
 }
-.loading-mask {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: -1;
-    .content {
-        position: absolute;
+.loading-mask { 
+    &::before{
+        content: '';
+        position: fixed;
         left: 50%;
         top: 50%;
-        transform: translate(-50%, -50%);
+        width: 100vmax;
+        height: 100vmax;
+        transform: translate(-50%, -50%) scale(0);
+        transition: transform 0.5s ease-in-out;
         font-weight: bold;
         font-size: 14px;
-        opacity: 0;
+        border-radius: 50%;
+        z-index: 98;
+    }
+    .content {
+        display: none;
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        z-index: 99;
+        transform: translate(-50%, -50%);
         .icon {
             display: block;
             width: 80px;
@@ -89,19 +99,15 @@ export default {
     }
 }
 .loading-enter {
-    transition: all 0.5s ease-in-out;
-    z-index: 98;
+    &::before{
+        transform: translate(-50%, -50%) scale(1.5);
+    }
     .content {
-        opacity: 1;
-        transition: all 0.2s ease;
+        display: block;
         .icon {
             animation-play-state: running;
         }
     }
-}
-.loading-end {
-    opacity: 0;
-    z-index: 98;
 }
 
 </style>
