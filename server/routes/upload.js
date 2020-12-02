@@ -6,6 +6,7 @@ const path = require('path')
 const auth = require('../middleware/auth')
 const log4js = require('log4js')
 const handleLogger = log4js.getLogger('handle')
+const http = require('http')
 const errLogger = log4js.getLogger('err')
 
 const MENU_PATH = path.resolve(__dirname, '../../upload/menu.json')
@@ -124,5 +125,20 @@ router.post('/delete', auth, (req, res, next) => {
         }
         // handleLogger.debug(`upload image path:${filepath}-success`)
     })  
+})
+
+router.post('/sprite', auth, (req, res, next) => {
+    http.get('http://127.0.0.1:3002', resp => {
+           const data = ''
+           resp.on('data', (chunk) => { data += chunk});
+           resp.on('end', () => {
+             console.log(data)
+           })
+        }).on('error', (e) => {
+            res.json({
+                code: 500,
+                msg: e
+            })
+        })
 })
 module.exports = router

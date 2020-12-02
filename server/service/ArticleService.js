@@ -135,8 +135,8 @@ module.exports = {
         }).select('title preview_image pv').exec()
     },
     getByKeyword(data) {
-        const page = data.page || 1
-        const pageSize = data.pageSize || 10
+        // const page = data.page || 1
+        // const pageSize = data.pageSize || 10
         const skipNum = ( page - 1 ) * pageSize
         const keyword = data.keyword
         return ArticleModel.find({
@@ -144,8 +144,11 @@ module.exports = {
                 { title: { $regex: keyword }},
                 { description: { $regex: keyword }}
             ]
-        }).skip(skipNum).limit(pageSize).sort({
+        }).sort({
             publish_time: -1
         }).select('title description publish_time tags').exec()
+    },
+    getCount() {
+        return ArticleModel.find().count()
     }
 }

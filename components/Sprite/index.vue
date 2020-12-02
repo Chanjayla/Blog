@@ -40,11 +40,17 @@
         <div class="work-pane">
             <p class="tit">预览</p>
             <div class="params" :key="tool">
-                <template v-if="tool=='裁切'">
+                <template v-if="tool == '裁切'">
                     <el-input v-model="areaLeft" placeholder="left"></el-input>
                     <el-input v-model="areaTop" placeholder="top"></el-input>
-                    <el-input v-model="areaWidth" placeholder="width"></el-input>
-                    <el-input v-model="areaHeight" placeholder="height"></el-input>
+                    <el-input
+                        v-model="areaWidth"
+                        placeholder="width"
+                    ></el-input>
+                    <el-input
+                        v-model="areaHeight"
+                        placeholder="height"
+                    ></el-input>
                 </template>
             </div>
             <div class="view">
@@ -52,13 +58,18 @@
                     <div v-for="view in viewList" :key="view.source">
                         <img :src="view.source" />
                     </div>
-                    <div class="area"  :style="`left: ${areaLeft};top: ${areaTop};width:${areaWidth};height:${areaHeight}`"></div>
+                    <div
+                        class="area"
+                        :style="`left: ${areaLeft};top: ${areaTop};width:${areaWidth};height:${areaHeight}`"
+                    ></div>
                 </div>
             </div>
             <div class="layers"></div>
         </div>
         <div class="handle">
-            <el-button type="primary" size="mini" @click="create">生成</el-button>
+            <el-button type="primary" size="mini" @click="create"
+                >生成</el-button
+            >
         </div>
         <!-- <input
             ref="selectFiles"
@@ -96,6 +107,8 @@
     </div>
 </template>
 <script>
+import { dataURItoBlob } from '~/utils'
+import * as Sprite from '~/api/sprite'
 export default {
     data() {
         return {
@@ -265,6 +278,21 @@ export default {
                 }
             }
         },
+        create() {
+            console.log(dataURItoBlob(this.imageList[this.selectList[0]].source))
+            if (this.tool == '裁切') {
+                Sprite.create({
+                    source: '',
+                    handle: 1,
+                    params: {
+                        l: this.areaLeft,
+                        t: this.areaTop,
+                        w: this.areaWidth,
+                        h: this.areaHeight
+                    }
+                }).then((res) => {})
+            }
+        },
     },
 }
 </script>
@@ -323,14 +351,13 @@ export default {
                 justify-content: center;
                 .area {
                     position: absolute;
-                    left: 0; 
+                    left: 0;
                     top: 0;
                     width: 100%;
                     height: 100%;
-                    background: rgba(0,0,0,.5);
+                    background: rgba(0, 0, 0, 0.5);
                 }
             }
-            
         }
         .layers {
             position: absolute;

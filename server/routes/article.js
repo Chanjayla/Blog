@@ -32,11 +32,12 @@ router.post('/page', (req, res, next) => {
         page: page,
         pageSize: pageSize,
         tags: tags
-    }).then(docs => {
+    }).then(async docs => {
+        const total = await articleService.getCount()
         res.json({
             code: 0,
             data: docs,
-            total: docs.length,
+            total: total,
             msg: 'ok'
         })
     }).catch(err => {
