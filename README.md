@@ -1,22 +1,3 @@
-# nuxt-ts
-  
-> My stylish Nuxt.js project
+# 个人技术博客
 
-## Build Setup
-
-```bash
-# install dependencies
-$ npm install
-
-# serve with hot reload at localhost:3000
-$ npm run dev
-
-# build for production and launch server
-$ npm run build
-$ npm run start
-
-# generate static project
-$ npm run generate
-```
-
-For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
+nuxtjs + mongodb + express搭建的博客网站（包含后台管理系统）
