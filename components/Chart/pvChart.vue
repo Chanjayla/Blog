@@ -20,6 +20,7 @@
 <script>
 import * as Statistics from '~/api/statistics'
 import echarts from '~/libs/echarts.min.js'
+import resizeMixin from './mixins/resize'
 export default {
     data() {
         return {
@@ -31,6 +32,7 @@ export default {
             dates: null,
         }
     },
+    mixins: [resizeMixin],
     mounted() {
         this.echartsInstance = echarts.init(
             this.$refs['chartContent'],

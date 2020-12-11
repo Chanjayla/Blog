@@ -6,23 +6,30 @@
 <script>
 import * as Statistics from '~/api/statistics'
 import echarts from '~/libs/echarts.min.js'
+import resizeMixin from './mixins/resize'
 export default {
     data() {
         return {
             echartsInstance: null,
+            requestData: null,
         }
     },
     mounted() {
         this.echartsInstance = echarts.init(this.$refs['chartContent'], 'light')
         this.requestStatistics()
     },
+    mixins: [resizeMixin],
     methods: {
         requestStatistics() {
             Statistics.getBlogPv().then((res) => {
-                const data = this.handleData(res.data)
-                this.initChart(data.xs, data.ys)
-                this.$emit('blogView', res.data)
+                this.requestData = res.data
+                this.refreshChart(res.data)
             })
+        },
+        refreshChart(data) {
+            const handleData = this.handleData(data)
+            this.initChart(handleData.xs, handleData.ys)
+            this.$emit('blogView', data)
         },
         handleData(data) {
             const xs = []
