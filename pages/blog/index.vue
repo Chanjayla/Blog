@@ -85,7 +85,6 @@ export default {
     width: 100%;
     &__timg {
         position: relative;
-        width: 100vw;
         height:  100vh;
         min-height: 300px;
         background: url(/home_page_header.webp);
