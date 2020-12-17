@@ -25,9 +25,6 @@ export default {
         loadingMask,
         setting
     },
-    fetch() {
-        this.loadingStatus = this.$store.state.app.loading
-    },
     watch: {
         loading() {
             this.loadingStatus = this.loading
