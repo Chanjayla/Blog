@@ -1,6 +1,6 @@
 export default ({ app, store }) => {
     app.router.beforeEach((to, from, next) => {
-        if(to.name&&to.name.match(/blog/)&&to.name != from.name) {
+        if(to.name&&to.name.match(/(blog)|(post)/)&&to.name != from.name) {
             store.dispatch('app/toggleLoading', 1)
             if(!process.server) {
                 statistics(to.fullPath, from.fullPath)
