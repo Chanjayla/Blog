@@ -24,7 +24,7 @@ export default {
         theFooter,
         loadingMask,
         setting
-    },
+    }, 
     watch: {
         loading() {
             this.loadingStatus = this.loading
