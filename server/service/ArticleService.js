@@ -137,7 +137,7 @@ module.exports = {
     getByKeyword(data) {
         // const page = data.page || 1
         // const pageSize = data.pageSize || 10
-        const skipNum = ( page - 1 ) * pageSize
+        // const skipNum = ( page - 1 ) * pageSize
         const keyword = data.keyword
         return ArticleModel.find({
             $or: [
