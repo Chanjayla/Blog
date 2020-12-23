@@ -1,4 +1,4 @@
-import { userLogin } from '~/api/user'
+import { userLogin, verifyHuman} from '~/api/user'
 import { getToken, setToken, removeToken } from '~/utils/auth'
 
 export const state = () => ({
@@ -28,7 +28,8 @@ export const actions = {
     login({ commit }, userInfo) {
         return userLogin({
             password: userInfo.password,
-            username: userInfo.username
+            username: userInfo.username,
+            recaptchaToken: userInfo.recaptchaToken
         }).then(res => {
             if (res.data.code === 0) {
                 sessionStorage.setItem('cms_username', userInfo.username)

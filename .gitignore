@@ -94,4 +94,5 @@ static
 
 # key
 server/key
-server/mongodb/config.js
+server/https
+server/config

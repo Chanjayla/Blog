@@ -4,7 +4,7 @@
             <h1>Login Form</h1>
             <el-row>
                 <el-col :span="24">
-                    <el-form :model="loginForm" >
+                    <el-form :model="loginForm">
                         <el-form-item>
                             <el-input
                                 v-model="loginForm.username"
@@ -22,7 +22,22 @@
                             ></el-input>
                         </el-form-item>
                         <el-form-item>
-                            <el-button type="primary" style="width: 100%;" @click="login">Login</el-button>
+                            <vue-recaptcha
+                                @verify="verifyHuman"
+                                @expired="verifyExpired"
+                                :sitekey="sitekey"
+                                :loadRecaptchaScript="true"
+                                recaptchaHost="recaptcha.net"
+                            >
+                            </vue-recaptcha>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button
+                                type="primary"
+                                style="width: 100%"
+                                @click="login"
+                                >Login</el-button
+                            >
                         </el-form-item>
                     </el-form>
                 </el-col>
@@ -31,42 +46,63 @@
     </div>
 </template>
 <script>
+import VueRecaptcha from 'vue-recaptcha'
+import { sitekey } from '~/config/recaptcha'
 export default {
     data() {
         return {
             loginForm: {
                 username: '',
-                password: ''
-            }
+                password: '',
+            },
+            sitekey: sitekey,
+            verifyToken: '',
         }
     },
     layout: 'empty',
-    components: {},
-    mounted() {
-        
+    components: {
+        VueRecaptcha,
     },
+    mounted() {},
     methods: {
         login() {
-            this.$store.dispatch('user/login', {
-                username: this.loginForm.username,
-                password: this.loginForm.password
-            }).then(() => {
+            if (this.verifyToken) {
+                this.$store
+                    .dispatch('user/login', {
+                        username: this.loginForm.username,
+                        password: this.loginForm.password,
+                        recaptchaToken: this.verifyToken,
+                    })
+                    .then(() => {
+                        this.$message({
+                            message: '登录成功',
+                            type: 'success',
+                        })
+                        this.loginForm.username = ''
+                        this.loginForm.password = ''
+                        setTimeout(() => {
+                            this.$router.push('/admin/dashboard')
+                        }, 2000)
+                    })
+                    .catch((err) => {
+                        this.$message({
+                            message: `登录失败,${err}`,
+                        })
+                    })
+            } else {
                 this.$message({
-                    message: '登录成功',
-                    type: 'success'
+                    type: 'error',
+                    message: `未验证`,
                 })
-                this.loginForm.username = ''
-                this.loginForm.password = ''
-                setTimeout(() => {
-                    this.$router.push('/admin/dashboard')
-                },2000)
-            }).catch((err) => {
-                this.$message({
-                    message: `登录失败,${err}`
-                })
-            })
+            }
+        },
+        verifyHuman(response) {
+            this.verifyToken = response
+        },
+        verifyExpired() {
+            this.verifyToken = ''
         }
-    }
+    },
 }
 </script>
 <style lang="scss" scoped>

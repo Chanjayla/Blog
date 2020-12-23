@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const config = require('./config')
+const config = require('../config/db')
 let conn = mongoose.createConnection(
     `mongodb://${config.admin.user}:${config.admin.password}@${config.ip}:${config.port}/${config.database}`,
     {

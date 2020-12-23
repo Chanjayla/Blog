@@ -11,7 +11,7 @@
                 class="article-list__item__img"
             >
                 <template v-if="item.loaded">
-                    <img :src="item.preview_image" />
+                    <img :src="item.preview_image" :alt="item.title"/>
                 </template>
                 <template v-else>
                     <img src="~/assets/icons/loading.svg" />

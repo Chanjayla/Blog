@@ -22,6 +22,16 @@
                             ></el-input>
                         </el-form-item>
                         <el-form-item>
+                            <vue-recaptcha
+                                @verify="verifyHuman"
+                                @expired="verifyExpired"
+                                :sitekey="sitekey"
+                                :loadRecaptchaScript="true"
+                                recaptchaHost="recaptcha.net"
+                            >
+                            </vue-recaptcha>
+                        </el-form-item>
+                        <el-form-item>
                             <el-button
                                 type="primary"
                                 style="width: 100%"
@@ -36,6 +46,8 @@
     </div>
 </template>
 <script>
+import VueRecaptcha from 'vue-recaptcha'
+import { sitekey } from '~/config/recaptcha'
 export default {
     layout: 'blog',
     data() {
@@ -44,8 +56,13 @@ export default {
                 username: '',
                 password: '',
             },
-            redirectPath: '/'
+            redirectPath: '/',
+            sitekey: sitekey,
+            verifyToken: '',
         }
+    },
+    components: {
+        VueRecaptcha,
     },
     mounted() {
         this.redirectPath = this.$route.query.p || this.redirectPath
@@ -53,27 +70,44 @@ export default {
     },
     methods: {
         login() {
-            this.$store.dispatch('user/login', {
-                username: this.loginForm.username,
-                password: this.loginForm.password
-            }).then(() => {
+            if (this.verifyToken) {
+                this.$store
+                    .dispatch('user/login', {
+                        username: this.loginForm.username,
+                        password: this.loginForm.password,
+                        recaptchaToken: this.verifyToken,
+                    })
+                    .then(() => {
+                        this.$message({
+                            message: '登录成功',
+                            type: 'success',
+                        })
+                        this.loginForm.username = ''
+                        this.loginForm.password = ''
+                        this.$store.dispatch('app/toggleLoading', 1)
+                        setTimeout(() => {
+                            this.$router.push(this.redirectPath)
+                        }, 1000)
+                    })
+                    .catch((err) => {
+                        this.$message({
+                            message: `登录失败,${err}`,
+                        })
+                    })
+            } else {
                 this.$message({
-                    message: '登录成功',
-                    type: 'success'
+                    type: 'error',
+                    message: `未验证`,
                 })
-                this.loginForm.username = ''
-                this.loginForm.password = ''
-                this.$store.dispatch('app/toggleLoading', 1)
-                setTimeout(() => {
-                    this.$router.push(this.redirectPath)
-                }, 1000)
-            }).catch((err) => {
-                this.$message({
-                    message: `登录失败,${err}`
-                })
-            })
-        }
-    }
+            }
+        },
+        verifyHuman(response) {
+            this.verifyToken = response
+        },
+        verifyExpired() {
+            this.verifyToken = ''
+        },
+    },
 }
 </script>
 <style lang="scss" scoped>

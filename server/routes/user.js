@@ -1,12 +1,24 @@
 const express = require('express')
 const router = express.Router()
 const Jwt = require('../jwt')
+const axios = require('axios')
+const qs = require('qs')
 const userService = require('../service/UserService')
 const log4js = require('log4js')
-const { default: UserService } = require('../service/UserService')
 const errLogger = log4js.getLogger('err')
 const auth = require('../middleware/auth')
+const recaptcha = require('../config/recaptcha')
 router.post('/login', async (req, res, next) => {
+    const recaptchaToken = req.body.recaptchaToken
+    const address = req.headers.origin
+    const verifyHumanRes = await verifyHuman(recaptchaToken,address)
+    if(!verifyHumanRes.success) {
+        res.json({
+            code: -2,
+            msg: 'verify fail!'
+        })
+        return 
+    }
     const params = {
         username: req.body.username,
         password: req.body.password
@@ -94,24 +106,24 @@ router.post('/modifyPwd', auth, (req, res) => {
     const id = req.body.id
     const oldPwd = req.body.oldPwd
     const newPwd = req.body.newPwd
-    if(id && oldPwd && newPwd) {
+    if (id && oldPwd && newPwd) {
         userService.verify({
             id: id,
             password: oldPwd
         }).then(doc => {
-            if(doc) {
+            if (doc) {
                 return true
             } else {
                 return Promise.reject('no user')
             }
-        }).then( () => {
+        }).then(() => {
             return userService.updatePwd({
                 id: id
             }, {
                 password: newPwd
             })
-        }).then( (doc) => {
-            if(doc) {
+        }).then((doc) => {
+            if (doc) {
                 res.json({
                     code: 200,
                     msg: 'ok'
@@ -131,4 +143,29 @@ router.post('/modifyPwd', auth, (req, res) => {
     }
 
 })
+
+async function verifyHuman(token,address) {
+    const url = `${recaptcha.host}/recaptcha/api/siteverify`
+    const result = await axios({
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        url: url,
+        data: qs.stringify({
+            secret: recaptcha.secret,
+            response: token,
+            remoteip: address
+        })
+     }).then(res => {
+       return res.data
+    })
+    .catch(error => {
+        res.json({
+            code: 500,
+            msg: error
+        })
+        errLogger.error(`verify recaptcha error:${error}`)
+    })  
+    return result
+}
+
 module.exports = router

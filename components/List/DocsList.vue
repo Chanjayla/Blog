@@ -9,7 +9,7 @@
                 :data-idx="index"
                 :class="{selected: item.selected && inSelectStatus }"
             >
-                <img src="~/assets/icons/md.svg" alt />
+                <img src="~/assets/icons/md.svg" :alt="item.name" />
                 <span>{{ item.name }}</span>
             </div>
         </div>
