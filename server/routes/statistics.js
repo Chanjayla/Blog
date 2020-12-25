@@ -3,7 +3,6 @@ const router = express.Router()
 const auth = require('../middleware/auth')
 const stService = require('../service/StatisticsService')
 const articleService = require('../service/ArticleService')
-const { json } = require('body-parser')
 
 router.get('/pv', (req, res)=> {
     const ltime = req.query.ltime
@@ -21,7 +20,7 @@ router.get('/pv', (req, res)=> {
         referer: referer,
         ip: ip
     })
-    const blogId = url && url.match(/(?<=\/blog\/)\w+/)
+    const blogId = url && url.match(/(?<=\/post\/)\w+/)
     if(blogId && blogId[0].length > 20) {
         articleService.statisticsPv(blogId[0]).then(res => {
             

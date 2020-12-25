@@ -22,8 +22,25 @@
                 >
             </figure>
             <div class="detail-box__preface" v-if="preface">{{ preface }}</div>
+            <ContentLoader
+                v-if="!isServer && !content"
+                :width="500"
+                :height="450"
+            >
+                <rect x="0" y="0" rx="3" ry="3" width="100%" height="200" />
+                <rect x="0" y="210" rx="3" ry="3" width="100%" height="15" />
+                <rect x="0" y="235" rx="3" ry="3" width="100%" height="15" />
+                <rect x="25%" y="260" rx="3" ry="3" width="50%" height="10" />
+                <rect x="5%" y="300" rx="3" ry="3" width="90%" height="15" />
+                <rect x="5%" y="330" rx="3" ry="3" width="90%" height="15" />
+                <rect x="5%" y="360" rx="3" ry="3" width="90%" height="15" />
+                <rect x="5%" y="390" rx="3" ry="3" width="90%" height="15" />
+                <rect x="5%" y="420" rx="3" ry="3" width="90%" height="15" />
+                <rect x="5%" y="450" rx="3" ry="3" width="90%" height="15" />
+            </ContentLoader>
             <div
-                class="markdown-content"
+                v-else
+                class="markdown-content detail-box__content"
                 v-html="content"
                 v-highlight
                 ref="contentBox"
@@ -65,7 +82,7 @@
                 </div>
             </div>
             <div class="detail-box__dir">
-                <ul :key="dirKey" v-if="directory.length>0">
+                <ul :key="dirKey" v-if="directory.length > 0">
                     <li
                         class="dir-item"
                         v-for="item in directory"
@@ -89,14 +106,24 @@ import * as Article from '~/api/article'
 import 'gitalk/dist/gitalk.css'
 import Gitalk from 'gitalk'
 import gitalkConfig from '~/config/gitalk'
+import ContentLoader from '~/components/ContentLoader'
 export default {
     layout: 'blog',
     data() {
         return {
+            isServer: false,
             directory: [],
             imgLoaded: false,
             dirKey: 0,
             scrollCb: function () {},
+            previewImage: '',
+            title: '',
+            publish_time: '',
+            nextData: null,
+            prevData: null,
+            preface: null,
+            tags: [],
+            content: '',
         }
     },
     asyncData({ params, error }) {
@@ -107,7 +134,6 @@ export default {
             })
                 .then((detail) => {
                     return {
-                        author: detail.data.author,
                         previewImage: detail.data.preview_image,
                         title: detail.data.title,
                         publish_time: detail.data.publish_time,
@@ -125,7 +151,6 @@ export default {
             return {
                 isServer: false,
                 id: params.id,
-                author: '',
                 previewImage: '',
                 title: '',
                 publish_time: '',
@@ -138,9 +163,9 @@ export default {
         }
     },
     mounted() {
+        this.$store.dispatch('app/toggleLoading', 2)
         if (this.isServer === false) {
             Article.getById({ id: this.id }).then((detail) => {
-                this.author = detail.data.author
                 this.previewImage = detail.data.preview_image
                 this.title = detail.data.title
                 this.publish_time = detail.data.publish_time
@@ -150,17 +175,17 @@ export default {
                 this.prevData = detail.prev
                 this.nextData = detail.next
                 this.$nextTick(() => {
-                    this.$store.dispatch('app/toggleLoading', 2)
                     if (this.$refs.contentBox) {
                         this.initDirectory()
                     }
                 })
             })
         } else {
-            this.$store.dispatch('app/toggleLoading', 2)
-            if (this.$refs.contentBox) {
-                this.initDirectory()
-            }
+            this.$nextTick(() => {
+                if (this.$refs.contentBox) {
+                    this.initDirectory()
+                }
+            })
         }
         this.scrollCb = throttle((e) => {
             const top =
@@ -177,6 +202,9 @@ export default {
             })
             gitalk.render('gitalk-container')
         }
+    },
+    components: {
+        ContentLoader,
     },
     beforeDestroy() {
         document.removeEventListener('scroll', this.scrollCb)
@@ -262,6 +290,8 @@ export default {
             background: rgba(0, 150, 94, 0.1);
             border-radius: 5px;
         }
+    }
+    &__content {
     }
     &__preface {
         box-sizing: border-box;

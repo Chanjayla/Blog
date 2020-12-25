@@ -257,7 +257,7 @@ export default {
                 }
                 i {
                     font-size: 14px;
-                    vertical-align: center;
+                    vertical-align: middle;
                 }
                 a {
                     margin-left: 10px;
