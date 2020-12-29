@@ -58,6 +58,7 @@ export default {
                 .then((res) => {
                     return {
                         articleData: res[0].data.data,
+                        total : res[0].data.total,
                         hotData: res[1].data.data,
                         tagData: res[2].data.data,
                     }
