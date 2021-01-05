@@ -36,6 +36,8 @@ export default {
                 theme: 'zenburn',
                 extraKeys: {},
             },
+            autoSaveTimer: -1,
+            autoSaveDuration: 5000
         }
     },
     props: {
@@ -70,8 +72,21 @@ export default {
         accept() {
             this.code = this.accept
         },
+        code() {
+            clearTimeout(this.autoSaveTimer)
+            this.autoSaveTimer = setTimeout(()=> {
+                this.$emit('auto-save', this.code)
+                this.$message({
+                    type: 'success',
+                    message: `Auto Save`,
+                })
+            }, this.autoSaveDuration)
+        }
     },
     mounted() {},
+    beforeDestroy() {
+        clearTimeout(this.autoSaveTimer)
+    }
 }
 </script>
 <style lang="scss" scoped>

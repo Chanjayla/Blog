@@ -101,17 +101,32 @@
                 </el-upload>
             </el-form-item>
             <el-form-item>
-                <MarkdownEditor ref="markdownEditor" :accept="fileText" @selectImage="showDrawerToMd"/>
+                <MarkdownEditor
+                    ref="markdownEditor"
+                    :accept="fileText"
+                    @selectImage="showDrawerToMd"
+                    @auto-save="autoSave"
+                />
             </el-form-item>
         </el-form>
-        <el-drawer :visible.sync="drawer" :with-header="false" size="40%" @close="closeDrawer">
-            <div style="height: 100vh;overflow: auto;">
-                <RsList @select="selectOnline" filter="image" :hiddenName="true"/>
+        <el-drawer
+            :visible.sync="drawer"
+            :with-header="false"
+            size="40%"
+            @close="closeDrawer"
+        >
+            <div style="height: 100vh; overflow: auto">
+                <RsList
+                    @select="selectOnline"
+                    filter="image"
+                    :hiddenName="true"
+                />
             </div>
         </el-drawer>
     </div>
 </template>
 <script>
+import localforage from 'localforage'
 import MDInput from '~/components/Input/MDInput'
 import MarkdownEditor from '~/components/MarkdownEditor/index'
 import Sticky from '~/components/Sticky'
@@ -136,7 +151,8 @@ export default {
             fileText: '',
             previewImage: '',
             drawer: false,
-            inSelectStatus: false
+            draftShow: true,
+            inSelectStatus: false,
         }
     },
     mounted() {
@@ -144,15 +160,29 @@ export default {
         if (this.id) {
             Article.getById({
                 id: this.id,
-            }).then((res) => {
-                if (res.code === 0 && res.data) {
-                    this.desc = res.data.description
-                    this.author = res.data.author || this.author
-                    this.fileText = res.data.content
-                    this.title = res.data.title
-                    this.publish = new Date(res.data.publish_time)
-                    this.previewImage = res.data.preview_image
-                    this.selectTags = res.data.tags
+            })
+                .then((res) => {
+                    if (res.code === 0 && res.data) {
+                        this.desc = res.data.description
+                        this.author = res.data.author || this.author
+                        this.fileText = res.data.content
+                        this.title = res.data.title
+                        this.publish = new Date(res.data.publish_time)
+                        this.previewImage = res.data.preview_image
+                        this.selectTags = res.data.tags
+                    }
+                })
+                .then(() => {
+                    localforage.getItem(`${this.id}_draft`, (err, data) => {
+                        if (data) {
+                            this.fileText = data
+                        }
+                    })
+                })
+        } else {
+            localforage.getItem(`new_draft`, (err, data) => {
+                if (data) {
+                    this.fileText = data
                 }
             })
         }
@@ -171,7 +201,7 @@ export default {
         MDInput,
         MarkdownEditor,
         Sticky,
-        RsList
+        RsList,
     },
     methods: {
         tagChange(value) {
@@ -202,6 +232,7 @@ export default {
                 })
                 .then((res) => {
                     if (res.data.code === 0) {
+                        localforage.removeItem(`${this.id || 'new'}_draft`)
                         this.$message({
                             type: 'success',
                             message: '上传成功',
@@ -252,13 +283,20 @@ export default {
             this.drawer = true
         },
         closeDrawer() {
-             this.inSelectStatus = false
+            this.inSelectStatus = false
         },
         selectOnline(path) {
-            if(this.inSelectStatus) {
+            if (this.inSelectStatus) {
                 this.previewImage = path
             }
-        }
+        },
+        autoSave(data) {
+            if (this.id) {
+                localforage.setItem(`${this.id}_draft`, data)
+            } else {
+                localforage.setItem(`new_draft`, data)
+            }
+        },
     },
 }
 </script>

@@ -45,7 +45,6 @@ export function compileNuxtRouter(routes) {
       }
     }
   })
-  // console.log(result)
 }
 
 export function transFileToText(file) {
