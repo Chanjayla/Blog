@@ -4,6 +4,7 @@ const { Nuxt, Builder } = require('nuxt')
 const bodyParser = require('body-parser')
 const https = require('https')
 const http = require('http')
+const spdy = require('spdy')
 const fs = require('fs')
 const log4js = require('./log')
 const compression = require('compression')
@@ -12,7 +13,7 @@ require('./schedule')
 app.use(compression())
 app.use(log4js.connectLogger(log4js.getLogger('default'), {
   format: '[:remote-addr :method :url :status :response-timems][:referrer HTTP/:http-version :user-agent]'//自定义输出格式
- }))
+}))
 app.use(bodyParser.json())
 
 require('./routes')(app)
@@ -21,7 +22,7 @@ app.use("/docs", express.static('docs'))
 const config = require('../nuxt.config.js')
 config.dev = process.env.NODE_ENV !== 'production'
 
-async function start () {
+async function start() {
   // Init Nuxt.js
   const nuxt = new Nuxt(config)
 
@@ -37,15 +38,19 @@ async function start () {
   // Give nuxt middleware to express
   app.use(nuxt.render)
   // Listen the server
-  http.createServer(function(req, res) {
-    if(config.dev) {
-      res.writeHead(301, {'Location': 'https://127.0.0.1:' + port  + req.url});
+  // let server = https.createServer({
+  //   key: fs.readFileSync('server/https/4713990_www.jaylang.cn.key'),
+  //   cert: fs.readFileSync('server/https/4713990_www.jaylang.cn.pem')
+  // }, app).listen(port, host)
+  http.createServer(function (req, res) {
+    if (config.dev) {
+      res.writeHead(301, { 'Location': 'https://127.0.0.1:' + port + req.url });
     } else {
-      res.writeHead(301, {'Location': 'https://' + req.headers.host + req.url});
+      res.writeHead(301, { 'Location': 'https://' + req.headers.host + req.url });
     }
     res.end()
   }).listen(port2, host)
-  let server = https.createServer({
+  let server = spdy.createServer({
     key: fs.readFileSync('server/https/4713990_www.jaylang.cn.key'),
     cert: fs.readFileSync('server/https/4713990_www.jaylang.cn.pem')
   }, app).listen(port, host)
