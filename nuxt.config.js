@@ -113,7 +113,7 @@ module.exports = {
           common: {
             test: /api|utils|assets|styles/,
             name: 'common',
-            chunks: 'async',
+            chunks: 'all',
             priority: 2,
             minChunks: 1
           },
