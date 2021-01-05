@@ -20,6 +20,7 @@ export default {
 .contact {
     padding: 10px;
     border-radius: 10px;
+    text-align: right;
     a {
         display: inline-block;
         margin: 0 10px;
