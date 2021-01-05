@@ -15,5 +15,4 @@ COPY --from=builder /code/node_modules ./node_modules
 EXPOSE 3000
 EXPOSE 3001
 RUN npm run build
-RUN npm run stop
 CMD ["npm", "start"] 
