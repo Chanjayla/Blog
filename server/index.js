@@ -51,8 +51,8 @@ async function start() {
     res.end()
   }).listen(port2, host)
   let server = spdy.createServer({
-    key: fs.readFileSync('server/https/4713990_www.jaylang.cn.key'),
-    cert: fs.readFileSync('server/https/4713990_www.jaylang.cn.pem')
+    key: fs.readFileSync('server/https/www.jaylang.cn.key'),
+    cert: fs.readFileSync('server/https/www.jaylang.cn.pem')
   }, app).listen(port, host)
   require('./socket')(server)
   consola.ready({
