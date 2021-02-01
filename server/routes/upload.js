@@ -65,7 +65,7 @@ router.get('/page', auth, (req, res, next) => {
     const page = req.query.page || 1
     const pageSize = req.query.pageSize || 10
     const type = req.query.type || ''
-    const data = type ? menuJson.filter(item => item.type.indexOf(type)>-1) : menuJson
+    const data = type ? menuJson.filter(item => item.type.indexOf(type) > -1) : menuJson
     try {
         let result = data.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize)
         res.json({
@@ -107,8 +107,7 @@ router.post('/delete', auth, (req, res, next) => {
     arr.forEach && arr.forEach(idx => {
         deleteList.push(menuJson[idx].path)
     })
-    console.log(deleteList)
-    menuJson = menuJson.filter((item,idx) => arr.indexOf(idx) === -1)
+    menuJson = menuJson.filter((item, idx) => arr.indexOf(idx) === -1)
     fs.writeFileSync(DELETE_LIST_PATH, JSON.stringify(deleteList))
     fs.writeFile(MENU_PATH, JSON.stringify(menuJson), function (err) {
         if (err) {
@@ -124,21 +123,30 @@ router.post('/delete', auth, (req, res, next) => {
             })
         }
         // handleLogger.debug(`upload image path:${filepath}-success`)
-    })  
+    })
 })
 
-router.post('/sprite', auth, (req, res, next) => {
-    http.get('http://127.0.0.1:3002', resp => {
-           const data = ''
-           resp.on('data', (chunk) => { data += chunk});
-           resp.on('end', () => {
-             console.log(data)
-           })
-        }).on('error', (e) => {
-            res.json({
-                code: 500,
-                msg: e
-            })
-        })
-})
+// router.post('/sprite', auth, (req, res, next) => {
+//     const source = req.body.source
+//     http.get('http://127.0.0.1:3002', resp => {
+//         let data = []
+//         let dataLen = 0
+//         resp.on('data', (chunk) => { 
+//             data.push(chunk)
+//             dataLen += chunk.length
+//         });
+//         resp.on('end', () => {
+//             const resData = Buffer.concat(data, dataLen)
+//             res.json({
+//                 code: 200,
+//                 data: resData.toString('base64')
+//             })
+//         })
+//     }).on('error', (e) => {
+//         res.json({
+//             code: 500,
+//             msg: e
+//         })
+//     })
+// })
 module.exports = router

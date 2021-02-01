@@ -1,7 +1,7 @@
 <template>
-    <div class="fnt-pane">
+    <div class="fnt-panel">
         <div class="mask"></div>
-        <Sprite />
+        <!-- <Sprite /> -->
     </div>
 </template>
 <script>
@@ -14,7 +14,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.fnt-pane {
+.fnt-panel {
     box-sizing: border-box;
     .mask {
         width: 100%;

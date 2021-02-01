@@ -37,22 +37,52 @@
                 </div>
             </div>
         </div>
-        <div class="work-pane">
-            <p class="tit">预览</p>
+        <div class="param-list">
+            <p class="tit">参数</p>
             <div class="params" :key="tool">
                 <template v-if="tool == '裁切'">
-                    <el-input v-model="areaLeft" placeholder="left"></el-input>
-                    <el-input v-model="areaTop" placeholder="top"></el-input>
-                    <el-input
-                        v-model="areaWidth"
-                        placeholder="width"
-                    ></el-input>
-                    <el-input
-                        v-model="areaHeight"
-                        placeholder="height"
-                    ></el-input>
+                    <div class="param-item">
+                        <label for="areaLeft">left：</label>
+                        <input
+                            type="text"
+                            placeholder="left"
+                            v-model="areaLeft"
+                            name="areaLeft"
+                        />
+                    </div>
+                    <div class="param-item">
+                        <label for="areaLeft">top：</label>
+                        <input
+                            type="text"
+                            placeholder="top"
+                            v-model="areaTop"
+                            name="areaTop"
+                        />
+                    </div>
+                    <div class="param-item">
+                        <label for="areaLeft">width：</label>
+                        <input
+                            type="text"
+                            placeholder="width"
+                            v-model="areaWidth"
+                            name="areaWidth"
+                        />
+                    </div>
+                    <div class="param-item">
+                        <label for="areaLeft">height：</label>
+                        <input
+                            type="text"
+                            placeholder="height"
+                            v-model="areaHeight"
+                            name="areaHeight"
+                        />
+                    </div>
                 </template>
             </div>
+        </div>
+        <div class="work-pane">
+            <p class="tit">预览</p>
+
             <div class="view">
                 <div class="content">
                     <div v-for="view in viewList" :key="view.source">
@@ -279,17 +309,16 @@ export default {
             }
         },
         create() {
-            console.log(dataURItoBlob(this.imageList[this.selectList[0]].source))
             if (this.tool == '裁切') {
                 Sprite.create({
-                    source: '',
+                    source: this.imageList[this.selectList[0]].source,
                     handle: 1,
                     params: {
                         l: this.areaLeft,
                         t: this.areaTop,
                         w: this.areaWidth,
-                        h: this.areaHeight
-                    }
+                        h: this.areaHeight,
+                    },
                 }).then((res) => {})
             }
         },
@@ -330,17 +359,27 @@ export default {
             height: 100%;
         }
     }
+    .param-list {
+        margin-bottom: 10px;
+        .params {
+            .param-item {
+                display: flex;
+                align-items: center;
+                input {
+                    display: block;
+                    line-height: 24px;
+                    margin: 5px 0;
+                    border: 0;
+                    outline: none;
+                    background: #eee;
+                }
+            }
+        }
+    }
     .work-pane {
         position: relative;
         min-height: 500px;
         margin-bottom: 10px;
-        .params {
-            position: absolute;
-            top: 40px;
-            left: 0;
-            width: 100px;
-            border-right: 1px solid #eee;
-        }
         .view {
             margin: 0 200px;
             overflow: auto;

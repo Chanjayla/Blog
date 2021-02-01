@@ -73,59 +73,78 @@ module.exports = {
     */
     extractCSS: true,
     extend(config, ctx) {
-      config.optimization.splitChunks = {
-        cacheGroups: {
-          blog: {
-            test: /pages\/blog/,
-            name: 'blog',
-            chunks: 'async',
-            priority: 1,
-            minChunks: 1
-          },
-          admin: {
-            test: /pages\/admin/,
-            name: 'admin',
-            chunks: 'async',
-            priority: 1,
-            minChunks: 1
-          },
-          detail: {
-            test: /pages\/post/,
-            name: 'post',
-            chunks: 'async',
-            priority: 1,
-            minChunks: 1
-          },
-          elementui: {
-            test: /element-ui/,
-            name: 'element-ui',
-            chunks: 'initial',
-            priority: 1,
-            minChunks: 1
-          },
-          // codemirror: {
-          //   test: /codemirror/,
-          //   name: 'codemirror',
-          //   chunks: 'initial',
-          //   priority: 2,
-          //   minChunks: 1
-          // },
-          common: {
-            test: /api|utils|assets|styles/,
-            name: 'common',
-            chunks: 'all',
-            priority: 2,
-            minChunks: 1
-          },
-          marked: {
-            test: /marked/,
-            name: 'marked',
-            chunks: 'async',
-            priority: 2,
-            minChunks: 2
+      if(ctx.isServer) {
+        config.optimization.splitChunks = {}
+      } else {
+        config.optimization.splitChunks = {
+          cacheGroups: {
+            blog: {
+              test: /pages\/blog/,
+              name: 'blog',
+              chunks: 'async',
+              priority: 1,
+              minChunks: 1
+            },
+            admin: {
+              test: /pages\/admin/,
+              name: 'admin',
+              chunks: 'async',
+              priority: 1,
+              minChunks: 1
+            },
+            detail: {
+              test: /pages\/post/,
+              name: 'post',
+              chunks: 'async',
+              priority: 1,
+              minChunks: 1
+            },
+            code: {
+              test: /pages\/code/,
+              name: 'code',
+              chunks: 'async',
+              priority: 1,
+              minChunks: 1
+            },
+            sprite: {
+              test: /pages\/sprite/,
+              name: 'sprite',
+              chunks: 'async',
+              priority: 1,
+              minChunks: 1
+            },
+            elementui: {
+              test: /element-ui/,
+              name: 'element-ui',
+              chunks: 'initial',
+              priority: 1,
+              minChunks: 1
+            },
+            // codemirror: {
+            //   test: /codemirror/,
+            //   name: 'codemirror',
+            //   chunks: 'initial',
+            //   priority: 2,
+            //   minChunks: 1
+            // },
+            common: {
+              test: /api|utils|assets|styles/,
+              name: 'common',
+              chunks: 'all',
+              priority: 2,
+              minChunks: 1
+            },
+            marked: {
+              test: /marked/,
+              name: 'marked',
+              chunks: 'async',
+              priority: 2,
+              minChunks: 2
+            }
           }
         }
       }
+
     },
     analyza: {
       analyzeMode: 'static'

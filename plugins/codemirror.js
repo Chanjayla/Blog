@@ -7,7 +7,7 @@ import 'codemirror/lib/codemirror.css'
 import 'codemirror/theme/zenburn.css'
 
 import 'codemirror/mode/markdown/markdown.js'
- 
+import 'codemirror/mode/javascript/javascript.js'
 // active-line.js
 import 'codemirror/addon/selection/active-line.js'
  
