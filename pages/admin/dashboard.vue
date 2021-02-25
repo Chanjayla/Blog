@@ -231,6 +231,9 @@ export default {
             line-height: 40px;
             padding: 0 50px;
             font-size: 14px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
             .icon {
                 position: absolute;
                 left: 5px;
