@@ -142,23 +142,20 @@ export default {
                         content: marked(detail.data.content),
                         prevData: detail.prev,
                         nextData: detail.next,
+                        isServer: true,
                     }
                 })
                 .catch((err) => {
+                    return {
+                        isServer: false,
+                        id: params.id
+                    }
                     // error({ statusCode: 400, message: err })
                 })
         } else {
             return {
                 isServer: false,
-                id: params.id,
-                previewImage: '',
-                title: '',
-                publish_time: '',
-                tags: [],
-                preface: '',
-                content: '',
-                prevData: null,
-                nextData: null,
+                id: params.id
             }
         }
     },
