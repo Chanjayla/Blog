@@ -34,10 +34,15 @@ export const pathMap = {
         icon: 'el-icon-view',
         path: '/admin/docManager/view'
     },
-    '/admin/resourceManager/view': {
-        name: 'Resource-view',
+    '/admin/resourceManager/pic': {
+        name: 'Picture',
         icon: 'el-icon-view',
-        path: '/admin/resourceManager/view'
+        path: '/admin/resourceManager/pic'
+    },
+    '/admin/resourceManager/music': {
+        name: 'Music',
+        icon: 'el-icon-headset',
+        path: '/admin/resourceManager/music'
     },
     // '/admin/theme': {
     //     name: 'Theme',
@@ -49,6 +54,7 @@ export const pathMap = {
         icon: 'el-icon-user',
         path: '/admin/profile'
     },
+    
     // '/admin/tool/fnt': {
     //    name: 'fnt',
     //    icon: 'el-icon-magic-stick',
@@ -87,7 +93,8 @@ export default {
         name: 'Resources',
         icon: 'el-icon-picture',
         children: [
-            pathMap['/admin/resourceManager/view']
+            pathMap['/admin/resourceManager/pic'],
+            pathMap['/admin/resourceManager/music']
         ]
     },
     profile: pathMap['/admin/profile'],

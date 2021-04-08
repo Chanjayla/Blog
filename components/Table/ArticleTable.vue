@@ -164,7 +164,7 @@ export default {
             pageSize: 20,
             total: 0,
             switchArr: [],
-            canSetTop: true
+            canSetTop: true,
         }
     },
     mounted() {
@@ -211,17 +211,19 @@ export default {
             this.$router.push('/admin/articleManager/edit?id=' + row._id)
         },
         handleDelete(index, row) {
-            Article.del({
-                id: row._id,
-            }).then((res) => {
-                if (res.data.code === 0) {
-                    this.getArticleList()
-                } else {
-                    this.$message({
-                        type: 'error',
-                        message: '删除失败',
-                    })
-                }
+            this.$confirm(`Delete this article?`).then(() => {
+                Article.del({
+                    id: row._id,
+                }).then((res) => {
+                    if (res.data.code === 0) {
+                        this.getArticleList()
+                    } else {
+                        this.$message({
+                            type: 'error',
+                            message: '删除失败',
+                        })
+                    }
+                })
             })
         },
         flushTable() {
@@ -236,10 +238,10 @@ export default {
             this.getArticleList()
         },
         setTop(val) {
-            if(!this.canSetTop) return 
+            if (!this.canSetTop) return
             const arr = val.split('-')
             const id = arr[0]
-            const is_top = arr[1] == 1?true:false
+            const is_top = arr[1] == 1 ? true : false
             this.canSetTop = false
             Article.setTop({
                 id,
@@ -249,12 +251,14 @@ export default {
                 if (res.data.code === 0) {
                     this.$message({
                         type: 'success',
-                        message: is_top?'Set top success':'Cancel top success',
+                        message: is_top
+                            ? 'Set top success'
+                            : 'Cancel top success',
                     })
                 } else {
                     this.$message({
                         type: 'error',
-                        message: is_top?'Set top fail':'Cancel top fail',
+                        message: is_top ? 'Set top fail' : 'Cancel top fail',
                     })
                 }
             })

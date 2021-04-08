@@ -5,6 +5,7 @@
         <loadingMask :status="loadingStatus" :class="`${themeName}-loading`"/>
         <setting></setting>
         <the-footer :class="`${themeName}-footer`"></the-footer>
+        <component :is="csrAplayer"></component>
     </div>
 </template>
 <script>
@@ -16,19 +17,23 @@ import { mapState } from 'vuex'
 export default {
     data() {
         return {
-            loadingStatus: 0
+            loadingStatus: 0,
+            csrAplayer: null
         }
     },
     components: {
         theHeader,
         theFooter,
         loadingMask,
-        setting
+        setting,
     }, 
     watch: {
         loading() {
             this.loadingStatus = this.loading
         }
+    },
+    mounted() {
+        this.csrAplayer = () => import('~/components/Music/aplayer.vue')
     },
     computed: {
         ...mapState({
@@ -51,6 +56,7 @@ export default {
     @media screen and (max-width: $mobileWidth) {
         width: 100%;
     }
+    padding-bottom: 30px;
 }
 .main-box {
     margin: 0 auto;

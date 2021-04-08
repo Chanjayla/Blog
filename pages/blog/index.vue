@@ -43,13 +43,17 @@ export default {
         if (process.server) {
             return Promise.all([Article.getLatest(), Article.getTop()])
                 .then((res) => {
+                    console.log(res)
                     return {
                         latestData: res[0].data.data,
                         topData: res[1].data.data,
                     }
                 })
                 .catch((err) => {
-                    // error({ statusCode: 400, message: err })
+                    return {
+                        latestData: [],
+                        topData: []
+                    }
                 })
         } else {
             return {

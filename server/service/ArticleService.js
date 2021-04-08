@@ -60,7 +60,7 @@ module.exports = {
     deleteMulti(data) {
         const condition = {
             _id: {
-                $in: mongoose.mongo.ObjectId(data.ids)
+                $in: data.ids
             }
         }
         return ArticleModel.deleteMany(condition)

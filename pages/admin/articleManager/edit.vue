@@ -116,7 +116,7 @@
             @close="closeDrawer"
         >
             <div style="height: 100vh; overflow: auto">
-                <RsList
+                <PicList
                     @select="selectOnline"
                     filter="image"
                     :hiddenName="true"
@@ -130,7 +130,7 @@ import localforage from 'localforage'
 import MDInput from '~/components/Input/MDInput'
 import MarkdownEditor from '~/components/MarkdownEditor/index'
 import Sticky from '~/components/Sticky'
-import RsList from '~/components/List/ResourcesList'
+import PicList from '~/components/List/PicList'
 import { mapState } from 'vuex'
 import { transFileToText } from '~/utils'
 import * as Article from '~/api/article'
@@ -201,7 +201,7 @@ export default {
         MDInput,
         MarkdownEditor,
         Sticky,
-        RsList,
+        PicList,
     },
     methods: {
         tagChange(value) {

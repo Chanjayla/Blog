@@ -19,11 +19,13 @@ export default {
     },
     mounted() {
         this.breadcrumb = this.getRoutePath()
+        console.log(this.breadcrumb)
     },
     methods: {
         getRoutePath() {
             const paths = [pathMap['/admin/dashboard']]
             this.$route.path !== '/admin/dashboard' &&
+                pathMap[this.$route.path] && 
                 paths.push(pathMap[this.$route.path])
             return paths
         }

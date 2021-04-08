@@ -36,7 +36,8 @@ export default {
 .setting {
     position: fixed;
     right: 10px;
-    bottom: 10px;
+    bottom: 60px;
+    z-index: 2;
     img {
         width: 30px;
         height: 30px;

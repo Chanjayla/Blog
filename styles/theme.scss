@@ -1,4 +1,5 @@
 .theme0 {
+    background: #fff;
     &-loading {
         &::before {
             background: rgba(251,251,251,1);
@@ -59,9 +60,13 @@
 
 
 .theme1 {
+    background: rgba(24,26,27,1);
     &-loading {
         &::before {
             background: rgba(24,26,27,1);
+            color: #fff;
+        }
+        .content {
             color: #fff;
         }
     }

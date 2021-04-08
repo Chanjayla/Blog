@@ -69,3 +69,19 @@ export function dataURItoBlob(dataURI) {
   }  
   return new Blob([ab], {type: mimeString});  
 }
+
+export function uint8arrayToBase64(u8Arr) {
+  let CHUNK_SIZE = 0x8000; //arbitrary number
+  let index = 0;
+  let length = u8Arr.length;
+  let result = '';
+  let slice;
+  while (index < length) {
+      slice = u8Arr.subarray(index, Math.min(index + CHUNK_SIZE, length));
+      result += String.fromCharCode.apply(null, slice);
+      index += CHUNK_SIZE;
+  }
+  // web image base64图片格式: "data:image/png;base64," + b64encoded;
+  // return  "data:image/png;base64," + btoa(result);
+  return btoa(result);
+}

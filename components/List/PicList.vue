@@ -4,13 +4,14 @@
         <div class="rs-btn">
             <el-upload
                 v-if="canUpload"
-                action="/upload/resource"
+                action="/resource/upload/pic"
                 name="resource"
                 multiple
                 :limit="3"
                 :on-exceed="handleExceed"
                 :on-success="handleSuccess"
                 :show-file-list="false"
+                accept="image/png, image/jpeg"
             >
                 <el-button size="small" type="primary" icon="el-icon-upload"
                     >upload</el-button
@@ -52,7 +53,7 @@
                     <img :src="item.path" :data-idx="idx" />
                 </template>
                 <template v-else>
-                    <img src="~/assets/icons/file.svg" />
+                    <img src="~/assets/icons/file.svg" :data-idx="idx"/>
                 </template>
                 <!-- <span v-if="!hiddenName" class="name">{{ item.path }}</span> -->
                 <!-- <div>
@@ -84,7 +85,7 @@
     </div>
 </template>
 <script>
-import * as Upload from '~/api/upload'
+import * as Resource from '~/api/resource'
 import ClipboardJS from 'clipboard'
 export default {
     data() {
@@ -131,7 +132,7 @@ export default {
             this.getRsPage()
         },
         getRsPage() {
-            Upload.getPage({
+            Resource.getPage({
                 page: this.page,
                 pageSize: this.pageSize,
                 type: this.filter || '',
@@ -167,6 +168,7 @@ export default {
                 const index =
                     target.dataset.idx &&
                     parseInt(target.dataset.idx) + this.pageSize * (this.page - 1)
+                console.log(index)
                 if (typeof index !== 'undefined') {
                     const arrIndex = this.deleteArr.indexOf(index)
                     if (arrIndex > -1) {
@@ -219,8 +221,9 @@ export default {
             }
         },
         requestDelete() {
-            Upload.del({
-                arr: this.deleteArr
+            Resource.del({
+                arr: this.deleteArr,
+                type: 'pic'
             }).then(res => {
                 if(res.data.code === 0) {
                     this.getRsPage()

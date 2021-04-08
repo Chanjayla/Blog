@@ -34,7 +34,7 @@
             @close="closeDrawer"
         >
             <div style="height: 100vh; overflow: auto">
-                <RsList
+                <PicList
                     @select="selectOnline"
                     filter="image"
                     :hiddenName="true"
@@ -78,7 +78,7 @@
 </template>
 <script>
 import MDInput from '~/components/Input/MDInput'
-import RsList from '~/components/List/ResourcesList'
+import PicList from '~/components/List/PicList'
 import * as User from '~/api/user'
 export default {
     layout: 'admin',
@@ -104,7 +104,7 @@ export default {
     },
     components: {
         MDInput,
-        RsList,
+        PicList,
     },
     computed: {},
     methods: {

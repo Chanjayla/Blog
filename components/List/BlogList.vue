@@ -10,12 +10,15 @@
                 :to="`/post/${item._id}`"
                 class="article-list__item__img"
             >
-                <template v-if="item.loaded">
-                    <img :src="item.preview_image" :alt="item.title"/>
-                </template>
-                <template v-else>
-                    <img src="~/assets/icons/loading.svg" />
-                </template>
+                <transition name="fade">
+                    <template v-if="item.loaded">
+                        <img :src="item.preview_image" :alt="item.title" />
+                    </template>
+                    <template v-else>
+                        <img src="~/assets/icons/loading.svg" />
+                    </template>
+                </transition>
+                
             </nuxt-link>
             <div class="article-list__item__msg">
                 <p class="article-list__item__msg__date">
@@ -45,8 +48,8 @@ export default {
     },
     props: {
         dataList: {
-            default: []
-        }
+            default: [],
+        },
     },
     methods: {
         loadDefaultImg(e) {
@@ -59,14 +62,14 @@ export default {
                     if (
                         !this.dataList[idx].loaded &&
                         item.getBoundingClientRect().top < this.height &&
-                        item.getBoundingClientRect().top  > 0
+                        item.getBoundingClientRect().top > 0
                     ) {
                         this.dataList[idx].loaded = true
                     }
                 })
                 this.$forceUpdate()
             } else {
-                 this.lazyImageBoxes.forEach((item, idx) => {
+                this.lazyImageBoxes.forEach((item, idx) => {
                     this.dataList[idx].loaded = true
                 })
             }
@@ -172,5 +175,15 @@ export default {
     &__no-data {
         padding-top: 10px;
     }
+}
+
+.slide-fade-enter-active {
+  transition: all .1s ease;
+}
+.slide-fade-leave-active {
+  transition: all 1s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-fade-enter, .slide-fade-leave-to {
+  opacity: 0;
 }
 </style>

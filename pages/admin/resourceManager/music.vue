@@ -1,10 +1,10 @@
 <template>
     <div>
-        <RsList></RsList>
+        <MusicList></MusicList>
     </div>
 </template>
 <script>
-import RsList from '~/components/List/ResourcesList'
+import MusicList from '~/components/List/MusicList'
 export default {
     layout: 'admin',
     middleware: 'authenticated',
@@ -12,7 +12,7 @@ export default {
         // error({ statusCode: 400, message: 'Developing...' }) 
     },
     components: {
-        RsList
+        MusicList
     }
 }
 </script>
