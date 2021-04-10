@@ -1,6 +1,6 @@
 <template>
     <div class="home-box">
-        <div class="home-box__timg">
+        <div class="home-box__timg" :class="{'home-box__timg_show': bgLoaded}">
             <div class="mask"></div>
             <!-- <h1 class="home-box__timg__tit" data-text="Hello World!">Hello World !</h1> -->
             <Contact class="home-box__timg__contact" />
@@ -30,10 +30,14 @@
 </template>
 
 <script>
-import Vue from 'vue'
 import * as Article from '~/api/article'
 export default {
     layout: 'blog',
+    data() {
+        return {
+            bgLoaded: false,
+        }
+    },
     components: {
         BlogList: () => import('~/components/List/BlogList.vue'),
         SideList: () => import('~/components/List/SideList.vue'),
@@ -64,6 +68,11 @@ export default {
         }
     },
     mounted() {
+        var img = document.createElement('img')
+        img.src = '/home_page_header.webp'
+        img.onload = () => {
+            this.bgLoaded = true
+        }
         if (this.isServer === false) {
             Promise.all([Article.getLatest(), Article.getTop()]).then((res) => {
                 this.topData = res[1].data.data
@@ -72,6 +81,7 @@ export default {
                     this.$store.dispatch('app/toggleLoading', 2)
                 })
             })
+            
         } else {
             this.$store.dispatch('app/toggleLoading', 2)
         }
@@ -91,11 +101,10 @@ export default {
         position: relative;
         height:  100vh;
         min-height: 300px;
-        background: url(/home_page_header.webp);
+        background-color: #000;
         background-attachment: fixed;
         background-repeat: no-repeat;
-        background-position: 0 0;
-        background-size: cover;
+        background-position: 50% 50%;
         @media screen and (max-width: $mobileWidth) {
             height: 100vh;
             background-size: cover;
@@ -125,6 +134,10 @@ export default {
             width: 220px;
             white-space: nowrap;
         }
+    }
+    &__timg_show {
+        background-image: url(/home_page_header.webp);
+        animation: bg-fade .5s ease forwards;
     }
     &__layout {
         display: flex;
@@ -193,6 +206,14 @@ export default {
                 font-size: 1.2em;
             }
         }
+    }
+}
+@keyframes bg-fade {
+    0% {
+        background-size: 110% 110%;
+    }
+    100% {
+        background-size: 100% 100%;
     }
 }
 </style>
