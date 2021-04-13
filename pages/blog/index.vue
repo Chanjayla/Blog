@@ -1,9 +1,13 @@
 <template>
     <div class="home-box">
-        <div class="home-box__timg" :class="{'home-box__timg_show': bgLoaded}">
+        <div class="home-box__timg-box">
+            <div
+                class="home-box__timg"
+                :class="{ 'home-box__timg_show': bgLoaded }"
+            ></div>
             <div class="mask"></div>
             <!-- <h1 class="home-box__timg__tit" data-text="Hello World!">Hello World !</h1> -->
-            <Contact class="home-box__timg__contact" />
+            <Contact class="home-box__contact" />
         </div>
         <section class="home-box__layout">
             <section class="home-box__content">
@@ -12,7 +16,10 @@
                     <span>Release</span>
                 </div>
                 <div class="home-box__content__list">
-                    <release-list :dataList="releaseData" v-if="releaseData"></release-list>
+                    <release-list
+                        :dataList="releaseData"
+                        v-if="releaseData"
+                    ></release-list>
                 </div>
                 <div class="home-box__content__tit">
                     <i class="el-icon-sort-up"></i>
@@ -50,23 +57,27 @@ export default {
         BlogList: () => import('~/components/List/BlogList.vue'),
         SideList: () => import('~/components/List/SideList.vue'),
         Contact: () => import('~/components/Contact/index.vue'),
-        ReleaseList: () => import('~/components/List/CardInlineList.vue')
+        ReleaseList: () => import('~/components/List/CardInlineList.vue'),
     },
     asyncData() {
         if (process.server) {
-            return Promise.all([Article.getLatest(), Article.getTop(), Release.getAll()])
+            return Promise.all([
+                Article.getLatest(),
+                Article.getTop(),
+                Release.getAll(),
+            ])
                 .then((res) => {
                     return {
                         latestData: res[0].data.data,
                         topData: res[1].data.data,
-                        releaseData: res[2].data.data
+                        releaseData: res[2].data.data,
                     }
                 })
                 .catch((err) => {
                     return {
                         latestData: [],
                         topData: [],
-                        releaseData: []
+                        releaseData: [],
                     }
                 })
         } else {
@@ -85,7 +96,11 @@ export default {
             this.bgLoaded = true
         }
         if (this.isServer === false) {
-            Promise.all([Article.getLatest(), Article.getTop(), Release.getAll()]).then((res) => {
+            Promise.all([
+                Article.getLatest(),
+                Article.getTop(),
+                Release.getAll(),
+            ]).then((res) => {
                 this.topData = res[1].data.data
                 this.latestData = res[0].data.data
                 this.releaseData = res[2].data.data
@@ -93,7 +108,6 @@ export default {
                     this.$store.dispatch('app/toggleLoading', 2)
                 })
             })
-            
         } else {
             this.$store.dispatch('app/toggleLoading', 2)
         }
@@ -109,47 +123,51 @@ export default {
 <style lang="scss" scoped>
 .home-box {
     width: 100%;
-    &__timg {
+    &__timg-box {
         position: relative;
-        height:  100vh;
+        height: 100vh;
         min-height: 300px;
+        overflow: hidden;
+    }
+    &__timg {
+        position: absolute;
+        width: 100%;
+        height: 100%;
         background-color: #000;
         background-attachment: fixed;
         background-repeat: no-repeat;
         background-position: 50% 50%;
-        @media screen and (max-width: $mobileWidth) {
-            height: 100vh;
-            background-size: cover;
-        }
-        .mask {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0.3;
-        }
-        &__tit {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 5.4rem;
-            color: #fff;
-            opacity: 0.8;
-            user-select: none;
-        }
-        &__contact {
-            position: absolute;
-            right: 0;
-            bottom: 0;
-            width: 220px;
-            white-space: nowrap;
-        }
+    }
+
+    .mask {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.3;
+    }
+    &__tit {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 5.4rem;
+        color: #fff;
+        opacity: 0.8;
+        user-select: none;
+    }
+    &__contact {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        width: 220px;
+        white-space: nowrap;
     }
     &__timg_show {
         background-image: url(/home_page_header.webp);
-        animation: bg-fade .5s ease forwards;
+        background-size: cover;
+        animation: bg-fade 0.5s ease forwards;
     }
     &__layout {
         display: flex;
@@ -222,10 +240,10 @@ export default {
 }
 @keyframes bg-fade {
     0% {
-        background-size: 110% 110%;
+        transform: scale(1.1);
     }
     100% {
-        background-size: 100% 100%;
+        transform: scale(1);
     }
 }
 </style>

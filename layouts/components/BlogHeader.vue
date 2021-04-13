@@ -1,7 +1,7 @@
 <template>
     <div class="app-header">
         <div
-            class="mask app-header__mask"
+            class="app-header__mask"
             :class="`${themeName}-mask`"
             :style="isTop&&!loading ? 'background: transparent;' : ''"
         ></div>
@@ -159,6 +159,7 @@ export default {
         top: 0;
         left: 0;
         width: 100%;
+        background: rgb(24, 26, 27);
         transition: all 0.2s ease;
         z-index: -1;
     }
