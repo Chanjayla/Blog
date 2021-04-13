@@ -11,4 +11,5 @@ module.exports = app => {
   app.use("/docs", require("./docs"))
   app.use("/resource", require("./resource"))
   app.use("/statistics", require("./statistics"))
+  app.use("/api/release", require("./release"))
 };

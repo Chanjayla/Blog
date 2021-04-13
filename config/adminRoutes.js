@@ -44,6 +44,11 @@ export const pathMap = {
         icon: 'el-icon-headset',
         path: '/admin/resourceManager/music'
     },
+    '/admin/release': {
+        name: 'Release',
+        icon: 'el-icon-s-release',
+        path: '/admin/release'
+    },
     // '/admin/theme': {
     //     name: 'Theme',
     //     icon: 'el-icon-picture-outline-round',
@@ -60,7 +65,7 @@ export const pathMap = {
     //    icon: 'el-icon-magic-stick',
     //    path: '/admin/tool/fnt'
     // }
-
+    
 
 }
 export default {
@@ -97,6 +102,7 @@ export default {
             pathMap['/admin/resourceManager/music']
         ]
     },
+    release: pathMap['/admin/release'],
     profile: pathMap['/admin/profile'],
     // theme: pathMap['/admin/theme'],
     // tool: {

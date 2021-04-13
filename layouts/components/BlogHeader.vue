@@ -7,7 +7,10 @@
         ></div>
         <div class="app-header__tit" >
             <nuxt-link to="/blog">Genos's Blog</nuxt-link>
-            <i :class="themeId > 0 ? 'night' : 'noon'" @click="changeTheme"></i>
+            <div @click="changeTheme" >
+                <ThemeIco :status="themeId" style="display: flex;align-items: center;margin-left: 10px;"></ThemeIco>
+            </div>
+            
         </div>
         <div class="app-header__menu">
             <div
@@ -43,6 +46,7 @@
 <script>
 import Sticky from '~/components/Sticky'
 import Search from '~/components/Search'
+import ThemeIco from '~/components/Canvas/themeIco'
 import { mapState } from 'vuex'
 export default {
     data() {
@@ -58,11 +62,6 @@ export default {
                     name: 'Blog',
                     icon: 'icon-pen',
                 },
-                {
-                    path: '/blog/rss',
-                    name: 'Message',
-                    icon: 'icon-games',
-                }
                 // {
                 //     path: '/blog/about',
                 //     name: 'About',
@@ -133,6 +132,7 @@ export default {
     components: {
         Sticky,
         Search,
+        ThemeIco
     },
 }
 </script>
@@ -169,50 +169,6 @@ export default {
         font-size: 20px;
         &:hover {
             color: inherit;
-        }
-        .noon {
-            position: relative;
-            display: inline-block;
-            width: 30px;
-            height: 30px;
-            margin-left: 10px;
-            border-radius: 50%;
-            background: #fff;
-            overflow: hidden;
-            cursor: pointer;
-            &::before {
-                content: '';
-                position: absolute;
-                width: 100%;
-                height: 100%;
-                top: -24px;
-                left: -24px;
-                border-radius: 50%;
-                background: #000;
-                transition: all 0.2s linear;
-            }
-        }
-        .night {
-            position: relative;
-            display: inline-block;
-            width: 30px;
-            height: 30px;
-            margin-left: 10px;
-            border-radius: 50%;
-            background: #fff;
-            overflow: hidden;
-            cursor: pointer;
-            &::before {
-                content: '';
-                position: absolute;
-                width: 100%;
-                height: 100%;
-                top: -10px;
-                left: -10px;
-                border-radius: 50%;
-                background: #000;
-                transition: all 0.2s linear;
-            }
         }
     }
     &__menu {

@@ -8,6 +8,13 @@
         <section class="home-box__layout">
             <section class="home-box__content">
                 <div class="home-box__content__tit">
+                    <i class="el-icon-s-release"></i>
+                    <span>Release</span>
+                </div>
+                <div class="home-box__content__list">
+                    <release-list :dataList="releaseData" v-if="releaseData"></release-list>
+                </div>
+                <div class="home-box__content__tit">
                     <i class="el-icon-sort-up"></i>
                     <span>The Top</span>
                 </div>
@@ -31,6 +38,7 @@
 
 <script>
 import * as Article from '~/api/article'
+import * as Release from '~/api/release'
 export default {
     layout: 'blog',
     data() {
@@ -42,26 +50,29 @@ export default {
         BlogList: () => import('~/components/List/BlogList.vue'),
         SideList: () => import('~/components/List/SideList.vue'),
         Contact: () => import('~/components/Contact/index.vue'),
+        ReleaseList: () => import('~/components/List/CardInlineList.vue')
     },
     asyncData() {
         if (process.server) {
-            return Promise.all([Article.getLatest(), Article.getTop()])
+            return Promise.all([Article.getLatest(), Article.getTop(), Release.getAll()])
                 .then((res) => {
-                    console.log(res)
                     return {
                         latestData: res[0].data.data,
                         topData: res[1].data.data,
+                        releaseData: res[2].data.data
                     }
                 })
                 .catch((err) => {
                     return {
                         latestData: [],
-                        topData: []
+                        topData: [],
+                        releaseData: []
                     }
                 })
         } else {
             return {
                 latestData: null,
+                releaseData: null,
                 topData: null,
                 isServer: false,
             }
@@ -74,9 +85,10 @@ export default {
             this.bgLoaded = true
         }
         if (this.isServer === false) {
-            Promise.all([Article.getLatest(), Article.getTop()]).then((res) => {
+            Promise.all([Article.getLatest(), Article.getTop(), Release.getAll()]).then((res) => {
                 this.topData = res[1].data.data
                 this.latestData = res[0].data.data
+                this.releaseData = res[2].data.data
                 this.$nextTick(() => {
                     this.$store.dispatch('app/toggleLoading', 2)
                 })

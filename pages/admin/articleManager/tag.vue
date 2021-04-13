@@ -12,22 +12,6 @@
             >{{tag.name}}</el-tag>
             <el-button style="height: 32px;margin: 10px;" size="small" @click="addTag">+ New Tag</el-button>
         </div>
-        <!-- <div class="tag-manager__tit" v-if="selectedTags.length > 0">Default Preview Image: [ {{selectedTags.join(',')}} ]</div>
-        <div class="tag-manager__row" style="padding: 10px" v-if="selectedTags.length > 0">
-            <el-upload
-                    action="/upload/image"
-                    name="preview"
-                    :with-credentials="true"
-                    accept="image/jpeg, image/png"
-                    :on-success="uploadSuccess"
-                    style="text-align: left;"
-                >
-                     <el-button size="small" type="primary">点击上传</el-button>
-                     <div>
-                         <img :src="previewImage" alt="">
-                     </div>
-                </el-upload>
-        </div> -->
         <div class="tag-manager__tit">TAG: [ {{selectedTags.join(',')}} ]</div>
         <div class="tag-manager__row">
             <ArticleTable :tags="selectedTags" />
@@ -37,7 +21,6 @@
 <script>
 import ArticleTable from '~/components/Table/ArticleTable'
 import * as Tag from '~/api/tag'
-import { mapState } from 'vuex'
 export default {
     layout: 'admin',
     middleware: 'authenticated',
@@ -74,7 +57,7 @@ export default {
             })
         },
         deleteTag(tag) {
-            Message.confirm('是否要删除此标签', '提示', {
+            this.$confirm('是否要删除此标签', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning',

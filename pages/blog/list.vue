@@ -1,9 +1,9 @@
 <template>
     <div class="article-box">
-        <div class="article-box__header">
+        <!-- <div class="article-box__header">
             <div class="mask"></div>
             <h1 class="tit">Blog</h1>
-        </div>
+        </div> -->
         <div class="article-box__left">
             <blog-list :dataList="articleData" v-if="articleData"></blog-list>
             <el-pagination
@@ -13,13 +13,13 @@
                 @current-change="changePage"
             ></el-pagination>
         </div>
-        <div class="article-box__right">
+        <div class="article-box__right"> 
+            <tag-cloud :dataList="tagData" v-if="tagData"></tag-cloud>
             <div class="article-box__right__tit">
                 <i class="el-icon-star-on"></i>
                 <span>Most View</span>
             </div>
-            <side-list :dataList="hotData" v-if="hotData"></side-list>
-            <tag-cloud :dataList="tagData" v-if="tagData"></tag-cloud>
+            <side-list :dataList="hotData" v-if="hotData"></side-list>        
         </div>
     </div>
 </template>
@@ -121,7 +121,7 @@ export default {
     justify-content: center;
     width: 100%;
     margin: 0 auto;
-    padding-top: 510px;
+    padding-top: 60px;
     transition: all 0.2s ease;
     @media screen and (max-width: $mobileWidth) {
         min-width: 0;

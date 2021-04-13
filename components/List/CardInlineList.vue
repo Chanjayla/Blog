@@ -5,8 +5,8 @@
       class="list-box__item"
       v-for="item in dataList"
       :key="item.id"
-      :href="item.source||''"
-      :style="`background-image:url(${item.imageURL})`"
+      :href="item.url||''"
+      :style="`background-image:url(${item.image})`"
       :data-title="item.title"
       :data-desc="item.desc"
     >
@@ -22,14 +22,18 @@ export default {
 </script>
 <style lang="scss" scoped>
 .list-box {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  box-sizing: border-box;
   width: 100%;
+  height: 200px;
+  padding-left: 20px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
   &__item {
+    display: inline-block;
     position: relative;
-    width: 360px;
-    height: 200px;
+    width: 300px;
+    height: 160px;
     margin: 0 10px;
     box-shadow: rgba(0, 0, 0, 0.3) 1px 1px 3px;
     overflow: hidden;
@@ -41,7 +45,7 @@ export default {
       position: absolute;
       padding: 0 10px;
       width: 100%;
-      transition: transform 0.4s linear;
+      transition: all .2s linear;
       text-align: center;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -56,14 +60,16 @@ export default {
       line-height: 36px;
       color: #fff;
       background: #000;
-      transform: translate(-100%, 0);
+      transform: scale(1.2);
+      opacity: 0;
       font-size: 20px;
     }
     &::after {
       content: attr(data-desc);
       left: 0;
       bottom: 20px;
-      transform: translate(100%, 0);
+      transform: scale(1.2);
+       opacity: 0;
       font-size: 14px;
       color: #f5f5f5;
     }
@@ -83,10 +89,12 @@ export default {
       z-index: 1;
     }
     &:hover::before {
-      transform: translate(0, 0);
+       opacity: 1;
+      transform: scale(1);
     }
     &:hover::after {
-      transform: translate(0, 0);
+       opacity: 1;
+      transform: scale(1);
     }
   }
 }
