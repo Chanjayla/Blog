@@ -6,7 +6,9 @@
             :style="isTop&&!loading ? 'background: transparent;' : ''"
         ></div>
         <div class="app-header__tit" >
-            <nuxt-link to="/blog">Genos's Blog</nuxt-link>
+            <nuxt-link to="/blog">
+                <GenosSvg :theme="themeId"></GenosSvg>
+            </nuxt-link>
             <div @click="changeTheme" >
                 <ThemeIco :status="themeId" style="display: flex;align-items: center;margin-left: 10px;"></ThemeIco>
             </div>
@@ -47,6 +49,7 @@
 import Sticky from '~/components/Sticky'
 import Search from '~/components/Search'
 import ThemeIco from '~/components/Canvas/themeIco'
+import GenosSvg from '~/components/Svg/genos'
 import { mapState } from 'vuex'
 export default {
     data() {
@@ -132,7 +135,8 @@ export default {
     components: {
         Sticky,
         Search,
-        ThemeIco
+        ThemeIco,
+        GenosSvg
     },
 }
 </script>
@@ -227,9 +231,6 @@ export default {
                 }
                 a {
                     color: $linkHoverColor;
-                }
-                &::after {
-                    transform: translateX(0);
                 }
             }
         }

@@ -2,7 +2,7 @@
     <div class="tag-cloud">
         <h2 class="tag-cloud__tit">
             <i class="iconfont icon-tag"></i>
-            <span>Tag Cloud</span>
+            <span>Tag</span>
         </h2>
         <div class="tag-cloud__list">
             <nuxt-link

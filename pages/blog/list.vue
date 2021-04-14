@@ -180,8 +180,6 @@ export default {
             width: 100%;
             line-height: 40px;
             margin: 40px auto 20px auto;
-            padding: 10px;
-            font-weight: 600;
             border-bottom: 1px dashed rgb(230, 230, 230);
             font-size: 1.2em;
         }

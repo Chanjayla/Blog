@@ -57,7 +57,7 @@ export default {
         BlogList: () => import('~/components/List/BlogList.vue'),
         SideList: () => import('~/components/List/SideList.vue'),
         Contact: () => import('~/components/Contact/index.vue'),
-        ReleaseList: () => import('~/components/List/CardInlineList.vue'),
+        ReleaseList: () => import('~/components/List/CardInlineList.vue')
     },
     asyncData() {
         if (process.server) {
