@@ -1,11 +1,13 @@
 <template>
     <div class="rss-box">
-        <div class="rss-box__header">
-            <div class="mask"></div>
-            <h1 class="tit">Message</h1> 
-        </div>
         <div class="rss-box__content">
-            <div class="rss-box__content__note">基于RSSHUB搭建的订阅器的，更多规则<a href="https://docs.rsshub.app/" target="_blank">查看文档</a></div>
+            <div class="rss-box__content__note">
+                基于RSSHUB搭建的订阅器的，更多规则<a
+                    href="https://docs.rsshub.app/"
+                    target="_blank"
+                    >查看文档</a
+                >
+            </div>
             <section class="left">
                 <div class="rss-box__content__tit">
                     <i class="el-icon-search"></i>
@@ -26,8 +28,8 @@
                                 <li v-for="tips in activeTips" :key="tips.name">
                                     <span>{{ tips.target }}</span>
                                     <span>{{ tips.title }}</span>
-                                </li>    
-                            </ul>                        
+                                </li>
+                            </ul>
                         </div>
                     </transition>
 
@@ -80,7 +82,12 @@
                     <i class="iconfont icon-3801wenjian"></i>
                     <span>My List</span>
                 </div>
-                <side-book-list :dataList="myList" style="width: 100%" @search="handleMyList" v-if="myList.length>0"></side-book-list>
+                <side-book-list
+                    :dataList="myList"
+                    style="width: 100%"
+                    @search="handleMyList"
+                    v-if="myList.length > 0"
+                ></side-book-list>
             </section>
         </div>
     </div>
@@ -100,11 +107,11 @@ export default {
             activeTips: [],
             tipsVisible: false,
             activeUrl: '',
-            myList: []
+            myList: [],
         }
     },
     components: {
-        SideBookList
+        SideBookList,
     },
     asyncData() {},
     mounted() {
@@ -124,40 +131,49 @@ export default {
                             /(?<=src\=\")[^\>]+.(jpg|png|svg|gif)/
                         )
                         item.image = item.image ? item.image[0] : null
+                        if (item.image) {
+                            // 临时添加rss返回错误链接过滤
+                            item.image = item.image.replace(
+                                'https://www.bilibili.com/video/',
+                                ''
+                            )
+                        }
+
                         return item
                     })
                 }
             })
         },
         save() {
-            this.$prompt('订阅备注名称', '新增',{
+            this.$prompt('订阅备注名称', '新增', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
-            }).then(({value}) => {
-                return Rss.add({
-                    name: value,
-                    url: this.activeUrl,
-                    image: this.result[0] ? this.result[0].image : ''
-                })
-            }).then(res => {
-                console.log(res)
-                if(res.data.code === 0) {
-                    this.$message({
-                        message: '创建成功',
-                        type: 'success'
-                    })
-                    this.getMyList()
-                } else {
-                    this.$message({
-                        message: '创建失败',
-                        type: 'error'
-                    })
-                }
             })
+                .then(({ value }) => {
+                    return Rss.add({
+                        name: value,
+                        url: this.activeUrl,
+                        image: this.result[0] ? this.result[0].image : '',
+                    })
+                })
+                .then((res) => {
+                    if (res.data.code === 0) {
+                        this.$message({
+                            message: '创建成功',
+                            type: 'success',
+                        })
+                        this.getMyList()
+                    } else {
+                        this.$message({
+                            message: '创建失败',
+                            type: 'error',
+                        })
+                    }
+                })
         },
         getMyList() {
             return Rss.my().then((res) => {
-                if(res.data.code === 0) {
+                if (res.data.code === 0) {
                     this.myList = res.data.data
                 }
             })
@@ -199,7 +215,7 @@ export default {
     justify-content: center;
     width: 100%;
     margin: 0 auto;
-    padding-top: 510px;
+    padding-top: 100px;
     transition: all 0.2s ease;
     @media screen and (max-width: $mobileWidth) {
         min-width: 0;
@@ -249,14 +265,14 @@ export default {
         .left {
             float: left;
             width: 870px;
-            @media screen and (max-width:$mobileWidth) {
+            @media screen and (max-width: $mobileWidth) {
                 float: none;
                 width: 100%;
             }
         }
         .right {
             margin-left: 900px;
-            @media screen and (max-width:$mobileWidth) {
+            @media screen and (max-width: $mobileWidth) {
                 margin-left: 0;
             }
         }
@@ -274,7 +290,7 @@ export default {
             font-weight: 600;
             border-bottom: 1px dashed rgb(230, 230, 230);
             font-size: 1.2em;
-            
+
             & > * {
                 margin: 0 5px;
             }
@@ -324,7 +340,7 @@ export default {
             background: #fff;
             overflow: hidden;
             cursor: pointer;
-            @media screen and (max-width:$mobileWidth) {
+            @media screen and (max-width: $mobileWidth) {
                 display: block;
                 margin: 20px auto;
             }

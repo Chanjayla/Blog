@@ -19,7 +19,6 @@ export default {
     },
     mounted() {
         this.breadcrumb = this.getRoutePath()
-        console.log(this.breadcrumb)
     },
     methods: {
         getRoutePath() {

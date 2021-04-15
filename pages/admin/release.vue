@@ -128,7 +128,6 @@ export default {
         getAllRelease() {
             Release.getAll()
                 .then((res) => {
-                    console.log(res)
                     if (res.data.code === 0) {
                         this.releaseData = res.data.data
                     }

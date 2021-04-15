@@ -61,7 +61,7 @@ export default {
                     this.$emit('tool', '[{$1}](https://xxx.com)')
                     break
                 case 'image':
-                    this.$emit('tool', '![{$1}](https://xxx/favicon.ico)', 'image')
+                    this.$emit('tool', '![image_title]({$1})', 'image')
                     break
                 case 'table':
                     this.$emit('tool', 'header 1 | header 2 \n ---|--- \n row 1 col 1 | row 1 col 2 \n row 2 col 1 | row 2 col 2')

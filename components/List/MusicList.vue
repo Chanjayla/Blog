@@ -156,7 +156,6 @@ export default {
                         this.deleteArr.push(index)
                         this.listKey++
                     }
-                    console.log(this.deleteArr)
                 }
             }
         },

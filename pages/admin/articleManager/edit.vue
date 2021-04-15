@@ -27,7 +27,7 @@
                 <el-input
                     type="textarea"
                     v-model="desc"
-                    :show-word-limit="true"
+                    show-word-limit
                     maxlength="200"
                     autosize
                 ></el-input>
@@ -84,11 +84,7 @@
                     :limit="1"
                     :on-success="uploadSuccess"
                     :on-remove="uploadRemove"
-                    :file-list="
-                        previewImage
-                            ? [{ name: 'previewImage', url: previewImage }]
-                            : []
-                    "
+                    :file-list="pvImg"
                 >
                     <i class="el-icon-upload"></i>
                     <div class="el-upload__text">
@@ -153,6 +149,7 @@ export default {
             drawer: false,
             draftShow: true,
             inSelectStatus: false,
+            selectImgCb: null,
         }
     },
     mounted() {
@@ -196,6 +193,11 @@ export default {
         ...mapState({
             sidebar: (state) => state.app.sidebar,
         }),
+        pvImg() {
+            return this.previewImage
+                ? [{ name: 'previewImage', url: this.previewImage }]
+                : []
+        },
     },
     components: {
         MDInput,
@@ -204,6 +206,9 @@ export default {
         PicList,
     },
     methods: {
+        test() {
+            console.log
+        },
         tagChange(value) {
             this.selectTags = value
         },
@@ -277,10 +282,12 @@ export default {
         showDrawerToPreview() {
             this.inSelectStatus = true
             this.drawer = true
+            this.selectImgCb = null
         },
-        showDrawerToMd() {
+        showDrawerToMd(cb) {
             this.inSelectStatus = false
             this.drawer = true
+            this.selectImgCb = cb
         },
         closeDrawer() {
             this.inSelectStatus = false
@@ -288,6 +295,9 @@ export default {
         selectOnline(path) {
             if (this.inSelectStatus) {
                 this.previewImage = path
+            }
+            if (this.selectImgCb) {
+                this.selectImgCb(path)
             }
         },
         autoSave(data) {

@@ -2,19 +2,26 @@
     <div class="editor-container">
         <ToolBar @tool="inputValue" />
         <el-row class="editor-box">
-            <el-col :span="type=='divide' ? 12 : 24" style="margin-bottom: 10px;">
+            <el-col
+                :span="type == 'divide' ? 12 : 24"
+                style="margin-bottom: 10px"
+            >
                 <no-ssr placeholder="Codemirror Loading...">
                     <codemirror
                         ref="editor"
                         class="editor-panel"
                         v-model="code"
                         :options="cmOption"
-                        style="line-height: 24px;"
+                        style="line-height: 24px"
                     ></codemirror>
                 </no-ssr>
             </el-col>
-            <el-col :span="type=='divide' ? 12 : 24" class="view">
-                <div class="markdown-content" v-highlight v-html="viewHtml"></div>
+            <el-col :span="type == 'divide' ? 12 : 24" class="view">
+                <div
+                    class="markdown-content"
+                    v-highlight
+                    v-html="viewHtml"
+                ></div>
             </el-col>
         </el-row>
     </div>
@@ -37,27 +44,34 @@ export default {
                 extraKeys: {},
             },
             autoSaveTimer: -1,
-            autoSaveDuration: 5000
+            autoSaveDuration: 5000,
         }
     },
     props: {
         accept: String,
         type: {
             default: 'divide',
-            type: String
-        }
+            type: String,
+        },
     },
     methods: {
         inputValue(text, type) {
+            if (type == 'image') {
+                this.$emit('selectImage', (path) => {
+                    const selection = path
+                    this.$refs['editor'].codemirror.doc.replaceSelection(
+                        text.replace('{$1}', selection)
+                    )
+                    this.$refs['editor'].codemirror.focus()
+                })
+                return
+            }
             const selection =
                 this.$refs['editor'].codemirror.doc.getSelection() || 'text'
             this.$refs['editor'].codemirror.doc.replaceSelection(
                 text.replace('{$1}', selection)
             )
             this.$refs['editor'].codemirror.focus()
-            if(type == 'image') {
-                this.$emit('selectImage')
-            }
         },
     },
     components: {
@@ -74,19 +88,19 @@ export default {
         },
         code() {
             clearTimeout(this.autoSaveTimer)
-            this.autoSaveTimer = setTimeout(()=> {
+            this.autoSaveTimer = setTimeout(() => {
                 this.$emit('auto-save', this.code)
                 this.$message({
                     type: 'success',
                     message: `Auto Save`,
                 })
             }, this.autoSaveDuration)
-        }
+        },
     },
     mounted() {},
     beforeDestroy() {
         clearTimeout(this.autoSaveTimer)
-    }
+    },
 }
 </script>
 <style lang="scss" scoped>
@@ -102,7 +116,6 @@ export default {
         .CodeMirror {
             padding: 10px;
             height: 500px;
-            
         }
     }
 }

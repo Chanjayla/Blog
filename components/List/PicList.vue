@@ -168,7 +168,6 @@ export default {
                 const index =
                     target.dataset.idx &&
                     parseInt(target.dataset.idx) + this.pageSize * (this.page - 1)
-                console.log(index)
                 if (typeof index !== 'undefined') {
                     const arrIndex = this.deleteArr.indexOf(index)
                     if (arrIndex > -1) {
