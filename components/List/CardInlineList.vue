@@ -59,9 +59,8 @@ export default {
       height: 36px;
       line-height: 36px;
       color: #fff;
-      background: #000;
+      background: rgba(0,0,0,.3);
       transform: scale(1.2);
-      opacity: 0;
       font-size: 20px;
     }
     &::after {
@@ -79,7 +78,7 @@ export default {
       width: 100%;
       height: 100%;
       z-index: -1;
-      background: rgba(0, 0, 0, 0.3);
+      background: rgba(0, 0, 0, 0.4);
       transition: opacity 0.5s ease;
       opacity: 0;
     }
@@ -89,7 +88,7 @@ export default {
       z-index: 1;
     }
     &:hover::before {
-       opacity: 1;
+      background: #000;
       transform: scale(1);
     }
     &:hover::after {

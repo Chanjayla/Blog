@@ -113,6 +113,13 @@ module.exports = {
               priority: 1,
               minChunks: 1
             },
+            rss: {
+              test: /pages\/rss/,
+              name: 'rss',
+              chunks: 'async',
+              priority: 1,
+              minChunks: 1
+            },
             elementui: {
               test: /element-ui/,
               name: 'element-ui',
