@@ -16,7 +16,6 @@
                 v-if="total > pageSize"
             ></el-pagination>
         </div>
-        <tag-cloud></tag-cloud>
     </div>
 </template>
 <script>
