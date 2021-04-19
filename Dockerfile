@@ -14,4 +14,5 @@ COPY ./ /nuxt/
 COPY --from=builder /code/node_modules ./node_modules
 EXPOSE 3000
 EXPOSE 3001
-CMD ["npm", "run", "start"] 
+RUN npm run build
+CMD ["node", "server/index.js"] 
