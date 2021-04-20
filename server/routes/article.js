@@ -199,7 +199,7 @@ router.post('/setTop', auth, (req, res) => {
 })
 
 router.get('/getTop', (req, res) => {
-    const date = new Date()
+    const date = new Date().getTime()
     const num = req.query.num || 10
     articleService.getBySort(num, {
         is_top: -1
@@ -209,7 +209,7 @@ router.get('/getTop', (req, res) => {
             data: docs,
             msg: 'ok',
             in: date,
-            out: new Date()
+            out: new Date().getTime()
         })
     }).catch(err => {
         res.json({
