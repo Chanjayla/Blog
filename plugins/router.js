@@ -3,7 +3,7 @@ export default ({ app, store }) => {
         if(to.name&&to.name.match(/(blog)|(post)/)&&to.name != from.name) {
             store.dispatch('app/toggleLoading', 1)
             if(!process.server) {
-                statistics(to.fullPath, from.fullPath)
+                // statistics(to.fullPath, from.fullPath)
             }
             next()
         } else {
