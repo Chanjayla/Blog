@@ -7,6 +7,7 @@ export default ({ $axios, store }) => {
 		axios.defaults.baseURL = 'https://www.jaylang.cn'
 	}
 	$axios.onResponse(response => {
+		console.log('test:', response)
 		const message = response.data.msg
 		const code = response.data.code 
 		if (code == -1 || code == -2) {
