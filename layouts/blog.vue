@@ -5,7 +5,7 @@
         <loadingMask :status="loadingStatus" :class="`${themeName}-loading`"/>
         <setting></setting>
         <the-footer :class="`${themeName}-footer`"></the-footer>
-        <component :is="csrAplayer"></component>
+        <!-- <component :is="csrAplayer"></component> -->
     </div>
 </template>
 <script>
@@ -33,7 +33,7 @@ export default {
         }
     },
     mounted() {
-        this.csrAplayer = () => import('~/components/Music/aplayer.vue')
+        // this.csrAplayer = () => import('~/components/Music/aplayer.vue')
     },
     computed: {
         ...mapState({
