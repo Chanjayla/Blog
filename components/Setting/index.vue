@@ -9,7 +9,7 @@ import { transScroll } from '~/utils'
 export default {
     data() {
         return {
-            isTop: true
+            isTop: true,
         }
     },
     mounted() {
@@ -36,7 +36,7 @@ export default {
 .setting {
     position: fixed;
     right: 10px;
-    bottom: 60px;
+    bottom: 20px;
     z-index: 2;
     img {
         width: 30px;
