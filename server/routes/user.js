@@ -146,6 +146,7 @@ router.post('/modifyPwd', auth, (req, res) => {
 
 async function verifyHuman(token,address) {
     const url = `${recaptcha.host}/recaptcha/api/siteverify`
+    let err = null
     const result = await axios({
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -159,13 +160,10 @@ async function verifyHuman(token,address) {
        return res.data
     })
     .catch(error => {
-        res.json({
-            code: 500,
-            msg: error
-        })
+        err = error
         errLogger.error(`verify recaptcha error:${error}`)
     })  
-    return result
+    return result || err
 }
 
 module.exports = router
